@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "omie-erp": {
+      "command": "python3",
+      "args": ["/Users/kleberdossantosribeiro/omie-mcp/claude_http_client.py"]
+    }
+  }
+}

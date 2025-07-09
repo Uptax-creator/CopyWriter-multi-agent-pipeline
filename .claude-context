@@ -1,0 +1,7 @@
+{
+  "project": "Omie MCP Server",
+  "current_issue": "500 Bad Request SOAP",
+  "working_tools": ["listar_categorias"],
+  "failing_tools": ["criar_cliente"],
+  "references": "./context/"
+}

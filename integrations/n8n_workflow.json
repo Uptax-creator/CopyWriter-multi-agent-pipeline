@@ -1,0 +1,163 @@
+{
+  "name": "Omie ERP Integration",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "webhook-omie",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-start",
+      "name": "Webhook Start",
+      "type": "n8n-nodes-base.webhook",
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.body.action}}",
+              "value2": "criar_conta_pagar"
+            }
+          ]
+        }
+      },
+      "id": "check-action",
+      "name": "Check Action",
+      "type": "n8n-nodes-base.if",
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:8000/mcp",
+        "options": {
+          "bodyContentType": "json",
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        },
+        "body": {
+          "jsonrpc": "2.0",
+          "id": 1,
+          "method": "tools/call",
+          "params": {
+            "name": "criar_conta_pagar",
+            "arguments": {
+              "cnpj_cpf_fornecedor": "={{$json.body.cnpj_fornecedor}}",
+              "razao_social_fornecedor": "={{$json.body.razao_social}}",
+              "numero_documento": "={{$json.body.numero_documento}}",
+              "data_vencimento": "={{$json.body.data_vencimento}}",
+              "valor_documento": "={{$json.body.valor_documento}}",
+              "codigo_categoria": "={{$json.body.codigo_categoria}}",
+              "codigo_departamento": "={{$json.body.codigo_departamento}}",
+              "codigo_tipo_documento": "={{$json.body.codigo_tipo_documento}}"
+            }
+          }
+        }
+      },
+      "id": "criar-conta-pagar",
+      "name": "Criar Conta Pagar",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [680, 200]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:8000/mcp",
+        "options": {
+          "bodyContentType": "json",
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        },
+        "body": {
+          "jsonrpc": "2.0",
+          "id": 1,
+          "method": "tools/call",
+          "params": {
+            "name": "criar_conta_receber",
+            "arguments": {
+              "cnpj_cpf_cliente": "={{$json.body.cnpj_cliente}}",
+              "razao_social_cliente": "={{$json.body.razao_social}}",
+              "numero_documento": "={{$json.body.numero_documento}}",
+              "data_vencimento": "={{$json.body.data_vencimento}}",
+              "valor_documento": "={{$json.body.valor_documento}}",
+              "codigo_categoria": "={{$json.body.codigo_categoria}}"
+            }
+          }
+        }
+      },
+      "id": "criar-conta-receber",
+      "name": "Criar Conta Receber",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [680, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json}}"
+      },
+      "id": "response",
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Start": {
+      "main": [
+        [
+          {
+            "node": "Check Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Action": {
+      "main": [
+        [
+          {
+            "node": "Criar Conta Pagar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Criar Conta Receber",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Conta Pagar": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Criar Conta Receber": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "project": "Omie MCP Server",
+  "version": "7.0.0",
+  "description": "Servidor MCP HTTP para integração com Omie ERP",
+  
+  "current_issue": {
+    "error": "500 Bad Request SOAP",
+    "endpoint": "/geral/clientes/",
+    "method": "IncluirCliente",
+    "status": "investigating"
+  },
+  
+  "working_tools": [
+    "consultar_categorias",
+    "consultar_departamentos"
+  ],
+  
+  "failing_tools": [
+    "cadastrar_cliente_fornecedor"
+  ],
+  
+  "untested_tools": [
+    "criar_conta_pagar",
+    "criar_conta_receber",
+    "consultar_contas_pagar",
+    "consultar_contas_receber",
+    "consultar_tipos_documento"
+  ],
+  
+  "key_files": {
+    "main_server": "omie_http_server.py",
+    "json_fixed": "omie_server_json_fixed.py",
+    "context": "./context/",
+    "docs": [
+      "PROJECT_CONTEXT.md",
+      "TROUBLESHOOTING.md"
+    ]
+  },
+  
+  "test_commands": {
+    "run_server": "python omie_http_server.py",
+    "test_client": "curl -X POST http://localhost:8000/test/cliente-ultra -H 'Content-Type: application/json' -d '{\"razao_social\": \"TESTE\", \"cnpj_cpf\": \"11222333000144\", \"email\": \"teste@email.com\", \"tipo_cliente\": \"cliente\"}'",
+    "view_docs": "http://localhost:8000/docs"
+  },
+  
+  "environment": {
+    "OMIE_APP_KEY": "required",
+    "OMIE_APP_SECRET": "required",
+    "port": 8000
+  },
+  
+  "dependencies": [
+    "fastapi",
+    "uvicorn", 
+    "httpx",
+    "pydantic",
+    "mcp"
+  ],
+  
+  "api_details": {
+    "base_url": "https://app.omie.com.br/api/v1",
+    "expected_response": "JSON",
+    "error_response": "SOAP/XML (problema)",
+    "test_cnpj": [
+      "24493607000119",
+      "11222333000144",
+      "33444555000166"
+    ]
+  },
+  
+  "next_steps": [
+    "Modularizar código em arquivos separados",
+    "Implementar testes unitários",
+    "Testar API diretamente com curl",
+    "Verificar documentação oficial Omie",
+    "Criar mock server para testes"
+  ]
+}

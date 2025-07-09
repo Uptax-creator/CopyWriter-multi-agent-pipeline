@@ -1,0 +1,62 @@
+{
+  "claude_desktop_config": {
+    "mcpServers": {
+      "omie-erp": {
+        "command": "python",
+        "args": ["/Users/kleberdossantosribeiro/omie-mcp/omie_http_server.py"]
+      }
+    }
+  },
+  "claude_web_config": {
+    "webhook_url": "http://localhost:8000/mcp",
+    "tools": [
+      {
+        "name": "consultar_categorias_omie",
+        "description": "Consulta categorias do Omie ERP",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "pagina": {
+              "type": "integer",
+              "description": "Número da página"
+            }
+          }
+        }
+      },
+      {
+        "name": "criar_conta_pagar_omie",
+        "description": "Cria conta a pagar no Omie ERP",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "cnpj_cpf_fornecedor": {
+              "type": "string",
+              "description": "CNPJ/CPF do fornecedor"
+            },
+            "razao_social_fornecedor": {
+              "type": "string",
+              "description": "Razão social do fornecedor"
+            },
+            "numero_documento": {
+              "type": "string",
+              "description": "Número do documento"
+            },
+            "data_vencimento": {
+              "type": "string",
+              "description": "Data de vencimento (DD/MM/AAAA)"
+            },
+            "valor_documento": {
+              "type": "number",
+              "description": "Valor do documento"
+            },
+            "codigo_categoria": {
+              "type": "string",
+              "description": "Código da categoria"
+            }
+          },
+          "required": ["cnpj_cpf_fornecedor", "numero_documento", "data_vencimento", "valor_documento", "codigo_categoria"]
+        }
+      }
+    ]
+  }
+}

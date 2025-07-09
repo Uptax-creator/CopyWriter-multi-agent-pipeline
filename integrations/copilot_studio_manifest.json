@@ -1,0 +1,211 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Omie ERP Integration",
+  "name_for_model": "omie_erp",
+  "description_for_human": "Integração completa com Omie ERP para gestão financeira, incluindo contas a pagar, contas a receber e consultas de dados de referência",
+  "description_for_model": "Sistema para consultar categorias, departamentos, tipos de documento e gerenciar contas a pagar e receber no Omie ERP. Permite criar, atualizar e consultar dados financeiros com validação automática de códigos.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "http://localhost:8000/openapi.json"
+  },
+  "logo_url": "https://app.omie.com.br/favicon.ico",
+  "contact_email": "suporte@omie.com.br",
+  "legal_info_url": "https://www.omie.com.br/termos-de-uso/",
+  "functions": [
+    {
+      "name": "consultar_categorias",
+      "description": "Consulta categorias de receita e despesa no Omie ERP",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "pagina": {
+            "type": "integer",
+            "description": "Número da página para paginação",
+            "default": 1
+          },
+          "registros_por_pagina": {
+            "type": "integer",
+            "description": "Quantidade de registros por página",
+            "default": 50
+          }
+        }
+      }
+    },
+    {
+      "name": "consultar_departamentos",
+      "description": "Consulta departamentos organizacionais no Omie ERP",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "pagina": {
+            "type": "integer",
+            "description": "Número da página para paginação",
+            "default": 1
+          },
+          "registros_por_pagina": {
+            "type": "integer",
+            "description": "Quantidade de registros por página",
+            "default": 50
+          }
+        }
+      }
+    },
+    {
+      "name": "consultar_tipos_documento",
+      "description": "Consulta tipos de documentos disponíveis no Omie ERP",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    },
+    {
+      "name": "criar_conta_pagar",
+      "description": "Cria uma nova conta a pagar no Omie ERP com consulta/criação automática de fornecedor",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cnpj_cpf_fornecedor": {
+            "type": "string",
+            "description": "CNPJ/CPF do fornecedor (será consultado/criado automaticamente)"
+          },
+          "razao_social_fornecedor": {
+            "type": "string",
+            "description": "Razão social do fornecedor (usado se não existir)"
+          },
+          "numero_documento": {
+            "type": "string",
+            "description": "Número do documento/nota fiscal"
+          },
+          "data_vencimento": {
+            "type": "string",
+            "description": "Data de vencimento no formato DD/MM/AAAA"
+          },
+          "valor_documento": {
+            "type": "number",
+            "description": "Valor do documento em reais"
+          },
+          "codigo_categoria": {
+            "type": "string",
+            "description": "Código da categoria (obrigatório - use consultar_categorias)"
+          },
+          "codigo_departamento": {
+            "type": "string",
+            "description": "Código do departamento (opcional - use consultar_departamentos)"
+          },
+          "codigo_tipo_documento": {
+            "type": "string",
+            "description": "Código do tipo de documento (opcional - use consultar_tipos_documento)"
+          }
+        },
+        "required": ["cnpj_cpf_fornecedor", "numero_documento", "data_vencimento", "valor_documento", "codigo_categoria"]
+      }
+    },
+    {
+      "name": "criar_conta_receber",
+      "description": "Cria uma nova conta a receber no Omie ERP com consulta/criação automática de cliente",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "cnpj_cpf_cliente": {
+            "type": "string",
+            "description": "CNPJ/CPF do cliente (será consultado/criado automaticamente)"
+          },
+          "razao_social_cliente": {
+            "type": "string",
+            "description": "Razão social do cliente (usado se não existir)"
+          },
+          "numero_documento": {
+            "type": "string",
+            "description": "Número do documento/nota fiscal"
+          },
+          "data_vencimento": {
+            "type": "string",
+            "description": "Data de vencimento no formato DD/MM/AAAA"
+          },
+          "valor_documento": {
+            "type": "number",
+            "description": "Valor do documento em reais"
+          },
+          "codigo_categoria": {
+            "type": "string",
+            "description": "Código da categoria (obrigatório - use consultar_categorias)"
+          },
+          "codigo_departamento": {
+            "type": "string",
+            "description": "Código do departamento (opcional - use consultar_departamentos)"
+          },
+          "codigo_tipo_documento": {
+            "type": "string",
+            "description": "Código do tipo de documento (opcional - use consultar_tipos_documento)"
+          }
+        },
+        "required": ["cnpj_cpf_cliente", "numero_documento", "data_vencimento", "valor_documento", "codigo_categoria"]
+      }
+    },
+    {
+      "name": "consultar_contas_pagar",
+      "description": "Consulta contas a pagar com filtros por fornecedor, status e período",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "codigo_cliente_fornecedor": {
+            "type": "integer",
+            "description": "Código do fornecedor para filtrar"
+          },
+          "data_inicio": {
+            "type": "string",
+            "description": "Data inicial do período (DD/MM/AAAA)"
+          },
+          "data_fim": {
+            "type": "string",
+            "description": "Data final do período (DD/MM/AAAA)"
+          },
+          "pagina": {
+            "type": "integer",
+            "description": "Número da página",
+            "default": 1
+          },
+          "registros_por_pagina": {
+            "type": "integer",
+            "description": "Registros por página",
+            "default": 20
+          }
+        }
+      }
+    },
+    {
+      "name": "consultar_contas_receber",
+      "description": "Consulta contas a receber com filtros por cliente, status e período",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "codigo_cliente_fornecedor": {
+            "type": "integer",
+            "description": "Código do cliente para filtrar"
+          },
+          "data_inicio": {
+            "type": "string",
+            "description": "Data inicial do período (DD/MM/AAAA)"
+          },
+          "data_fim": {
+            "type": "string",
+            "description": "Data final do período (DD/MM/AAAA)"
+          },
+          "pagina": {
+            "type": "integer",
+            "description": "Número da página",
+            "default": 1
+          },
+          "registros_por_pagina": {
+            "type": "integer",
+            "description": "Registros por página",
+            "default": 20
+          }
+        }
+      }
+    }
+  ]
+}
