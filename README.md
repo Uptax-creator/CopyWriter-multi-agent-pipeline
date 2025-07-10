@@ -193,6 +193,16 @@ Após configurar, você pode usar comandos como:
 | `alterar_conta_receber` | Altera conta a receber | `codigo_lancamento_omie` |
 | `excluir_conta_receber` | Exclui conta a receber | `codigo_lancamento_omie` |
 
+### 🔧 Ferramentas Simplificadas
+
+| Ferramenta | Descrição | Parâmetros Obrigatórios |
+|------------|-----------|-------------------------|
+| `cadastrar_cliente_fornecedor` | Cadastra cliente ou fornecedor (versão simplificada) | `razao_social`, `cnpj_cpf`, `email`, `tipo_cliente` |
+| `criar_conta_pagar` | Cria conta a pagar (versão simplificada) | `cnpj_cpf_fornecedor`, `numero_documento`, `data_vencimento`, `valor_documento` |
+| `atualizar_conta_pagar` | Atualiza conta a pagar existente | `codigo_lancamento`, `valor_documento`, `data_vencimento` |
+
+**Total: 20 ferramentas** organizadas em 5 categorias funcionais.
+
 ## 🔗 Integrações
 
 ### Claude Desktop

@@ -31,7 +31,7 @@ def main():
         "mcpServers": {
             "omie-erp": {
                 "command": "python",
-                "args": [str(Path(__file__).parent / "omie_http_server.py")]
+                "args": [str(Path(__file__).parent / "omie_mcp_server.py")]
             }
         }
     }

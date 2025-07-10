@@ -207,6 +207,204 @@ class MCPServer:
                         "registros_por_pagina": {"type": "integer", "description": "Registros por página", "default": 20}
                     }
                 }
+            },
+            {
+                "name": "cadastrar_cliente_fornecedor",
+                "description": "Cadastra cliente ou fornecedor no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "razao_social": {"type": "string", "description": "Razão social"},
+                        "cnpj_cpf": {"type": "string", "description": "CNPJ ou CPF"},
+                        "email": {"type": "string", "description": "Email"},
+                        "tipo_cliente": {"type": "string", "description": "Tipo: cliente ou fornecedor"}
+                    },
+                    "required": ["razao_social", "cnpj_cpf", "email", "tipo_cliente"]
+                }
+            },
+            {
+                "name": "criar_conta_pagar",
+                "description": "Cria uma nova conta a pagar no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "cnpj_cpf_fornecedor": {"type": "string", "description": "CNPJ/CPF do fornecedor"},
+                        "razao_social_fornecedor": {"type": "string", "description": "Razão social do fornecedor"},
+                        "numero_documento": {"type": "string", "description": "Número do documento"},
+                        "data_vencimento": {"type": "string", "description": "Data vencimento (DD/MM/AAAA)"},
+                        "valor_documento": {"type": "number", "description": "Valor do documento"},
+                        "codigo_categoria": {"type": "string", "description": "Código da categoria"}
+                    },
+                    "required": ["cnpj_cpf_fornecedor", "numero_documento", "data_vencimento", "valor_documento", "codigo_categoria"]
+                }
+            },
+            {
+                "name": "atualizar_conta_pagar",
+                "description": "Atualiza uma conta a pagar existente no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "codigo_lancamento": {"type": "integer", "description": "Código do lançamento"},
+                        "valor_documento": {"type": "number", "description": "Novo valor do documento"},
+                        "data_vencimento": {"type": "string", "description": "Nova data vencimento (DD/MM/AAAA)"}
+                    },
+                    "required": ["codigo_lancamento"]
+                }
+            },
+            {
+                "name": "consultar_clientes",
+                "description": "Consulta clientes cadastrados no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "pagina": {"type": "integer", "description": "Página", "default": 1},
+                        "registros_por_pagina": {"type": "integer", "description": "Registros por página", "default": 50}
+                    }
+                }
+            },
+            {
+                "name": "consultar_fornecedores",
+                "description": "Consulta fornecedores cadastrados no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "pagina": {"type": "integer", "description": "Página", "default": 1},
+                        "registros_por_pagina": {"type": "integer", "description": "Registros por página", "default": 50}
+                    }
+                }
+            },
+            {
+                "name": "incluir_cliente",
+                "description": "Inclui novo cliente no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "razao_social": {"type": "string", "description": "Razão social"},
+                        "cnpj_cpf": {"type": "string", "description": "CNPJ ou CPF"},
+                        "email": {"type": "string", "description": "Email"},
+                        "telefone": {"type": "string", "description": "Telefone"}
+                    },
+                    "required": ["razao_social", "cnpj_cpf", "email"]
+                }
+            },
+            {
+                "name": "incluir_fornecedor",
+                "description": "Inclui novo fornecedor no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "razao_social": {"type": "string", "description": "Razão social"},
+                        "cnpj_cpf": {"type": "string", "description": "CNPJ ou CPF"},
+                        "email": {"type": "string", "description": "Email"},
+                        "telefone": {"type": "string", "description": "Telefone"}
+                    },
+                    "required": ["razao_social", "cnpj_cpf", "email"]
+                }
+            },
+            {
+                "name": "alterar_cliente",
+                "description": "Altera cliente existente no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "codigo_cliente_omie": {"type": "integer", "description": "Código do cliente"},
+                        "razao_social": {"type": "string", "description": "Nova razão social"},
+                        "email": {"type": "string", "description": "Novo email"},
+                        "telefone": {"type": "string", "description": "Novo telefone"}
+                    },
+                    "required": ["codigo_cliente_omie"]
+                }
+            },
+            {
+                "name": "alterar_fornecedor",
+                "description": "Altera fornecedor existente no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "codigo_cliente_omie": {"type": "integer", "description": "Código do fornecedor"},
+                        "razao_social": {"type": "string", "description": "Nova razão social"},
+                        "email": {"type": "string", "description": "Novo email"},
+                        "telefone": {"type": "string", "description": "Novo telefone"}
+                    },
+                    "required": ["codigo_cliente_omie"]
+                }
+            },
+            {
+                "name": "incluir_conta_pagar",
+                "description": "Inclui nova conta a pagar no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "codigo_cliente_fornecedor": {"type": "integer", "description": "Código do fornecedor"},
+                        "numero_documento": {"type": "string", "description": "Número do documento"},
+                        "data_vencimento": {"type": "string", "description": "Data vencimento (DD/MM/AAAA)"},
+                        "valor_documento": {"type": "number", "description": "Valor do documento"},
+                        "codigo_categoria": {"type": "string", "description": "Código da categoria"}
+                    },
+                    "required": ["codigo_cliente_fornecedor", "numero_documento", "data_vencimento", "valor_documento"]
+                }
+            },
+            {
+                "name": "alterar_conta_pagar",
+                "description": "Altera conta a pagar existente no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "codigo_lancamento_omie": {"type": "integer", "description": "Código do lançamento"},
+                        "valor_documento": {"type": "number", "description": "Novo valor"},
+                        "data_vencimento": {"type": "string", "description": "Nova data vencimento"}
+                    },
+                    "required": ["codigo_lancamento_omie"]
+                }
+            },
+            {
+                "name": "excluir_conta_pagar",
+                "description": "Exclui conta a pagar do Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "codigo_lancamento_omie": {"type": "integer", "description": "Código do lançamento"}
+                    },
+                    "required": ["codigo_lancamento_omie"]
+                }
+            },
+            {
+                "name": "incluir_conta_receber",
+                "description": "Inclui nova conta a receber no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "codigo_cliente_fornecedor": {"type": "integer", "description": "Código do cliente"},
+                        "numero_documento": {"type": "string", "description": "Número do documento"},
+                        "data_vencimento": {"type": "string", "description": "Data vencimento (DD/MM/AAAA)"},
+                        "valor_documento": {"type": "number", "description": "Valor do documento"}
+                    },
+                    "required": ["codigo_cliente_fornecedor", "numero_documento", "data_vencimento", "valor_documento"]
+                }
+            },
+            {
+                "name": "alterar_conta_receber",
+                "description": "Altera conta a receber existente no Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "codigo_lancamento_omie": {"type": "integer", "description": "Código do lançamento"},
+                        "valor_documento": {"type": "number", "description": "Novo valor"},
+                        "data_vencimento": {"type": "string", "description": "Nova data vencimento"}
+                    },
+                    "required": ["codigo_lancamento_omie"]
+                }
+            },
+            {
+                "name": "excluir_conta_receber",
+                "description": "Exclui conta a receber do Omie ERP",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "codigo_lancamento_omie": {"type": "integer", "description": "Código do lançamento"}
+                    },
+                    "required": ["codigo_lancamento_omie"]
+                }
             }
         ]
     
@@ -278,6 +476,36 @@ class MCPServer:
                     return await omie_handlers.handle_consultar_contas_pagar(arguments)
                 elif tool_name == "consultar_contas_receber":
                     return await omie_handlers.handle_consultar_contas_receber(arguments)
+                elif tool_name == "cadastrar_cliente_fornecedor":
+                    return await omie_handlers.handle_cadastrar_cliente_fornecedor(arguments)
+                elif tool_name == "criar_conta_pagar":
+                    return await omie_handlers.handle_criar_conta_pagar(arguments)
+                elif tool_name == "atualizar_conta_pagar":
+                    return await omie_handlers.handle_atualizar_conta_pagar(arguments)
+                elif tool_name == "consultar_clientes":
+                    return await omie_handlers.handle_consultar_clientes(arguments)
+                elif tool_name == "consultar_fornecedores":
+                    return await omie_handlers.handle_consultar_fornecedores(arguments)
+                elif tool_name == "incluir_cliente":
+                    return await omie_handlers.handle_incluir_cliente(arguments)
+                elif tool_name == "incluir_fornecedor":
+                    return await omie_handlers.handle_incluir_fornecedor(arguments)
+                elif tool_name == "alterar_cliente":
+                    return await omie_handlers.handle_alterar_cliente(arguments)
+                elif tool_name == "alterar_fornecedor":
+                    return await omie_handlers.handle_alterar_fornecedor(arguments)
+                elif tool_name == "incluir_conta_pagar":
+                    return await omie_handlers.handle_incluir_conta_pagar(arguments)
+                elif tool_name == "alterar_conta_pagar":
+                    return await omie_handlers.handle_alterar_conta_pagar(arguments)
+                elif tool_name == "excluir_conta_pagar":
+                    return await omie_handlers.handle_excluir_conta_pagar(arguments)
+                elif tool_name == "incluir_conta_receber":
+                    return await omie_handlers.handle_incluir_conta_receber(arguments)
+                elif tool_name == "alterar_conta_receber":
+                    return await omie_handlers.handle_alterar_conta_receber(arguments)
+                elif tool_name == "excluir_conta_receber":
+                    return await omie_handlers.handle_excluir_conta_receber(arguments)
             else:
                 # Usar versão inline
                 if tool_name == "consultar_categorias":
@@ -290,6 +518,36 @@ class MCPServer:
                     return await self.handle_consultar_contas_pagar(arguments)
                 elif tool_name == "consultar_contas_receber":
                     return await self.handle_consultar_contas_receber(arguments)
+                elif tool_name == "cadastrar_cliente_fornecedor":
+                    return await self.handle_cadastrar_cliente_fornecedor(arguments)
+                elif tool_name == "criar_conta_pagar":
+                    return await self.handle_criar_conta_pagar(arguments)
+                elif tool_name == "atualizar_conta_pagar":
+                    return await self.handle_atualizar_conta_pagar(arguments)
+                elif tool_name == "consultar_clientes":
+                    return await self.handle_consultar_clientes(arguments)
+                elif tool_name == "consultar_fornecedores":
+                    return await self.handle_consultar_fornecedores(arguments)
+                elif tool_name == "incluir_cliente":
+                    return await self.handle_incluir_cliente(arguments)
+                elif tool_name == "incluir_fornecedor":
+                    return await self.handle_incluir_fornecedor(arguments)
+                elif tool_name == "alterar_cliente":
+                    return await self.handle_alterar_cliente(arguments)
+                elif tool_name == "alterar_fornecedor":
+                    return await self.handle_alterar_fornecedor(arguments)
+                elif tool_name == "incluir_conta_pagar":
+                    return await self.handle_incluir_conta_pagar(arguments)
+                elif tool_name == "alterar_conta_pagar":
+                    return await self.handle_alterar_conta_pagar(arguments)
+                elif tool_name == "excluir_conta_pagar":
+                    return await self.handle_excluir_conta_pagar(arguments)
+                elif tool_name == "incluir_conta_receber":
+                    return await self.handle_incluir_conta_receber(arguments)
+                elif tool_name == "alterar_conta_receber":
+                    return await self.handle_alterar_conta_receber(arguments)
+                elif tool_name == "excluir_conta_receber":
+                    return await self.handle_excluir_conta_receber(arguments)
             
             raise ValueError(f"Ferramenta não encontrada: {tool_name}")
             
@@ -407,6 +665,58 @@ class MCPServer:
             return f"Contas a Receber encontradas: {len(contas)}\n\n" + "\n".join(lista_contas) + f"\n\nTotal (10 primeiras): R$ {total_valor:,.2f}"
         else:
             return "Nenhuma conta a receber encontrada"
+    
+    async def handle_cadastrar_cliente_fornecedor(self, args: Dict) -> str:
+        """Handler inline para cadastrar cliente/fornecedor"""
+        dados = {
+            "razao_social": args["razao_social"],
+            "cnpj_cpf": args["cnpj_cpf"],
+            "email": args["email"],
+            "tipo_cliente": args["tipo_cliente"]
+        }
+        
+        resultado = await omie_client.cadastrar_cliente_fornecedor(dados)
+        
+        if resultado.get("codigo_cliente_omie"):
+            return f"✅ {args['tipo_cliente'].title()} cadastrado com sucesso!\n\nCódigo: {resultado['codigo_cliente_omie']}\nRazão Social: {args['razao_social']}\nCNPJ/CPF: {args['cnpj_cpf']}"
+        else:
+            return f"❌ Erro ao cadastrar {args['tipo_cliente']}: {resultado}"
+    
+    async def handle_criar_conta_pagar(self, args: Dict) -> str:
+        """Handler inline para criar conta a pagar"""
+        dados = {
+            "cnpj_cpf": args["cnpj_cpf_fornecedor"],
+            "razao_social": args["razao_social_fornecedor"],
+            "numero_documento": args["numero_documento"],
+            "data_vencimento": args["data_vencimento"],
+            "valor_documento": args["valor_documento"],
+            "codigo_categoria": args["codigo_categoria"]
+        }
+        
+        resultado = await omie_client.criar_conta_pagar(dados)
+        
+        if resultado.get("codigo_lancamento_omie"):
+            return f"✅ Conta a pagar criada com sucesso!\n\nCódigo: {resultado['codigo_lancamento_omie']}\nDocumento: {args['numero_documento']}\nValor: R$ {args['valor_documento']:,.2f}\nVencimento: {args['data_vencimento']}"
+        else:
+            return f"❌ Erro ao criar conta a pagar: {resultado}"
+    
+    async def handle_atualizar_conta_pagar(self, args: Dict) -> str:
+        """Handler inline para atualizar conta a pagar"""
+        dados = {
+            "codigo_lancamento_omie": args["codigo_lancamento"]
+        }
+        
+        if args.get("valor_documento"):
+            dados["valor_documento"] = args["valor_documento"]
+        if args.get("data_vencimento"):
+            dados["data_vencimento"] = args["data_vencimento"]
+        
+        resultado = await omie_client.atualizar_conta_pagar(dados)
+        
+        if resultado.get("codigo_lancamento_omie"):
+            return f"✅ Conta a pagar atualizada com sucesso!\n\nCódigo: {resultado['codigo_lancamento_omie']}"
+        else:
+            return f"❌ Erro ao atualizar conta a pagar: {resultado}"
 
 # ============================================================================
 # MAIN LOOP
