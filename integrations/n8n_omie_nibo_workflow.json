@@ -1,0 +1,457 @@
+{
+  "name": "Omie MCP + Nibo MCP Integration",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "webhook-erp-sync",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-start",
+      "name": "ERP Sync Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [240, 300],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.body.action}}",
+              "operation": "equal",
+              "value2": "sync_clients"
+            }
+          ]
+        }
+      },
+      "id": "check-action",
+      "name": "Check Action Type",
+      "type": "n8n-nodes-base.if",
+      "position": [460, 300],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/mcp/tools/consultar_clientes",
+        "options": {
+          "bodyContentType": "json",
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        },
+        "body": {
+          "arguments": {
+            "pagina": 1,
+            "registros_por_pagina": 50
+          }
+        }
+      },
+      "id": "get-omie-clients",
+      "name": "Get Omie Clients",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [680, 200],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3002/mcp/tools/consultar_clientes",
+        "options": {
+          "bodyContentType": "json",
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        },
+        "body": {
+          "arguments": {
+            "pagina": 1,
+            "registros_por_pagina": 50
+          }
+        }
+      },
+      "id": "get-nibo-clients",
+      "name": "Get Nibo Clients",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [680, 400],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse Omie and Nibo client data\nconst omieData = JSON.parse($input.first().json.content[0].text);\nconst niboData = JSON.parse($input.last().json.content[0].text);\n\n// Extract client lists\nconst omieClients = omieData.clientes_cadastro || [];\nconst niboClients = niboData.clientes || [];\n\n// Create mapping for comparison\nconst niboClientMap = new Map();\nniboClients.forEach(client => {\n  if (client.documento) {\n    niboClientMap.set(client.documento.replace(/[^\\d]/g, ''), client);\n  }\n});\n\n// Find clients to sync from Omie to Nibo\nconst clientsToSync = [];\nomieClients.forEach(omieClient => {\n  const cleanDoc = omieClient.cnpj_cpf?.replace(/[^\\d]/g, '');\n  if (cleanDoc && !niboClientMap.has(cleanDoc)) {\n    clientsToSync.push({\n      name: omieClient.razao_social || omieClient.nome_fantasia,\n      document: omieClient.cnpj_cpf,\n      email: omieClient.email,\n      phone: omieClient.telefone1_ddd + omieClient.telefone1_numero,\n      omie_id: omieClient.codigo_cliente_omie\n    });\n  }\n});\n\nreturn clientsToSync.map(client => ({ json: client }));"
+      },
+      "id": "process-sync-data",
+      "name": "Process Sync Data",
+      "type": "n8n-nodes-base.code",
+      "position": [900, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3002/mcp/tools/incluir_cliente",
+        "options": {
+          "bodyContentType": "json",
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        },
+        "body": {
+          "arguments": {
+            "name": "={{$json.name}}",
+            "document": "={{$json.document}}",
+            "email": "={{$json.email}}",
+            "phone": "={{$json.phone}}"
+          }
+        }
+      },
+      "id": "create-nibo-client",
+      "name": "Create Nibo Client",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [1120, 300],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.body.action}}",
+              "operation": "equal",
+              "value2": "sync_financial"
+            }
+          ]
+        }
+      },
+      "id": "check-financial-sync",
+      "name": "Check Financial Sync",
+      "type": "n8n-nodes-base.if",
+      "position": [460, 500],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/mcp/tools/consultar_contas_pagar",
+        "options": {
+          "bodyContentType": "json",
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        },
+        "body": {
+          "arguments": {
+            "data_inicio": "2024-07-01",
+            "data_fim": "2024-07-31",
+            "pagina": 1,
+            "registros_por_pagina": 20
+          }
+        }
+      },
+      "id": "get-omie-payables",
+      "name": "Get Omie Payables",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [680, 600],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/mcp/tools/consultar_contas_receber",
+        "options": {
+          "bodyContentType": "json",
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        },
+        "body": {
+          "arguments": {
+            "data_inicio": "2024-07-01",
+            "data_fim": "2024-07-31",
+            "pagina": 1,
+            "registros_por_pagina": 20
+          }
+        }
+      },
+      "id": "get-omie-receivables",
+      "name": "Get Omie Receivables",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [680, 800],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "jsCode": "// Combine financial data for reporting\nconst payables = JSON.parse($input.first().json.content[0].text);\nconst receivables = JSON.parse($input.last().json.content[0].text);\n\nconst report = {\n  timestamp: new Date().toISOString(),\n  summary: {\n    total_payables: payables.contas_pagar?.length || 0,\n    total_receivables: receivables.contas_receber?.length || 0,\n    payables_amount: payables.contas_pagar?.reduce((sum, item) => sum + (item.valor_documento || 0), 0) || 0,\n    receivables_amount: receivables.contas_receber?.reduce((sum, item) => sum + (item.valor_documento || 0), 0) || 0\n  },\n  data: {\n    payables: payables.contas_pagar || [],\n    receivables: receivables.contas_receber || []\n  }\n};\n\nreturn [{ json: report }];"
+      },
+      "id": "process-financial-data",
+      "name": "Process Financial Data",
+      "type": "n8n-nodes-base.code",
+      "position": [900, 700],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.body.action}}",
+              "operation": "equal",
+              "value2": "test_connection"
+            }
+          ]
+        }
+      },
+      "id": "check-test-connection",
+      "name": "Check Test Connection",
+      "type": "n8n-nodes-base.if",
+      "position": [460, 900],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3001/mcp/tools/testar_conexao",
+        "options": {
+          "bodyContentType": "json",
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        },
+        "body": {
+          "arguments": {}
+        }
+      },
+      "id": "test-omie-connection",
+      "name": "Test Omie Connection",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [680, 1000],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3002/mcp/tools/testar_conexao",
+        "options": {
+          "bodyContentType": "json",
+          "headers": {
+            "Content-Type": "application/json"
+          }
+        },
+        "body": {
+          "arguments": {}
+        }
+      },
+      "id": "test-nibo-connection",
+      "name": "Test Nibo Connection",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [680, 1200],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse connection test results\nconst omieResult = JSON.parse($input.first().json.content[0].text);\nconst niboResult = JSON.parse($input.last().json.content[0].text);\n\nconst connectionStatus = {\n  timestamp: new Date().toISOString(),\n  omie: {\n    status: omieResult.status || 'unknown',\n    servidor: omieResult.servidor || 'unknown',\n    empresa: omieResult.empresa || 'unknown',\n    modo: omieResult.modo || 'unknown'\n  },\n  nibo: {\n    status: niboResult.status || 'unknown',\n    servidor: niboResult.servidor || 'unknown',\n    empresa: niboResult.empresa || 'unknown',\n    modo: niboResult.modo || 'unknown'\n  },\n  overall_status: (omieResult.status === 'conectado' && niboResult.status === 'conectado') ? 'healthy' : 'degraded'\n};\n\nreturn [{ json: connectionStatus }];"
+      },
+      "id": "process-connection-results",
+      "name": "Process Connection Results",
+      "type": "n8n-nodes-base.code",
+      "position": [900, 1100],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json}}"
+      },
+      "id": "response",
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [1340, 600],
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "ERP Sync Webhook": {
+      "main": [
+        [
+          {
+            "node": "Check Action Type",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check Financial Sync",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check Test Connection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Action Type": {
+      "main": [
+        [
+          {
+            "node": "Get Omie Clients",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Nibo Clients",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Omie Clients": {
+      "main": [
+        [
+          {
+            "node": "Process Sync Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Nibo Clients": {
+      "main": [
+        [
+          {
+            "node": "Process Sync Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Sync Data": {
+      "main": [
+        [
+          {
+            "node": "Create Nibo Client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Nibo Client": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Financial Sync": {
+      "main": [
+        [
+          {
+            "node": "Get Omie Payables",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Omie Receivables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Omie Payables": {
+      "main": [
+        [
+          {
+            "node": "Process Financial Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Omie Receivables": {
+      "main": [
+        [
+          {
+            "node": "Process Financial Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Financial Data": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Test Connection": {
+      "main": [
+        [
+          {
+            "node": "Test Omie Connection",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Test Nibo Connection",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Test Omie Connection": {
+      "main": [
+        [
+          {
+            "node": "Process Connection Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Test Nibo Connection": {
+      "main": [
+        [
+          {
+            "node": "Process Connection Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Connection Results": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "1.0.0"
+}

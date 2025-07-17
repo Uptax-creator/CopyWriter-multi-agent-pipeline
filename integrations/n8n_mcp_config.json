@@ -1,0 +1,128 @@
+{
+  "n8n_mcp_config": {
+    "server_info": {
+      "name": "omie-nibo-mcp-integration",
+      "version": "1.0.0",
+      "description": "MCP integration for Omie and Nibo ERP systems via N8N"
+    },
+    "target_n8n": {
+      "url": "https://applications-n8nt.jg26hn.easypanel.host",
+      "api_endpoint": "https://applications-n8nt.jg26hn.easypanel.host/api/v1",
+      "webhook_base": "https://applications-n8nt.jg26hn.easypanel.host/webhook"
+    },
+    "mcp_servers": {
+      "omie": {
+        "local_url": "http://localhost:3001",
+        "public_url": "https://your-domain.com/omie-mcp",
+        "tools": [
+          "testar_conexao",
+          "consultar_clientes", 
+          "consultar_fornecedores",
+          "consultar_contas_pagar",
+          "consultar_contas_receber",
+          "cadastrar_cliente_fornecedor"
+        ]
+      },
+      "nibo": {
+        "local_url": "http://localhost:3002",
+        "public_url": "https://your-domain.com/nibo-mcp",
+        "tools": [
+          "testar_conexao",
+          "consultar_categorias",
+          "consultar_centros_custo", 
+          "consultar_clientes",
+          "consultar_fornecedores",
+          "consultar_contas_pagar",
+          "consultar_contas_receber",
+          "incluir_cliente",
+          "incluir_fornecedor",
+          "incluir_socio"
+        ]
+      }
+    },
+    "workflow_to_deploy": {
+      "name": "Omie MCP + Nibo MCP Integration",
+      "file": "/Users/kleberdossantosribeiro/omie-mcp/integrations/n8n_omie_nibo_workflow.json",
+      "webhook_path": "webhook-erp-sync",
+      "description": "Automated sync between Omie and Nibo ERP systems",
+      "tags": ["omie", "nibo", "erp", "mcp", "automation"]
+    },
+    "deployment_steps": [
+      {
+        "step": 1,
+        "action": "authenticate",
+        "description": "Authenticate with remote N8N instance"
+      },
+      {
+        "step": 2,
+        "action": "import_workflow",
+        "description": "Import the Omie+Nibo integration workflow"
+      },
+      {
+        "step": 3,
+        "action": "configure_credentials",
+        "description": "Set up MCP server credentials"
+      },
+      {
+        "step": 4,
+        "action": "activate_workflow",
+        "description": "Activate the workflow for production use"
+      },
+      {
+        "step": 5,
+        "action": "test_webhooks",
+        "description": "Test webhook endpoints"
+      }
+    ],
+    "webhook_endpoints": {
+      "sync_clients": {
+        "url": "https://applications-n8nt.jg26hn.easypanel.host/webhook/erp-sync",
+        "method": "POST",
+        "payload": {
+          "action": "sync_clients"
+        }
+      },
+      "sync_financial": {
+        "url": "https://applications-n8nt.jg26hn.easypanel.host/webhook/erp-sync", 
+        "method": "POST",
+        "payload": {
+          "action": "sync_financial"
+        }
+      },
+      "test_connection": {
+        "url": "https://applications-n8nt.jg26hn.easypanel.host/webhook/erp-sync",
+        "method": "POST", 
+        "payload": {
+          "action": "test_connection"
+        }
+      }
+    },
+    "mcp_claude_config": {
+      "description": "Configuration for Claude Desktop to use n8n-mcp",
+      "config_path": "~/.config/claude-desktop/claude_desktop_config.json",
+      "mcp_server": {
+        "n8n-mcp": {
+          "command": "n8n-mcp",
+          "args": [],
+          "env": {
+            "N8N_API_URL": "https://applications-n8nt.jg26hn.easypanel.host/api/v1",
+            "N8N_API_KEY": "YOUR_N8N_API_KEY_HERE"
+          }
+        }
+      }
+    },
+    "production_urls": {
+      "note": "These URLs need to be configured when MCP servers are deployed to production",
+      "omie_mcp_prod": "https://your-production-domain.com/omie-mcp",
+      "nibo_mcp_prod": "https://your-production-domain.com/nibo-mcp",
+      "webhook_prod": "https://applications-n8nt.jg26hn.easypanel.host/webhook/erp-sync"
+    },
+    "manual_steps": {
+      "1": "Access N8N UI: https://applications-n8nt.jg26hn.easypanel.host",
+      "2": "Import workflow from: /integrations/n8n_omie_nibo_workflow.json",
+      "3": "Configure HTTP Request nodes to point to production MCP servers",
+      "4": "Set up credentials for MCP server authentication",
+      "5": "Activate workflow and test webhook endpoints"
+    }
+  }
+}
