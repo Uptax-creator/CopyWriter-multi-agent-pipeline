@@ -146,7 +146,27 @@ python scripts/validate_all.py
 python scripts/test_tool.py consultar_categorias
 ```
 
-### 4. Usar no Claude Desktop
+### 4. Scripts de Automação
+
+```bash
+# Gerenciar serviço
+python scripts/service_manager.py start    # Iniciar servidor
+python scripts/service_manager.py stop     # Parar servidor
+python scripts/service_manager.py status   # Ver status
+python scripts/service_manager.py logs     # Ver logs
+
+# Testes e validação
+python scripts/test_all_tools.py          # Testar todas as ferramentas
+python scripts/validate_all.py            # Validação completa
+
+# Automação de projeto
+python scripts/update_project.py status   # Status do projeto
+python scripts/update_project.py test     # Executar testes
+python scripts/update_project.py commit   # Commit interativo
+python scripts/update_project.py release patch  # Release automatizado
+```
+
+### 5. Usar no Claude Desktop
 
 Após configurar, você pode usar comandos como:
 
@@ -201,7 +221,17 @@ Após configurar, você pode usar comandos como:
 | `criar_conta_pagar` | Cria conta a pagar (versão simplificada) | `cnpj_cpf_fornecedor`, `numero_documento`, `data_vencimento`, `valor_documento` |
 | `atualizar_conta_pagar` | Atualiza conta a pagar existente | `codigo_lancamento`, `valor_documento`, `data_vencimento` |
 
-**Total: 20 ferramentas** organizadas em 5 categorias funcionais.
+**Total: 17 ferramentas** organizadas em 5 categorias funcionais.
+
+### 📊 Status das Ferramentas
+
+| Status | Categoria | Qtd | Ferramentas |
+|--------|-----------|-----|-------------|
+| ✅ Implementadas | Consultas | 7 | `consultar_categorias`, `consultar_departamentos`, `consultar_tipos_documento`, `consultar_clientes`, `consultar_fornecedores`, `consultar_contas_pagar`, `consultar_contas_receber` |
+| ✅ Implementadas | Clientes/Fornecedores | 4 | `incluir_cliente`, `incluir_fornecedor`, `alterar_cliente`, `alterar_fornecedor` |
+| ✅ Implementadas | Contas a Pagar | 3 | `incluir_conta_pagar`, `alterar_conta_pagar`, `excluir_conta_pagar` |
+| ✅ Implementadas | Contas a Receber | 3 | `incluir_conta_receber`, `alterar_conta_receber`, `excluir_conta_receber` |
+| ⏳ Pendentes | Consultas Avançadas | 3 | `consultar_cliente_por_codigo`, `consultar_fornecedor_por_codigo`, `buscar_dados_contato_cliente` |
 
 ## 🔗 Integrações
 

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Mockup Demo - Omie Tenant Manager v2.0</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .demo-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .demo-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .demo-card-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .demo-card-body {
+            padding: 20px;
+        }
+        
+        .screen-preview {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+        }
+        
+        .screen-title {
+            color: #495057;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .screen-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .demo-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 5px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-list li i {
+            color: #28a745;
+            font-size: 1.1rem;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-demo {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .demo-navigation {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .nav-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background: #495057;
+            transform: translateY(-1px);
+        }
+        
+        .nav-btn.active {
+            background: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <!-- Header -->
+        <div class="demo-header">
+            <h1>🎨 Mockup Demo - Omie Tenant Manager v2.0</h1>
+            <p class="lead">Teste todas as telas implementadas do sistema</p>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="demo-navigation">
+            <h5 class="text-center mb-3">🧭 Navegação Rápida</h5>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showDemoSection('overview')">Visão Geral</button>
+                <button class="nav-btn" onclick="showDemoSection('auth')">Autenticação</button>
+                <button class="nav-btn" onclick="showDemoSection('company')">Empresas</button>
+                <button class="nav-btn" onclick="showDemoSection('applications')">Aplicações</button>
+                <button class="nav-btn" onclick="showDemoSection('config')">Configurações</button>
+                <button class="nav-btn" onclick="showDemoSection('dashboard')">Dashboard</button>
+            </div>
+        </div>
+        
+        <!-- Seção: Visão Geral -->
+        <div id="overview-section" class="demo-section">
+            <div class="demo-card">
+                <div class="demo-card-header">
+                    <h3>📊 Visão Geral do Sistema</h3>
+                    <p class="mb-0">Status geral da implementação</p>
+                </div>
+                <div class="demo-card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>🏗️ Arquitetura</h5>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Frontend-first approach</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Multi-tenant (N:N usuários-empresas)</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Segurança robusta</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Design responsivo</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Visualizações múltiplas</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>🎯 Funcionalidades</h5>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Sistema de login/cadastro</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Gestão de empresas</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Catálogo de aplicações</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Configuração de credenciais</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Dashboard analítico</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="index.html" class="demo-btn">
+                            <i class="bi bi-play-fill me-2"></i>Iniciar Aplicação Completa
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seção: Autenticação -->
+        <div id="auth-section" class="demo-section d-none">
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h4>🔐 Tela de Boas-vindas</h4>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="screen-preview">
+                            <div class="screen-title">
+                                <i class="bi bi-house-door"></i>
+                                Welcome Screen
+                                <span class="status-badge status-completed">✓ Completo</span>
+                            </div>
+                            <div class="screen-description">
+                                Tela inicial com apresentação do sistema, recursos e opções de login/cadastro.
+                            </div>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Logo da Uptax.net</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Apresentação do sistema</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Botões de ação</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Preview de recursos</li>
+                            </ul>
+                        </div>
+                        <a href="index.html" class="demo-btn">
+                            <i class="bi bi-eye me-2"></i>Ver Tela
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h4>📝 Cadastro de Usuário</h4>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="screen-preview">
+                            <div class="screen-title">
+                                <i class="bi bi-person-plus"></i>
+                                User Registration
+                                <span class="status-badge status-completed">✓ Completo</span>
+                            </div>
+                            <div class="screen-description">
+                                Formulário completo de cadastro com validação de senha e segurança.
+                            </div>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Validação em tempo real</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Força da senha</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Formatação de telefone</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Validação de email</li>
+                            </ul>
+                        </div>
+                        <button class="demo-btn" onclick="window.open('index.html', '_blank'); setTimeout(() => alert('Clique em \"Cadastrar-se\" na tela inicial'), 1000)">
+                            <i class="bi bi-eye me-2"></i>Testar Cadastro
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h4>🔑 Login</h4>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="screen-preview">
+                            <div class="screen-title">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                                User Login
+                                <span class="status-badge status-completed">✓ Completo</span>
+                            </div>
+                            <div class="screen-description">
+                                Sistema de login com proteção contra força bruta e recuperação de senha.
+                            </div>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Autenticação JWT</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Proteção brute force</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Recuperação de senha</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Lembrar-me</li>
+                            </ul>
+                        </div>
+                        <button class="demo-btn" onclick="window.open('index.html', '_blank'); setTimeout(() => alert('Clique em \"Entrar\" na tela inicial'), 1000)">
+                            <i class="bi bi-eye me-2"></i>Testar Login
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seção: Empresas -->
+        <div id="company-section" class="demo-section d-none">
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h4>🏢 Seleção de Empresa</h4>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="screen-preview">
+                            <div class="screen-title">
+                                <i class="bi bi-building"></i>
+                                Company Selection
+                                <span class="status-badge status-completed">✓ Completo</span>
+                            </div>
+                            <div class="screen-description">
+                                Interface para selecionar empresa ativa, criar nova empresa ou aceitar convites.
+                            </div>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Lista de empresas do usuário</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Criação de nova empresa</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Convites pendentes</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Troca rápida de empresa</li>
+                            </ul>
+                        </div>
+                        <button class="demo-btn" onclick="simulateLogin()">
+                            <i class="bi bi-eye me-2"></i>Simular Acesso
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h4>➕ Criar Empresa</h4>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="screen-preview">
+                            <div class="screen-title">
+                                <i class="bi bi-plus-circle"></i>
+                                Create Company
+                                <span class="status-badge status-completed">✓ Completo</span>
+                            </div>
+                            <div class="screen-description">
+                                Formulário completo para criação de nova empresa com validação de CNPJ e CEP.
+                            </div>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Validação de CNPJ</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Busca automática de CEP</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Múltiplos telefones</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Dados completos</li>
+                            </ul>
+                        </div>
+                        <button class="demo-btn" onclick="simulateCreateCompany()">
+                            <i class="bi bi-eye me-2"></i>Testar Criação
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h4>✉️ Convidar Usuários</h4>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="screen-preview">
+                            <div class="screen-title">
+                                <i class="bi bi-person-plus"></i>
+                                Invite Users
+                                <span class="status-badge status-completed">✓ Completo</span>
+                            </div>
+                            <div class="screen-description">
+                                Sistema de convites com diferentes níveis de acesso e permissões.
+                            </div>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Múltiplos emails</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Funções definidas</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Validação de email</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Gerenciamento de convites</li>
+                            </ul>
+                        </div>
+                        <button class="demo-btn" onclick="simulateInviteUsers()">
+                            <i class="bi bi-eye me-2"></i>Testar Convites
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seção: Aplicações -->
+        <div id="applications-section" class="demo-section d-none">
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h4>📦 Catálogo de Aplicações</h4>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="screen-preview">
+                            <div class="screen-title">
+                                <i class="bi bi-grid-3x3-gap"></i>
+                                Applications Catalog
+                                <span class="status-badge status-completed">✓ Completo</span>
+                            </div>
+                            <div class="screen-description">
+                                Catálogo completo com aplicações disponíveis em múltiplas visualizações.
+                            </div>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Visualização Grid/Lista/Tabela</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Filtros avançados</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Pesquisa em tempo real</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Detalhes das aplicações</li>
+                            </ul>
+                        </div>
+                        <button class="demo-btn" onclick="simulateApplicationsCatalog()">
+                            <i class="bi bi-eye me-2"></i>Ver Catálogo
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h4>🏢 Aplicações da Empresa</h4>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="screen-preview">
+                            <div class="screen-title">
+                                <i class="bi bi-building-gear"></i>
+                                Company Applications
+                                <span class="status-badge status-completed">✓ Completo</span>
+                            </div>
+                            <div class="screen-description">
+                                Gestão das aplicações configuradas para a empresa atual.
+                            </div>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Dashboard de status</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Múltiplas visualizações</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Configuração direta</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Teste de conexão</li>
+                            </ul>
+                        </div>
+                        <button class="demo-btn" onclick="simulateCompanyApplications()">
+                            <i class="bi bi-eye me-2"></i>Ver Aplicações
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h4>⚙️ Configurar Credenciais</h4>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="screen-preview">
+                            <div class="screen-title">
+                                <i class="bi bi-gear"></i>
+                                Configure Credentials
+                                <span class="status-badge status-completed">✓ Completo</span>
+                            </div>
+                            <div class="screen-description">
+                                Interface completa para configuração de credenciais por aplicação.
+                            </div>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-check-circle-fill"></i> Campos dinâmicos</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Validação em tempo real</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Teste de conexão</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Configurações avançadas</li>
+                            </ul>
+                        </div>
+                        <button class="demo-btn" onclick="simulateCredentialsConfig()">
+                            <i class="bi bi-eye me-2"></i>Testar Configuração
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seção: Configurações -->
+        <div id="config-section" class="demo-section d-none">
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h4>👤 Perfil do Usuário</h4>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="screen-preview">
+                            <div class="screen-title">
+                                <i class="bi bi-person-circle"></i>
+                                User Profile
+                                <span class="status-badge status-demo">🚧 Em Planejamento</span>
+                            </div>
+                            <div class="screen-description">
+                                Gerenciamento completo do perfil do usuário e preferências.
+                            </div>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-clock"></i> Informações pessoais</li>
+                                <li><i class="bi bi-clock"></i> Alterar senha</li>
+                                <li><i class="bi bi-clock"></i> Configurações de segurança</li>
+                                <li><i class="bi bi-clock"></i> Preferências</li>
+                            </ul>
+                        </div>
+                        <button class="demo-btn" disabled>
+                            <i class="bi bi-hourglass me-2"></i>Em Desenvolvimento
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="demo-card-header">
+                        <h4>🔧 Configurações da Conta</h4>
+                    </div>
+                    <div class="demo-card-body">
+                        <div class="screen-preview">
+                            <div class="screen-title">
+                                <i class="bi bi-sliders"></i>
+                                Account Settings
+                                <span class="status-badge status-demo">🚧 Em Planejamento</span>
+                            </div>
+                            <div class="screen-description">
+                                Configurações gerais da conta e preferências do sistema.
+                            </div>
+                            <ul class="feature-list">
+                                <li><i class="bi bi-clock"></i> Notificações</li>
+                                <li><i class="bi bi-clock"></i> Tema da aplicação</li>
+                                <li><i class="bi bi-clock"></i> Idioma</li>
+                                <li><i class="bi bi-clock"></i> Integração com APIs</li>
+                            </ul>
+                        </div>
+                        <button class="demo-btn" disabled>
+                            <i class="bi bi-hourglass me-2"></i>Em Desenvolvimento
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Seção: Dashboard -->
+        <div id="dashboard-section" class="demo-section d-none">
+            <div class="demo-card">
+                <div class="demo-card-header">
+                    <h4>📊 Dashboard Principal</h4>
+                </div>
+                <div class="demo-card-body">
+                    <div class="screen-preview">
+                        <div class="screen-title">
+                            <i class="bi bi-speedometer2"></i>
+                            Main Dashboard
+                            <span class="status-badge status-completed">✓ Completo</span>
+                        </div>
+                        <div class="screen-description">
+                            Dashboard analítico com estatísticas, gráficos e visão geral do sistema.
+                        </div>
+                        <ul class="feature-list">
+                            <li><i class="bi bi-check-circle-fill"></i> Estatísticas em tempo real</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Gráficos interativos</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Atividades recentes</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Status das aplicações</li>
+                            <li><i class="bi bi-check-circle-fill"></i> Navegação rápida</li>
+                        </ul>
+                    </div>
+                    <button class="demo-btn" onclick="simulateDashboard()">
+                        <i class="bi bi-eye me-2"></i>Ver Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Botões de Ação -->
+        <div class="text-center mt-4">
+            <div class="demo-card">
+                <div class="demo-card-header">
+                    <h4>🚀 Ações Rápidas</h4>
+                </div>
+                <div class="demo-card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="index.html" class="demo-btn d-block mb-2">
+                                <i class="bi bi-play-fill me-2"></i>Aplicação Completa
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="test-buttons.html" class="demo-btn d-block mb-2">
+                                <i class="bi bi-bug me-2"></i>Teste de Funções
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="demo-btn d-block mb-2" onclick="showFlowDemo()">
+                                <i class="bi bi-arrow-right-circle me-2"></i>Demo do Fluxo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Navigation
+        function showDemoSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.demo-section').forEach(section => {
+                section.classList.add('d-none');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId + '-section').classList.remove('d-none');
+            
+            // Update navigation buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+        
+        // Simulation functions
+        function simulateLogin() {
+            alert('🔐 Simulando login...\n\nPasso 1: Acesse index.html\nPasso 2: Clique em "Entrar"\nPasso 3: Use email: admin@teste.com\nPasso 4: Use senha: 123456');
+            window.open('index.html', '_blank');
+        }
+        
+        function simulateCreateCompany() {
+            alert('🏢 Simulando criação de empresa...\n\nApós fazer login, você verá a tela de seleção de empresa com opção "Criar Nova Empresa".');
+            window.open('index.html', '_blank');
+        }
+        
+        function simulateInviteUsers() {
+            alert('✉️ Simulando convites...\n\nNo dashboard, acesse o menu "Empresas" → "Convidar Usuários".');
+            window.open('index.html', '_blank');
+        }
+        
+        function simulateApplicationsCatalog() {
+            alert('📦 Simulando catálogo...\n\nNo dashboard, acesse "Aplicações" → "Catálogo de Aplicações".');
+            window.open('index.html', '_blank');
+        }
+        
+        function simulateCompanyApplications() {
+            alert('🏢 Configurar Aplicações da Empresa...\n\nNOVA NAVEGAÇÃO:\n1. Faça login (admin@teste.com / 123456)\n2. Selecione uma empresa\n3. No MENU SUPERIOR: Clique em "Configurar Apps"\n4. OU no Dashboard: Botão "Configurar Apps" (azul)\n5. OU na seção central: Botão "Gerenciar"\n\n✨ Agora está muito mais acessível!');
+            window.open('index.html', '_blank');
+        }
+        
+        function simulateCredentialsConfig() {
+            alert('⚙️ Simulando configuração...\n\nPasso a passo:\n1. Acesse "Aplicações da Empresa" (botão verde)\n2. Clique no ícone ⚙️ "Configurar" em qualquer aplicação\n3. Preencha as credenciais dinâmicas\n4. Teste as configurações avançadas\n5. Use "Testar Conexão" para validar');
+            window.open('index.html', '_blank');
+        }
+        
+        function simulateDashboard() {
+            alert('📊 Simulando dashboard...\n\nApós fazer login e selecionar uma empresa, você verá o dashboard completo.');
+            window.open('index.html', '_blank');
+        }
+        
+        function showFlowDemo() {
+            const flow = `
+🌟 FLUXO COMPLETO DE DEMONSTRAÇÃO:
+
+1. 🏠 Tela de Boas-vindas
+   → Clique em "Cadastrar-se" ou "Entrar"
+
+2. 🔐 Login/Cadastro
+   → Email: admin@teste.com
+   → Senha: 123456
+
+3. 🏢 Seleção de Empresa
+   → Escolha uma empresa ou crie nova
+
+4. 📊 Dashboard Principal
+   → Visão geral do sistema
+
+5. 📦 Catálogo de Aplicações
+   → Veja aplicações disponíveis
+
+6. ⚙️ Configurar Aplicações
+   → Configure credenciais por empresa
+
+7. 🔧 Gerenciamento
+   → Convites, usuários, configurações
+
+Todas as funcionalidades estão implementadas e funcionais!
+            `;
+            alert(flow);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎨 Demo Mockup carregado com sucesso!');
+            console.log('📋 Todas as telas estão prontas para teste');
+        });
+    </script>
+</body>
+</html>

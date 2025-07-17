@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Botões</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { padding: 20px; background: #f5f5f5; }
+        .test-section { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .console { background: #1e1e1e; color: #fff; padding: 15px; border-radius: 5px; font-family: monospace; height: 200px; overflow-y: auto; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Teste de Botões - Omie Tenant Manager</h1>
+        
+        <div class="test-section">
+            <h3>Teste dos Botões da Tela de Boas-vindas</h3>
+            <button class="btn btn-primary btn-lg me-3" onclick="showRegister()">
+                <i class="bi bi-person-plus me-2"></i>Cadastrar-se
+            </button>
+            <button class="btn btn-outline-primary btn-lg" onclick="showLogin()">
+                <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+            </button>
+        </div>
+        
+        <div class="test-section">
+            <h3>Teste Direto das Funções</h3>
+            <button class="btn btn-success me-2" onclick="testShowRegister()">Testar showRegister()</button>
+            <button class="btn btn-info me-2" onclick="testShowLogin()">Testar showLogin()</button>
+            <button class="btn btn-warning me-2" onclick="checkAuthManager()">Verificar authManager</button>
+        </div>
+        
+        <div class="test-section">
+            <h3>Console de Debug:</h3>
+            <div class="console" id="console"></div>
+        </div>
+        
+        <div class="test-section">
+            <button class="btn btn-secondary" onclick="goToApp()">Ir para App Principal</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const consoleDiv = document.getElementById('console');
+        
+        // Capturar logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        function addToConsole(type, ...args) {
+            const timestamp = new Date().toLocaleTimeString();
+            const message = `[${timestamp}] [${type.toUpperCase()}] ${args.join(' ')}\n`;
+            consoleDiv.textContent += message;
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToConsole('info', ...args);
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToConsole('error', ...args);
+        };
+        
+        // Capturar erros globais
+        window.addEventListener('error', (e) => {
+            console.error('ERRO GLOBAL:', e.error?.message || e.message);
+        });
+        
+        function testShowRegister() {
+            console.log('Testando showRegister()...');
+            try {
+                if (typeof showRegister === 'function') {
+                    console.log('✅ showRegister existe');
+                    showRegister();
+                } else {
+                    console.error('❌ showRegister não é uma função:', typeof showRegister);
+                }
+            } catch (error) {
+                console.error('❌ Erro ao executar showRegister:', error);
+            }
+        }
+        
+        function testShowLogin() {
+            console.log('Testando showLogin()...');
+            try {
+                if (typeof showLogin === 'function') {
+                    console.log('✅ showLogin existe');
+                    showLogin();
+                } else {
+                    console.error('❌ showLogin não é uma função:', typeof showLogin);
+                }
+            } catch (error) {
+                console.error('❌ Erro ao executar showLogin:', error);
+            }
+        }
+        
+        function checkAuthManager() {
+            console.log('Verificando authManager...');
+            console.log('authManager:', typeof authManager);
+            if (typeof authManager !== 'undefined') {
+                console.log('✅ authManager existe');
+                console.log('authManager.showRegister:', typeof authManager.showRegister);
+                console.log('authManager.showLogin:', typeof authManager.showLogin);
+            } else {
+                console.error('❌ authManager não existe');
+            }
+        }
+        
+        function goToApp() {
+            window.location.href = 'index.html';
+        }
+        
+        console.log('Teste de botões iniciado...');
+        console.log('Tipos de função disponíveis:');
+        console.log('- showRegister:', typeof showRegister);
+        console.log('- showLogin:', typeof showLogin);
+        console.log('- authManager:', typeof authManager);
+    </script>
+    
+    <!-- Carregar scripts do app -->
+    <script src="js/security.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    
+    <script>
+        // Verificar após carregar scripts
+        setTimeout(() => {
+            console.log('=== APÓS CARREGAR SCRIPTS ===');
+            console.log('- showRegister:', typeof showRegister);
+            console.log('- showLogin:', typeof showLogin);
+            console.log('- authManager:', typeof authManager);
+            console.log('- securityManager:', typeof securityManager);
+            console.log('- app:', typeof app);
+        }, 1000);
+    </script>
+</body>
+</html>

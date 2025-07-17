@@ -1,0 +1,8 @@
+{
+  "server_url": "http://localhost:3000",
+  "omie_app_key": "sua_app_key_aqui",
+  "omie_app_secret": "seu_app_secret_aqui",
+  "timeout": 30,
+  "debug": false,
+  "retry_attempts": 3
+}

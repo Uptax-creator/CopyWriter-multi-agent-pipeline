@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uptax Manager v2.0</title>
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- Content Security Policy (Relaxed for development) -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self' 'unsafe-inline' 'unsafe-eval'; 
+        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; 
+        style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; 
+        font-src 'self' https://cdn.jsdelivr.net; 
+        img-src 'self' data: https:; 
+        connect-src 'self' https: http: ws: wss:;
+        form-action 'self';
+        base-uri 'self';
+    ">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/responsive-fixes.css" rel="stylesheet">
+    <link href="css/layout-fixes.css" rel="stylesheet">
+    <link href="css/view-toggle-fixes.css" rel="stylesheet">
+    <link href="css/form-height-fix.css" rel="stylesheet">
+    <link href="css/density-fixes.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Tela de Boas-vindas -->
+    <div id="welcomeScreen" class="welcome-screen">
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-8 col-lg-6 text-center">
+                    <div class="welcome-card">
+                        <!-- Logo Container -->
+                        <div class="logo-section mb-5">
+                            <div class="logo-container">
+                                <div class="logo-uptax-container">
+                                    <img src="assets/uptax-logo.png" alt="Uptax.net" class="logo-uptax" 
+                                         onerror="this.onerror=null; this.src='assets/uptax-logo.jpg'; this.onerror=function(){this.style.display='none';}">
+                                </div>
+                                <div class="brand-divider"></div>
+                                <div class="brand-info">
+                                    <h1 class="brand-title">Uptax Manager</h1>
+                                    <p class="brand-subtitle">Sistema de gerenciamento multi-tenant v2.0</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Descrição -->
+                        <div class="welcome-content mb-5">
+                            <h2 class="welcome-title">Bem-vindo!</h2>
+                            <p class="welcome-description">
+                                Gerencie suas empresas, usuários e integrações com o Omie ERP de forma simples e segura.
+                            </p>
+                        </div>
+
+                        <!-- Ações -->
+                        <div class="welcome-actions">
+                            <button class="btn btn-primary btn-lg me-3" onclick="showRegister()">
+                                <i class="bi bi-person-plus me-2"></i>Cadastrar-se
+                            </button>
+                            <button class="btn btn-outline-primary btn-lg" onclick="showLogin()">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+                            </button>
+                        </div>
+
+                        <!-- Features -->
+                        <div class="features-preview mt-5">
+                            <div class="row text-start">
+                                <div class="col-md-4">
+                                    <div class="feature-item">
+                                        <i class="bi bi-building text-primary"></i>
+                                        <h6>Multi-empresa</h6>
+                                        <small>Gerencie várias empresas em uma conta</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="feature-item">
+                                        <i class="bi bi-shield-check text-success"></i>
+                                        <h6>Seguro</h6>
+                                        <small>Autenticação robusta e dados protegidos</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="feature-item">
+                                        <i class="bi bi-plug text-info"></i>
+                                        <h6>Integrações</h6>
+                                        <small>Claude, Copilot, N8N e APIs personalizadas</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Cadastro -->
+    <div id="registerScreen" class="auth-screen d-none">
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-6 col-lg-5">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <button class="btn-back" onclick="showWelcome()">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                            <h2>Criar Conta</h2>
+                            <p>Preencha seus dados para começar</p>
+                        </div>
+
+                        <form id="registerForm" class="auth-form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="registerNome" required>
+                                        <label for="registerNome">Nome *</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" id="registerSobrenome" required>
+                                        <label for="registerSobrenome">Sobrenome *</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="registerEmail" required>
+                                <label for="registerEmail">E-mail *</label>
+                                <div class="form-text">
+                                    <span id="registerEmailStatus" class="text-muted">Digite para validar</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="registerTelefone" class="form-label">Telefone *</label>
+                                <div class="phone-input-container">
+                                    <select class="form-select country-select" id="countryCode">
+                                        <option value="+55" data-country="BR">🇧🇷 +55</option>
+                                        <option value="+1" data-country="US">🇺🇸 +1</option>
+                                        <option value="+44" data-country="GB">🇬🇧 +44</option>
+                                        <option value="+33" data-country="FR">🇫🇷 +33</option>
+                                        <option value="+49" data-country="DE">🇩🇪 +49</option>
+                                        <option value="+34" data-country="ES">🇪🇸 +34</option>
+                                        <option value="+39" data-country="IT">🇮🇹 +39</option>
+                                        <option value="+52" data-country="MX">🇲🇽 +52</option>
+                                        <option value="+54" data-country="AR">🇦🇷 +54</option>
+                                        <option value="+56" data-country="CL">🇨🇱 +56</option>
+                                    </select>
+                                    <input type="tel" class="form-control phone-number" id="registerTelefone" 
+                                           placeholder="(11) 99999-9999" required>
+                                </div>
+                                <div class="form-text">Número com DDD para Brasil</div>
+                            </div>
+
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="registerSenha" required minlength="8">
+                                <label for="registerSenha">Senha *</label>
+                                <div class="password-strength mt-2 d-none">
+                                    <div class="strength-bar">
+                                        <div class="strength-fill"></div>
+                                    </div>
+                                    <small class="strength-text"></small>
+                                </div>
+                                <div class="form-text">
+                                    Mínimo 8 caracteres com maiúscula, minúscula, número e símbolo
+                                </div>
+                            </div>
+
+                            <div class="form-floating mb-4">
+                                <input type="password" class="form-control" id="registerConfirmarSenha" required>
+                                <label for="registerConfirmarSenha">Confirmar Senha *</label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 btn-lg">
+                                <i class="bi bi-person-plus me-2"></i>Criar Conta
+                            </button>
+                        </form>
+
+                        <div class="auth-footer">
+                            <p>Já tem uma conta? <a href="#" onclick="showLogin()">Faça login</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Login -->
+    <div id="loginScreen" class="auth-screen d-none">
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-6 col-lg-4">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <button class="btn-back" onclick="showWelcome()">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                            <h2>Entrar</h2>
+                            <p>Acesse sua conta</p>
+                        </div>
+
+                        <form id="loginForm" class="auth-form">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="loginEmail" required>
+                                <label for="loginEmail">E-mail</label>
+                            </div>
+
+                            <div class="form-floating mb-4 position-relative">
+                                <input type="password" class="form-control" id="loginSenha" required>
+                                <label for="loginSenha">Senha</label>
+                                <button type="button" class="btn btn-link password-toggle" onclick="togglePasswordVisibility('loginSenha', this)">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe">
+                                        Lembrar-me
+                                    </label>
+                                </div>
+                                <a href="#" class="link-secondary">Esqueceu a senha?</a>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+                            </button>
+                        </form>
+
+                        <div class="auth-footer">
+                            <p>Não tem uma conta? <a href="#" onclick="showRegister()">Cadastre-se</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Seleção de Empresa -->
+    <div id="companySelectionScreen" class="d-none">
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-8 col-lg-6">
+                    <div class="company-selection-card">
+                        <div class="text-center mb-4">
+                            <h2>Escolha uma Empresa</h2>
+                            <p class="text-muted">Selecione uma empresa existente ou crie uma nova</p>
+                        </div>
+
+                        <!-- Lista de Empresas do Usuário -->
+                        <div id="userCompanies" class="mb-4">
+                            <!-- Será preenchido dinamicamente -->
+                        </div>
+
+                        <!-- Ações -->
+                        <div class="company-actions">
+                            <button class="btn btn-primary btn-lg w-100 mb-3" onclick="showCreateCompany()">
+                                <i class="bi bi-building-add me-2"></i>Criar Nova Empresa
+                            </button>
+                            <button class="btn btn-outline-secondary w-100" onclick="showJoinCompany()">
+                                <i class="bi bi-building-check me-2"></i>Juntar-se a Empresa Existente
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Principal -->
+    <div id="dashboardScreen" class="d-none">
+        <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#" onclick="showDashboard()">
+                    <i class="bi bi-building me-2"></i>
+                    <span id="currentCompanyName">Uptax Manager</span>
+                </a>
+                
+                <!-- Main Menu -->
+                <div class="navbar-nav me-auto">
+                    <a class="nav-link" href="#" onclick="showDashboard()">
+                        <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                    </a>
+                    <a class="nav-link" href="#" onclick="showApplications()">
+                        <i class="bi bi-grid-3x3-gap me-1"></i>Catálogo
+                    </a>
+                    <a class="nav-link" href="#" onclick="showCompanyApplications()">
+                        <i class="bi bi-building-gear me-1"></i>Configurar Apps
+                    </a>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-building me-1"></i>Empresa
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="showCreateCompany()">
+                                <i class="bi bi-building-add me-2"></i>Nova Empresa
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showInviteUser()">
+                                <i class="bi bi-person-plus me-2"></i>Convidar Usuário
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="switchCompany()">
+                                <i class="bi bi-arrow-repeat me-2"></i>Trocar Empresa
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="navbar-nav">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle me-1"></i>
+                            <span id="userName">Usuário</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" onclick="showUserProfile()">
+                                <i class="bi bi-person me-2"></i>Meu Perfil
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showAccountSettings()">
+                                <i class="bi bi-gear me-2"></i>Configurações
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">
+                                <i class="bi bi-box-arrow-right me-2"></i>Sair
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="container-fluid py-4">
+            <!-- Header Simplificado -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h2>Dashboard</h2>
+                    <p class="text-muted">Gerencie suas aplicações e integrações empresariais</p>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="row mb-4 stats-cards">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <h6 class="card-title text-muted mb-1">Apps Configuradas</h6>
+                                    <h3 class="mb-0" id="configuredApps">4</h3>
+                                </div>
+                                <div class="text-primary">
+                                    <i class="bi bi-app-indicator" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <h6 class="card-title text-muted mb-1">Apps Ativas</h6>
+                                    <h3 class="mb-0" id="activeApps">3</h3>
+                                </div>
+                                <div class="text-success">
+                                    <i class="bi bi-check-circle" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <h6 class="card-title text-muted mb-1">Usuários</h6>
+                                    <h3 class="mb-0" id="activeUsers">5</h3>
+                                </div>
+                                <div class="text-info">
+                                    <i class="bi bi-people" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <h6 class="card-title text-muted mb-1">Conexões (30d)</h6>
+                                    <h3 class="mb-0" id="monthlyConnections">847</h3>
+                                </div>
+                                <div class="text-warning">
+                                    <i class="bi bi-graph-up" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="row">
+                <!-- Applications Status -->
+                <div class="col-lg-8 col-md-8 mb-4">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Aplicações Configuradas</h5>
+                            <button class="btn btn-sm btn-outline-primary" onclick="showCompanyApplications()">
+                                <i class="bi bi-building-gear me-1"></i>Gerenciar
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="dashboardAppsList">
+                                <!-- Applications will be loaded here -->
+                                <div class="app-item border rounded p-3 mb-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="app-icon me-3">
+                                                    <i class="bi bi-diagram-3 text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1">Omie MCP</h6>
+                                                    <small class="text-muted">ERP Integration</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <span class="badge bg-success">Ativa</span>
+                                        </div>
+                                        <div class="col-md-3 text-end">
+                                            <button class="btn btn-sm btn-outline-primary me-1" onclick="configureCompanyApplication('omie-mcp-config')">
+                                                <i class="bi bi-gear"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" onclick="testCompanyAppConnection('omie-mcp-config')">
+                                                <i class="bi bi-wifi"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="app-item border rounded p-3 mb-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="app-icon me-3">
+                                                    <i class="bi bi-robot text-success"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1">Claude AI</h6>
+                                                    <small class="text-muted">AI Assistant</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <span class="badge bg-success">Ativa</span>
+                                        </div>
+                                        <div class="col-md-3 text-end">
+                                            <button class="btn btn-sm btn-outline-primary me-1" onclick="configureCompanyApplication('claude-config')">
+                                                <i class="bi bi-gear"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-info" onclick="testCompanyAppConnection('claude-config')">
+                                                <i class="bi bi-wifi"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="app-item border rounded p-3 mb-3">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6">
+                                            <div class="d-flex align-items-center">
+                                                <div class="app-icon me-3">
+                                                    <i class="bi bi-shuffle text-warning"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1">N8N Automation</h6>
+                                                    <small class="text-muted">Workflow Automation</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <span class="badge bg-warning">Pendente</span>
+                                        </div>
+                                        <div class="col-md-3 text-end">
+                                            <button class="btn btn-sm btn-outline-primary me-1" onclick="configureCompanyApplication('n8n-automation')">
+                                                <i class="bi bi-gear"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary" onclick="testCompanyAppConnection('n8n-automation')">
+                                                <i class="bi bi-wifi"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mt-3">
+                                <button class="btn btn-outline-primary" onclick="showApplications()">
+                                    <i class="bi bi-plus-circle me-1"></i>Adicionar Mais Aplicações
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions & Team -->
+                <div class="col-lg-4 col-md-4">
+                    <!-- Quick Actions -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">Ações Rápidas</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" onclick="showCompanyApplications()">
+                                    <i class="bi bi-building-gear me-2"></i>Configurar Apps
+                                </button>
+                                <button class="btn btn-outline-primary" onclick="showApplications()">
+                                    <i class="bi bi-grid-3x3-gap me-2"></i>Explorar Catálogo
+                                </button>
+                                <button class="btn btn-outline-success" onclick="showInviteUser()">
+                                    <i class="bi bi-person-plus me-2"></i>Convidar Usuário
+                                </button>
+                                <button class="btn btn-outline-secondary" onclick="showCreateCompany()">
+                                    <i class="bi bi-building-add me-2"></i>Nova Empresa
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Team Members -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Equipe</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="teamMembersList">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                                         style="width: 40px; height: 40px;">
+                                        <span class="text-white fw-bold">JS</span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">João Silva</h6>
+                                        <small class="text-muted">Administrador</small>
+                                    </div>
+                                    <span class="badge bg-success">Online</span>
+                                </div>
+                                
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                                         style="width: 40px; height: 40px;">
+                                        <span class="text-white fw-bold">MS</span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Maria Santos</h6>
+                                        <small class="text-muted">Usuário</small>
+                                    </div>
+                                    <span class="badge bg-warning">Ausente</span>
+                                </div>
+                                
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-info rounded-circle d-flex align-items-center justify-content-center me-3" 
+                                         style="width: 40px; height: 40px;">
+                                        <span class="text-white fw-bold">PC</span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Pedro Costa</h6>
+                                        <small class="text-muted">Usuário</small>
+                                    </div>
+                                    <span class="badge bg-secondary">Offline</span>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-sm btn-outline-primary w-100" onclick="showAllTeamMembers()">
+                                Ver Todos os Membros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Criação de Empresa -->
+    <div id="createCompanyScreen" class="auth-screen d-none">
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-10 col-lg-8">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <button class="btn-back" onclick="backToDashboard()">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                            <h2>Nova Empresa</h2>
+                            <p>Cadastre uma nova empresa no sistema</p>
+                        </div>
+
+                        <form id="createCompanyForm" class="auth-form">
+                            <!-- Dados da Empresa -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-building me-2"></i>Dados da Empresa
+                                </h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="companyName" required>
+                                            <label for="companyName">Nome da Empresa *</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="companyCNPJ" required maxlength="18">
+                                            <label for="companyCNPJ">CNPJ *</label>
+                                            <div class="form-text">
+                                                <span id="cnpjStatus" class="text-muted">Digite o CNPJ para validação</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="email" class="form-control" id="companyEmail" required>
+                                            <label for="companyEmail">E-mail *</label>
+                                            <div class="form-text">
+                                                <span id="companyEmailStatus" class="text-muted">Digite para validar</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="form-floating mb-3">
+                                                    <select class="form-select" id="companyPhoneCountry" required>
+                                                        <option value="+55" selected>+55 (Brasil)</option>
+                                                        <option value="+54">+54 (Argentina)</option>
+                                                        <option value="+56">+56 (Chile)</option>
+                                                        <option value="+598">+598 (Uruguai)</option>
+                                                        <option value="+595">+595 (Paraguai)</option>
+                                                        <option value="+1">+1 (EUA/Canadá)</option>
+                                                        <option value="+52">+52 (México)</option>
+                                                    </select>
+                                                    <label for="companyPhoneCountry">Código</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-8">
+                                                <div class="form-floating mb-3">
+                                                    <input type="tel" class="form-control" id="companyPhone" 
+                                                           placeholder="(11) 99999-9999" required>
+                                                    <label for="companyPhone">Telefone *</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Endereço -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-geo-alt me-2"></i>Endereço
+                                </h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="companyCEP" required maxlength="9">
+                                            <label for="companyCEP">CEP *</label>
+                                            <div class="form-text">
+                                                <span id="cepStatus" class="text-muted">Digite o CEP para busca automática</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="companyLogradouro" required>
+                                            <label for="companyLogradouro">Logradouro *</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="companyNumero" required>
+                                            <label for="companyNumero">Número *</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="companyComplemento">
+                                            <label for="companyComplemento">Complemento</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="companyBairro" required>
+                                            <label for="companyBairro">Bairro *</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="companyCidade" required>
+                                            <label for="companyCidade">Cidade *</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="companyEstado" required>
+                                                <option value="">Selecione o Estado</option>
+                                                <option value="AC">Acre</option>
+                                                <option value="AL">Alagoas</option>
+                                                <option value="AP">Amapá</option>
+                                                <option value="AM">Amazonas</option>
+                                                <option value="BA">Bahia</option>
+                                                <option value="CE">Ceará</option>
+                                                <option value="DF">Distrito Federal</option>
+                                                <option value="ES">Espírito Santo</option>
+                                                <option value="GO">Goiás</option>
+                                                <option value="MA">Maranhão</option>
+                                                <option value="MT">Mato Grosso</option>
+                                                <option value="MS">Mato Grosso do Sul</option>
+                                                <option value="MG">Minas Gerais</option>
+                                                <option value="PA">Pará</option>
+                                                <option value="PB">Paraíba</option>
+                                                <option value="PR">Paraná</option>
+                                                <option value="PE">Pernambuco</option>
+                                                <option value="PI">Piauí</option>
+                                                <option value="RJ">Rio de Janeiro</option>
+                                                <option value="RN">Rio Grande do Norte</option>
+                                                <option value="RS">Rio Grande do Sul</option>
+                                                <option value="RO">Rondônia</option>
+                                                <option value="RR">Roraima</option>
+                                                <option value="SC">Santa Catarina</option>
+                                                <option value="SP">São Paulo</option>
+                                                <option value="SE">Sergipe</option>
+                                                <option value="TO">Tocantins</option>
+                                            </select>
+                                            <label for="companyEstado">Estado *</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="companyPais" required>
+                                                <option value="Brasil" selected>Brasil</option>
+                                                <option value="Argentina">Argentina</option>
+                                                <option value="Chile">Chile</option>
+                                                <option value="Uruguai">Uruguai</option>
+                                                <option value="Paraguai">Paraguai</option>
+                                                <option value="Estados Unidos">Estados Unidos</option>
+                                                <option value="Canadá">Canadá</option>
+                                                <option value="México">México</option>
+                                                <option value="Outro">Outro</option>
+                                            </select>
+                                            <label for="companyPais">País *</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botões -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-outline-secondary w-100" onclick="backToDashboard()">
+                                        <i class="bi bi-arrow-left me-2"></i>Cancelar
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="bi bi-building-add me-2"></i>Criar Empresa
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Convite de Usuários -->
+    <div id="inviteUserScreen" class="auth-screen d-none">
+        <div class="container">
+            <div class="row justify-content-center align-items-center min-vh-100">
+                <div class="col-md-8 col-lg-6">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <button type="button" class="btn-back" onclick="backToDashboard()">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                            <h2>Convidar Usuário</h2>
+                            <p>Envie um convite para um novo membro da equipe</p>
+                        </div>
+
+                        <form id="inviteUserForm" class="auth-form">
+                            <!-- Informações do Usuário -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-person me-2"></i>Dados do Usuário
+                                </h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="inviteNome" required>
+                                            <label for="inviteNome">Nome *</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="inviteSobrenome" required>
+                                            <label for="inviteSobrenome">Sobrenome *</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" id="inviteEmail" required>
+                                    <label for="inviteEmail">E-mail *</label>
+                                    <div class="form-text">
+                                        O convite será enviado para este e-mail
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Função na Empresa -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-shield-check me-2"></i>Função e Permissões
+                                </h5>
+
+                                <!-- Nível de Acesso Principal -->
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold">Nível de Acesso *</label>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="access-level-card" data-level="admin">
+                                                <input type="radio" class="form-check-input" name="accessLevel" value="admin" id="accessAdmin" required>
+                                                <label for="accessAdmin" class="access-level-label">
+                                                    <div class="access-icon">
+                                                        <i class="bi bi-shield-fill-check text-danger"></i>
+                                                    </div>
+                                                    <h6>Administrador</h6>
+                                                    <small>Acesso total ao sistema</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="access-level-card" data-level="member">
+                                                <input type="radio" class="form-check-input" name="accessLevel" value="member" id="accessMember" required>
+                                                <label for="accessMember" class="access-level-label">
+                                                    <div class="access-icon">
+                                                        <i class="bi bi-person-check text-primary"></i>
+                                                    </div>
+                                                    <h6>Membro</h6>
+                                                    <small>Acesso limitado</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="access-level-card" data-level="readonly">
+                                                <input type="radio" class="form-check-input" name="accessLevel" value="readonly" id="accessReadonly" required>
+                                                <label for="accessReadonly" class="access-level-label">
+                                                    <div class="access-icon">
+                                                        <i class="bi bi-eye text-info"></i>
+                                                    </div>
+                                                    <h6>Somente Leitura</h6>
+                                                    <small>Apenas visualização</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Responsabilidades Específicas -->
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Responsabilidades (opcional)</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-check responsibility-check">
+                                                <input class="form-check-input" type="checkbox" id="respFinanceiro" name="responsibilities" value="financeiro">
+                                                <label class="form-check-label" for="respFinanceiro">
+                                                    <i class="bi bi-currency-dollar text-success me-2"></i>
+                                                    <strong>Responsável Financeiro</strong>
+                                                    <small class="d-block text-muted">Gestão de faturas e pagamentos</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check responsibility-check">
+                                                <input class="form-check-input" type="checkbox" id="respTecnico" name="responsibilities" value="tecnico">
+                                                <label class="form-check-label" for="respTecnico">
+                                                    <i class="bi bi-gear text-warning me-2"></i>
+                                                    <strong>Responsável Técnico</strong>
+                                                    <small class="d-block text-muted">Configurações e integrações</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-md-6">
+                                            <div class="form-check responsibility-check">
+                                                <input class="form-check-input" type="checkbox" id="respOperacional" name="responsibilities" value="operacional">
+                                                <label class="form-check-label" for="respOperacional">
+                                                    <i class="bi bi-clipboard-data text-info me-2"></i>
+                                                    <strong>Responsável Operacional</strong>
+                                                    <small class="d-block text-muted">Gestão do dia a dia</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check responsibility-check">
+                                                <input class="form-check-input" type="checkbox" id="respSuporte" name="responsibilities" value="suporte">
+                                                <label class="form-check-label" for="respSuporte">
+                                                    <i class="bi bi-headset text-secondary me-2"></i>
+                                                    <strong>Suporte ao Cliente</strong>
+                                                    <small class="d-block text-muted">Atendimento e suporte</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Configurações do Convite -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-envelope me-2"></i>Configurações do Convite
+                                </h5>
+
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" id="inviteMessage" style="height: 100px" placeholder="Mensagem personalizada..."></textarea>
+                                    <label for="inviteMessage">Mensagem Personalizada (opcional)</label>
+                                    <div class="form-text">
+                                        Esta mensagem será incluída no e-mail de convite
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="inviteExpiration">
+                                                <option value="24">24 horas</option>
+                                                <option value="72" selected>3 dias</option>
+                                                <option value="168">1 semana</option>
+                                                <option value="720">30 dias</option>
+                                            </select>
+                                            <label for="inviteExpiration">Validade do Convite</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mt-3 pt-2">
+                                            <input class="form-check-input" type="checkbox" id="requirePasswordReset" checked>
+                                            <label class="form-check-label" for="requirePasswordReset">
+                                                Exigir criação de senha no primeiro acesso
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Botões -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-outline-secondary w-100" onclick="backToDashboard()">
+                                        <i class="bi bi-arrow-left me-2"></i>Cancelar
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="bi bi-send me-2"></i>Enviar Convite
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Gerenciamento de Aplicações -->
+    <div id="applicationsScreen" class="auth-screen d-none">
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2 class="mb-1">Aplicações Disponíveis</h2>
+                            <p class="text-muted mb-0">Gerencie o catálogo de aplicações e integrações</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-secondary me-2" onclick="backToDashboard()">
+                                <i class="bi bi-arrow-left me-2"></i>Voltar
+                            </button>
+                            <button class="btn btn-primary" onclick="showCreateApplication()">
+                                <i class="bi bi-plus-circle me-2"></i>Configurar Nova Aplicação
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Filtros e Visualização -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="searchApplications" placeholder="Buscar aplicações...">
+                                        <label for="searchApplications">Buscar aplicações...</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="filterCategory">
+                                            <option value="">Todos os tipos</option>
+                                            <option value="erp">ERP</option>
+                                            <option value="mcp">MCP</option>
+                                            <option value="financial">Financeiro</option>
+                                            <option value="automation">Automação</option>
+                                            <option value="ai">Inteligência Artificial</option>
+                                        </select>
+                                        <label for="filterCategory">Tipo</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="filterStatus">
+                                            <option value="">Todos os status</option>
+                                            <option value="active">Ativo</option>
+                                            <option value="inactive">Inativo</option>
+                                            <option value="beta">Beta</option>
+                                        </select>
+                                        <label for="filterStatus">Status</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-outline-primary w-100 h-100" onclick="filterApplications()">
+                                        <i class="bi bi-search"></i> Filtrar
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="d-flex justify-content-end h-100">
+                                        <div class="btn-group" role="group">
+                                            <input type="radio" class="btn-check" name="viewMode" id="viewGrid" value="grid" checked>
+                                            <label class="btn btn-outline-secondary" for="viewGrid" title="Visualização em Grade">
+                                                <i class="bi bi-grid"></i>
+                                            </label>
+                                            
+                                            <input type="radio" class="btn-check" name="viewMode" id="viewList" value="list">
+                                            <label class="btn btn-outline-secondary" for="viewList" title="Visualização em Lista">
+                                                <i class="bi bi-list-ul"></i>
+                                            </label>
+                                            
+                                            <input type="radio" class="btn-check" name="viewMode" id="viewTable" value="table">
+                                            <label class="btn btn-outline-secondary" for="viewTable" title="Visualização em Tabela">
+                                                <i class="bi bi-table"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Container de Aplicações -->
+                    <div id="applicationsContainer">
+                        <!-- Grid View -->
+                        <div class="row" id="applicationsGrid">
+                            <!-- Aplicações em grade serão carregadas aqui -->
+                        </div>
+                        
+                        <!-- List View -->
+                        <div id="applicationsList" class="d-none">
+                            <!-- Aplicações em lista serão carregadas aqui -->
+                        </div>
+                        
+                        <!-- Table View -->
+                        <div id="applicationsTable" class="d-none">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Aplicação</th>
+                                            <th>Tipo</th>
+                                            <th>Status</th>
+                                            <th>Credenciais</th>
+                                            <th>Criada em</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="applicationsTableBody">
+                                        <!-- Aplicações em tabela serão carregadas aqui -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Criação/Edição de Aplicação -->
+    <div id="createApplicationScreen" class="auth-screen d-none">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <button type="button" class="btn-back" onclick="showApplications()">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>
+                            <h2 id="applicationFormTitle">Configurar Nova Aplicação</h2>
+                            <p>Configure uma nova aplicação no catálogo</p>
+                        </div>
+
+                        <form id="createApplicationForm" class="auth-form">
+                            <!-- Informações Básicas -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-info-circle me-2"></i>Informações Básicas
+                                </h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="appName" required>
+                                            <label for="appName">Nome da Aplicação *</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="appId" required>
+                                            <label for="appId">ID da Aplicação *</label>
+                                            <div class="form-text">Identificador único (ex: omie-mcp)</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" id="appDescription" style="height: 100px" required></textarea>
+                                    <label for="appDescription">Descrição *</label>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="appCategory" required>
+                                                <option value="">Selecione...</option>
+                                                <option value="erp">ERP</option>
+                                                <option value="mcp">MCP (Model Context Protocol)</option>
+                                                <option value="financial">Sistema Financeiro</option>
+                                                <option value="automation">Automação</option>
+                                                <option value="ai">Inteligência Artificial</option>
+                                                <option value="integration">Integração</option>
+                                            </select>
+                                            <label for="appCategory">Tipo *</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="appStatus" required>
+                                                <option value="active">Ativo</option>
+                                                <option value="beta">Beta</option>
+                                                <option value="inactive">Inativo</option>
+                                            </select>
+                                            <label for="appStatus">Status *</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="url" class="form-control" id="appUrl">
+                                            <label for="appUrl">Link da Aplicação</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Credenciais Obrigatórias -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-key me-2"></i>Credenciais Obrigatórias
+                                </h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="credential-checks">
+                                            <div class="form-check credential-check">
+                                                <input class="form-check-input" type="checkbox" id="reqAppKey" name="requiredCredentials" value="app_key">
+                                                <label class="form-check-label" for="reqAppKey">
+                                                    <i class="bi bi-key-fill text-primary me-2"></i>
+                                                    <strong>APP Key</strong>
+                                                    <small class="d-block text-muted">Chave de identificação da aplicação</small>
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="form-check credential-check">
+                                                <input class="form-check-input" type="checkbox" id="reqAppSecret" name="requiredCredentials" value="app_secret">
+                                                <label class="form-check-label" for="reqAppSecret">
+                                                    <i class="bi bi-shield-lock text-warning me-2"></i>
+                                                    <strong>APP Secret</strong>
+                                                    <small class="d-block text-muted">Chave secreta para autenticação</small>
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="form-check credential-check">
+                                                <input class="form-check-input" type="checkbox" id="reqApiUrl" name="requiredCredentials" value="api_url">
+                                                <label class="form-check-label" for="reqApiUrl">
+                                                    <i class="bi bi-globe text-info me-2"></i>
+                                                    <strong>URL da API</strong>
+                                                    <small class="d-block text-muted">Endpoint base da API</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="credential-checks">
+                                            <div class="form-check credential-check">
+                                                <input class="form-check-input" type="checkbox" id="reqEmail" name="requiredCredentials" value="email">
+                                                <label class="form-check-label" for="reqEmail">
+                                                    <i class="bi bi-envelope text-success me-2"></i>
+                                                    <strong>E-mail</strong>
+                                                    <small class="d-block text-muted">E-mail para autenticação</small>
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="form-check credential-check">
+                                                <input class="form-check-input" type="checkbox" id="reqPassword" name="requiredCredentials" value="password">
+                                                <label class="form-check-label" for="reqPassword">
+                                                    <i class="bi bi-lock text-danger me-2"></i>
+                                                    <strong>Senha</strong>
+                                                    <small class="d-block text-muted">Senha para autenticação</small>
+                                                </label>
+                                            </div>
+                                            
+                                            <div class="form-check credential-check">
+                                                <input class="form-check-input" type="checkbox" id="reqToken" name="requiredCredentials" value="token">
+                                                <label class="form-check-label" for="reqToken">
+                                                    <i class="bi bi-coin text-secondary me-2"></i>
+                                                    <strong>Token de Acesso</strong>
+                                                    <small class="d-block text-muted">Token JWT ou similar</small>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Credenciais Customizadas -->
+                                <div class="mt-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h6 class="mb-0">Credenciais Customizadas</h6>
+                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="addCustomCredential()">
+                                            <i class="bi bi-plus me-1"></i>Adicionar
+                                        </button>
+                                    </div>
+                                    <div id="customCredentials">
+                                        <!-- Credenciais customizadas serão adicionadas aqui -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Características Específicas -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-gear me-2"></i>Características Específicas
+                                </h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" id="authType">
+                                                <option value="api_key">API Key</option>
+                                                <option value="oauth2">OAuth 2.0</option>
+                                                <option value="basic">Basic Auth</option>
+                                                <option value="bearer">Bearer Token</option>
+                                                <option value="custom">Customizado</option>
+                                            </select>
+                                            <label for="authType">Tipo de Autenticação</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" id="apiVersion">
+                                            <label for="apiVersion">Versão da API</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" id="appNotes" style="height: 80px"></textarea>
+                                    <label for="appNotes">Notas de Configuração</label>
+                                    <div class="form-text">Instruções específicas para configuração desta aplicação</div>
+                                </div>
+                            </div>
+
+                            <!-- Botões -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-outline-secondary w-100" onclick="showApplications()">
+                                        <i class="bi bi-arrow-left me-2"></i>Cancelar
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="bi bi-save me-2"></i>Salvar Aplicação
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Configuração de Aplicações por Empresa -->
+    <div id="companyApplicationsScreen" class="auth-screen d-none">
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2 class="mb-1">Aplicações da Empresa</h2>
+                            <p class="text-muted mb-0" id="companyAppSubtitle">Configure as integrações para sua empresa</p>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-secondary me-2" onclick="backToDashboard()">
+                                <i class="bi bi-arrow-left me-2"></i>Voltar
+                            </button>
+                            <button class="btn btn-primary" onclick="showApplications()">
+                                <i class="bi bi-grid-3x3-gap me-2"></i>Explorar Catálogo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h3 class="mb-1" id="statsConfigured">4</h3>
+                                    <p class="card-title text-muted mb-0">Configuradas</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h3 class="mb-1 text-success" id="statsActive">3</h3>
+                                    <p class="card-title text-muted mb-0">Ativas</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h3 class="mb-1 text-warning" id="statsPending">1</h3>
+                                    <p class="card-title text-muted mb-0">Pendentes</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h3 class="mb-1 text-danger" id="statsError">0</h3>
+                                    <p class="card-title text-muted mb-0">Com Erro</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filtros e Visualização -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="searchCompanyApps" placeholder="Buscar aplicações...">
+                                        <label for="searchCompanyApps">Buscar aplicações...</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="filterCompanyCategory">
+                                            <option value="">Todos os tipos</option>
+                                            <option value="erp">ERP</option>
+                                            <option value="mcp">MCP</option>
+                                            <option value="financial">Financeiro</option>
+                                            <option value="automation">Automação</option>
+                                            <option value="ai">Inteligência Artificial</option>
+                                        </select>
+                                        <label for="filterCompanyCategory">Tipo</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="filterCompanyStatus">
+                                            <option value="">Todos os status</option>
+                                            <option value="active">Ativo</option>
+                                            <option value="pending">Pendente</option>
+                                            <option value="error">Com Erro</option>
+                                            <option value="inactive">Inativo</option>
+                                        </select>
+                                        <label for="filterCompanyStatus">Status</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-outline-primary w-100 h-100" onclick="filterCompanyApplications()">
+                                        <i class="bi bi-search"></i> Filtrar
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="d-flex justify-content-end h-100">
+                                        <div class="btn-group" role="group">
+                                            <input type="radio" class="btn-check" name="companyViewMode" id="companyViewGrid" value="grid" checked>
+                                            <label class="btn btn-outline-secondary" for="companyViewGrid" title="Visualização em Grade">
+                                                <i class="bi bi-grid"></i>
+                                            </label>
+                                            
+                                            <input type="radio" class="btn-check" name="companyViewMode" id="companyViewList" value="list">
+                                            <label class="btn btn-outline-secondary" for="companyViewList" title="Visualização em Lista">
+                                                <i class="bi bi-list-ul"></i>
+                                            </label>
+                                            
+                                            <input type="radio" class="btn-check" name="companyViewMode" id="companyViewTable" value="table">
+                                            <label class="btn btn-outline-secondary" for="companyViewTable" title="Visualização em Tabela">
+                                                <i class="bi bi-table"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Container de Aplicações da Empresa -->
+                    <div id="companyApplicationsContainer">
+                        <!-- Grid View -->
+                        <div class="row" id="companyApplicationsGrid">
+                            <!-- Aplicações da empresa em grade serão carregadas aqui -->
+                        </div>
+                        
+                        <!-- List View -->
+                        <div id="companyApplicationsList" class="d-none">
+                            <!-- Aplicações da empresa em lista serão carregadas aqui -->
+                        </div>
+                        
+                        <!-- Table View -->
+                        <div id="companyApplicationsTable" class="d-none">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Aplicação</th>
+                                            <th>Status</th>
+                                            <th>Última Conexão</th>
+                                            <th>Credenciais</th>
+                                            <th>Configurada em</th>
+                                            <th>Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="companyApplicationsTableBody">
+                                        <!-- Aplicações da empresa em tabela serão carregadas aqui -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Configuração de Credenciais -->
+    <!-- Tela de Configuração de Credenciais -->
+    <div id="configureAppCredentialsScreen" class="auth-screen d-none">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8">
+                    <div class="auth-card">
+                        <div class="auth-header">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <button type="button" class="btn-back" id="backToCompanyAppsHeader">
+                                    <i class="bi bi-arrow-left"></i>
+                                </button>
+                                <div class="d-flex align-items-center gap-3 flex-grow-1 ms-3">
+                                    <div class="app-icon-lg" id="configAppIcon">
+                                        <i class="bi bi-gear"></i>
+                                    </div>
+                                    <div>
+                                        <h2 id="configAppName">Configurar Aplicação</h2>
+                                        <p id="configAppDescription" class="text-muted mb-0">Configure as credenciais para esta aplicação</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status da Aplicação -->
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="info-card">
+                                    <div class="info-label">Status</div>
+                                    <div class="info-value" id="configAppStatus">Pendente</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="info-card">
+                                    <div class="info-label">Tipo</div>
+                                    <div class="info-value" id="configAppCategory">-</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="info-card">
+                                    <div class="info-label">Última Conexão</div>
+                                    <div class="info-value" id="configAppLastConnection">Nunca</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="info-card">
+                                    <div class="info-label">Versão</div>
+                                    <div class="info-value">v1.0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formulário de Configuração -->
+                        <form id="credentialsForm">
+                            <!-- Credenciais Obrigatórias -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-key me-2"></i>Credenciais Obrigatórias
+                                </h5>
+                                <div id="credentialsFields">
+                                    <!-- Campos dinâmicos serão inseridos aqui -->
+                                </div>
+                            </div>
+
+                            <!-- Configurações Avançadas -->
+                            <div class="form-section mb-4">
+                                <h5 class="form-section-title">
+                                    <i class="bi bi-sliders me-2"></i>Configurações Avançadas
+                                </h5>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="appEnabled" checked>
+                                            <label class="form-check-label" for="appEnabled">
+                                                Aplicação Habilitada
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="appNotifications" checked>
+                                            <label class="form-check-label" for="appNotifications">
+                                                Notificações
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-switch mb-3">
+                                            <input class="form-check-input" type="checkbox" id="appLogging" checked>
+                                            <label class="form-check-label" for="appLogging">
+                                                Logs Detalhados
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" class="form-control" id="appTimeout" name="timeout" value="30" min="5" max="300">
+                                            <label for="appTimeout">Timeout (segundos)</label>
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input type="number" class="form-control" id="appRetries" name="retries" value="3" min="0" max="10">
+                                            <label for="appRetries">Tentativas</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" id="appNotes" name="notes" style="height: 100px" placeholder="Notas sobre a configuração..."></textarea>
+                                    <label for="appNotes">Notas de Configuração</label>
+                                </div>
+                            </div>
+
+                            <!-- Botões de Ação -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-outline-secondary w-100" id="backToCompanyAppsBtn">
+                                        <i class="bi bi-arrow-left me-2"></i>Voltar
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-outline-warning w-100" id="testCredentialsBtn">
+                                        <i class="bi bi-wifi me-2"></i>Testar Conexão
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-outline-info w-100" onclick="showCredentialsHelp()">
+                                        <i class="bi bi-question-circle me-2"></i>Ajuda
+                                    </button>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="bi bi-save me-2"></i>Salvar
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay d-none">
+        <div class="loading-content">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Carregando...</span>
+            </div>
+            <p class="mt-3">Carregando...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/security.js"></script>
+    <script src="js/backend-integration.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/frontend-fixes.js"></script>
+    <script src="js/design-analyzer.js"></script>
+    <script src="js/design-analyzer-professional.js"></script>
+</body>
+</html>

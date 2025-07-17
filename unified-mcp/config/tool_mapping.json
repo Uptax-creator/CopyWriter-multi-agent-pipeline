@@ -1,0 +1,183 @@
+{
+  "universal_tools": {
+    "consultar_categorias": {
+      "description": "Consulta categorias cadastradas",
+      "omie": "consultar_categorias",
+      "nibo": "consultar_categorias",
+      "universal_params": {
+        "page": "pagina",
+        "limit": "registros_por_pagina"
+      }
+    },
+    "consultar_clientes": {
+      "description": "Consulta clientes cadastrados",
+      "omie": "consultar_clientes",
+      "nibo": "consultar_clientes",
+      "universal_params": {
+        "page": "pagina",
+        "limit": "registros_por_pagina"
+      }
+    },
+    "consultar_fornecedores": {
+      "description": "Consulta fornecedores cadastrados",
+      "omie": "consultar_fornecedores",
+      "nibo": "consultar_fornecedores",
+      "universal_params": {
+        "page": "pagina",
+        "limit": "registros_por_pagina"
+      }
+    },
+    "consultar_contas_pagar": {
+      "description": "Consulta contas a pagar",
+      "omie": "consultar_contas_pagar",
+      "nibo": "consultar_contas_pagar",
+      "universal_params": {
+        "start_date": "data_inicio",
+        "end_date": "data_fim",
+        "page": "pagina",
+        "limit": "registros_por_pagina"
+      }
+    },
+    "consultar_contas_receber": {
+      "description": "Consulta contas a receber",
+      "omie": "consultar_contas_receber",
+      "nibo": "consultar_contas_receber",
+      "universal_params": {
+        "start_date": "data_inicio",
+        "end_date": "data_fim",
+        "page": "pagina",
+        "limit": "registros_por_pagina"
+      }
+    },
+    "incluir_cliente": {
+      "description": "Inclui novo cliente",
+      "omie": "incluir_cliente",
+      "nibo": "incluir_cliente",
+      "universal_params": {
+        "name": "razao_social",
+        "document": "cnpj_cpf",
+        "email": "email",
+        "phone": "telefone"
+      }
+    },
+    "incluir_fornecedor": {
+      "description": "Inclui novo fornecedor",
+      "omie": "incluir_fornecedor",
+      "nibo": "incluir_fornecedor",
+      "universal_params": {
+        "name": "razao_social",
+        "document": "cnpj_cpf",
+        "email": "email",
+        "phone": "telefone"
+      }
+    },
+    "alterar_cliente": {
+      "description": "Altera dados de cliente existente",
+      "omie": "alterar_cliente",
+      "nibo": "alterar_cliente",
+      "universal_params": {
+        "id": "codigo_cliente",
+        "name": "razao_social",
+        "email": "email",
+        "phone": "telefone"
+      }
+    },
+    "alterar_fornecedor": {
+      "description": "Altera dados de fornecedor existente",
+      "omie": "alterar_fornecedor",
+      "nibo": "alterar_fornecedor",
+      "universal_params": {
+        "id": "codigo_fornecedor",
+        "name": "razao_social",
+        "email": "email",
+        "phone": "telefone"
+      }
+    }
+  },
+  "aliases": {
+    "consultar_departamentos": {
+      "target": "consultar_centros_custo",
+      "platforms": ["omie", "nibo"],
+      "note": "Omie usa 'departamentos', Nibo usa 'centros_custo'"
+    },
+    "consultar_centros_custo": {
+      "target": "consultar_departamentos",
+      "platforms": ["nibo", "omie"],
+      "note": "Nibo usa 'centros_custo', Omie usa 'departamentos'"
+    }
+  },
+  "exclusive_tools": {
+    "omie_only": [
+      "consultar_tipos_documento",
+      "consultar_cliente_por_codigo",
+      "consultar_fornecedor_por_codigo",
+      "buscar_dados_contato_cliente",
+      "buscar_dados_contato_fornecedor"
+    ],
+    "nibo_only": [
+      "consultar_socios",
+      "incluir_socio",
+      "alterar_socio",
+      "excluir_socio",
+      "obter_socio_por_id",
+      "incluir_multiplos_clientes",
+      "incluir_multiplos_fornecedores",
+      "excluir_cliente",
+      "excluir_fornecedor",
+      "excluir_conta_pagar",
+      "excluir_conta_receber"
+    ]
+  },
+  "field_mappings": {
+    "cliente": {
+      "omie": {
+        "id": "codigo_cliente",
+        "name": "razao_social",
+        "document": "cnpj_cpf",
+        "email": "email",
+        "phone": "telefone"
+      },
+      "nibo": {
+        "id": "id",
+        "name": "name",
+        "document": "document",
+        "email": "email",
+        "phone": "phone"
+      }
+    },
+    "fornecedor": {
+      "omie": {
+        "id": "codigo_fornecedor",
+        "name": "razao_social",
+        "document": "cnpj_cpf",
+        "email": "email",
+        "phone": "telefone"
+      },
+      "nibo": {
+        "id": "id",
+        "name": "name",
+        "document": "document",
+        "email": "email",
+        "phone": "phone"
+      }
+    },
+    "conta_pagar": {
+      "omie": {
+        "id": "codigo_lancamento",
+        "supplier_id": "codigo_fornecedor",
+        "document_number": "numero_documento",
+        "due_date": "data_vencimento",
+        "amount": "valor_documento",
+        "category": "codigo_categoria"
+      },
+      "nibo": {
+        "id": "id",
+        "supplier_id": "supplier_id",
+        "document_number": "document_number",
+        "due_date": "due_date",
+        "amount": "amount",
+        "category": "category_id"
+      }
+    }
+  }
+}

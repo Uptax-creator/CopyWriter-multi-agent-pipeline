@@ -1,0 +1,186 @@
+{
+  "teste_4_validar_credenciais": {
+    "erro": "HTTP 500",
+    "response": "{\"faultstring\":\"ERROR: Nenhum par\\u00e2metro foi recebido em WS_PARAMS!\",\"faultcode\":\"SOAP-ENV:Client-71\"}",
+    "headers": {
+      "date": "Fri, 11 Jul 2025 13:44:23 GMT",
+      "content-type": "application/json; encoding=UTF-8",
+      "content-length": "121",
+      "connection": "keep-alive",
+      "server": "nginx",
+      "x-omie-ratelimit": "1/960 allow",
+      "x-omie-parallelratelimit": "1/4 allow 10.TGlzdGFyQ2xpZW50ZXM=",
+      "x-omie-request-id": "27426ec0-5e5d-11f0-88b0-4faac62a30c1",
+      "omieapi-error": "71 - Nenhum parâmetro foi recebido em WS_PARAMS!",
+      "expires": "Tue, 03 Jul 2001 06:00:00 GMT",
+      "last-modified": "Fri, 11 Jul 2025 13:44:23 GMT",
+      "cache-control": "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0",
+      "pragma": "no-cache",
+      "content-encoding": "gzip",
+      "vary": "Accept-Encoding",
+      "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+    }
+  },
+  "teste_5_consultar_categorias": {
+    "erro": "HTTP 500",
+    "response": "{\"faultstring\":\"ERROR: Tag [APENAS_CATEGORIA_DE_RECEITA] n\\u00e3o faz parte da estrutura do tipo complexo [categoria_list_request]!\",\"faultcode\":\"SOAP-ENV:Client-5001\"}",
+    "headers": {
+      "date": "Fri, 11 Jul 2025 13:44:23 GMT",
+      "content-type": "application/json; encoding=UTF-8",
+      "content-length": "168",
+      "connection": "keep-alive",
+      "server": "nginx",
+      "x-omie-ratelimit": "2/960 allow",
+      "x-omie-parallelratelimit": "1/4 allow 10.TGlzdGFyQ2F0ZWdvcmlhcw==",
+      "x-omie-request-id": "2756ba10-5e5d-11f0-9c94-3b3ada72bdfb",
+      "omieapi-error": "5001 - Tag [APENAS_CATEGORIA_DE_RECEITA] não faz parte da estrutura do tipo complexo [categoria_list_request]!",
+      "expires": "Tue, 03 Jul 2001 06:00:00 GMT",
+      "last-modified": "Fri, 11 Jul 2025 13:44:23 GMT",
+      "cache-control": "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0",
+      "pragma": "no-cache",
+      "content-encoding": "gzip",
+      "vary": "Accept-Encoding",
+      "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+    }
+  },
+  "teste_1_minimo_possivel": {
+    "erro": "HTTP 500",
+    "response": "{\"faultstring\":\"ERROR: O preenchimento da tag [codigo_cliente_integracao] \\u00e9 obrigat\\u00f3rio!\",\"faultcode\":\"SOAP-ENV:Client-103\"}",
+    "headers": {
+      "date": "Fri, 11 Jul 2025 13:44:23 GMT",
+      "content-type": "application/json; encoding=UTF-8",
+      "content-length": "140",
+      "connection": "keep-alive",
+      "server": "nginx",
+      "x-omie-ratelimit": "3/960 allow",
+      "x-omie-parallelratelimit": "1/4 allow 10.SW5jbHVpckNsaWVudGU=",
+      "x-omie-request-id": "277f9ed0-5e5d-11f0-b232-29f513b07111",
+      "omieapi-error": "103 - O preenchimento da tag [codigo_cliente_integracao] é obrigatório!",
+      "expires": "Tue, 03 Jul 2001 06:00:00 GMT",
+      "last-modified": "Fri, 11 Jul 2025 13:44:23 GMT",
+      "cache-control": "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0",
+      "pragma": "no-cache",
+      "content-encoding": "gzip",
+      "vary": "Accept-Encoding",
+      "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+    }
+  },
+  "teste_2_omie_documentacao": {
+    "erro": "HTTP 500",
+    "response": "{\"faultstring\":\"ERROR: Tag [CLIENTE_FORNECEDOR] n\\u00e3o faz parte da estrutura do tipo complexo [clientes_cadastro]!\",\"faultcode\":\"SOAP-ENV:Client-5001\"}",
+    "headers": {
+      "date": "Fri, 11 Jul 2025 13:44:24 GMT",
+      "content-type": "application/json; encoding=UTF-8",
+      "content-length": "157",
+      "connection": "keep-alive",
+      "server": "nginx",
+      "x-omie-ratelimit": "4/960 allow",
+      "x-omie-parallelratelimit": "1/4 allow 10.SW5jbHVpckNsaWVudGU=",
+      "x-omie-request-id": "27aaf490-5e5d-11f0-b232-29f513b07111",
+      "omieapi-error": "5001 - Tag [CLIENTE_FORNECEDOR] não faz parte da estrutura do tipo complexo [clientes_cadastro]!",
+      "expires": "Tue, 03 Jul 2001 06:00:00 GMT",
+      "last-modified": "Fri, 11 Jul 2025 13:44:24 GMT",
+      "cache-control": "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0",
+      "pragma": "no-cache",
+      "content-encoding": "gzip",
+      "vary": "Accept-Encoding",
+      "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+    }
+  },
+  "teste_7_caracteres_especiais": {
+    "erro": "HTTP 500",
+    "response": "{\"faultstring\":\"ERROR: O preenchimento da tag [codigo_cliente_integracao] \\u00e9 obrigat\\u00f3rio!\",\"faultcode\":\"SOAP-ENV:Client-103\"}",
+    "headers": {
+      "date": "Fri, 11 Jul 2025 13:44:24 GMT",
+      "content-type": "application/json; encoding=UTF-8",
+      "content-length": "140",
+      "connection": "keep-alive",
+      "server": "nginx",
+      "x-omie-ratelimit": "5/960 allow",
+      "x-omie-parallelratelimit": "1/4 allow 10.SW5jbHVpckNsaWVudGU=",
+      "x-omie-request-id": "27d49ca0-5e5d-11f0-91f8-39410b5f93c8",
+      "omieapi-error": "103 - O preenchimento da tag [codigo_cliente_integracao] é obrigatório!",
+      "expires": "Tue, 03 Jul 2001 06:00:00 GMT",
+      "last-modified": "Fri, 11 Jul 2025 13:44:24 GMT",
+      "cache-control": "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0",
+      "pragma": "no-cache",
+      "content-encoding": "gzip",
+      "vary": "Accept-Encoding",
+      "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+    }
+  },
+  "teste_3_campos_obrigatorios": {
+    "erro": "HTTP 500",
+    "response": "{\"faultstring\":\"ERROR: Tag [CLIENTE_FORNECEDOR] n\\u00e3o faz parte da estrutura do tipo complexo [clientes_cadastro]!\",\"faultcode\":\"SOAP-ENV:Client-5001\"}",
+    "headers": {
+      "date": "Fri, 11 Jul 2025 13:44:24 GMT",
+      "content-type": "application/json; encoding=UTF-8",
+      "content-length": "157",
+      "connection": "keep-alive",
+      "server": "nginx",
+      "x-omie-ratelimit": "6/960 allow",
+      "x-omie-parallelratelimit": "1/4 allow 10.SW5jbHVpckNsaWVudGU=",
+      "x-omie-request-id": "28137a60-5e5d-11f0-b5ef-470fd37cc0b0",
+      "omieapi-error": "5001 - Tag [CLIENTE_FORNECEDOR] não faz parte da estrutura do tipo complexo [clientes_cadastro]!",
+      "expires": "Tue, 03 Jul 2001 06:00:00 GMT",
+      "last-modified": "Fri, 11 Jul 2025 13:44:24 GMT",
+      "cache-control": "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0",
+      "pragma": "no-cache",
+      "content-encoding": "gzip",
+      "vary": "Accept-Encoding",
+      "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+    }
+  },
+  "teste_6_diferentes_endpoints": [
+    [
+      "com_barra",
+      {
+        "erro": "HTTP 500",
+        "response": "{\"faultstring\":\"ERROR: O preenchimento da tag [codigo_cliente_integracao] \\u00e9 obrigat\\u00f3rio!\",\"faultcode\":\"SOAP-ENV:Client-103\"}",
+        "headers": {
+          "date": "Fri, 11 Jul 2025 13:44:25 GMT",
+          "content-type": "application/json; encoding=UTF-8",
+          "content-length": "140",
+          "connection": "keep-alive",
+          "server": "nginx",
+          "x-omie-ratelimit": "7/960 allow",
+          "x-omie-parallelratelimit": "1/4 allow 10.SW5jbHVpckNsaWVudGU=",
+          "x-omie-request-id": "28411a10-5e5d-11f0-9c7f-1376247413e1",
+          "omieapi-error": "103 - O preenchimento da tag [codigo_cliente_integracao] é obrigatório!",
+          "expires": "Tue, 03 Jul 2001 06:00:00 GMT",
+          "last-modified": "Fri, 11 Jul 2025 13:44:25 GMT",
+          "cache-control": "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0",
+          "pragma": "no-cache",
+          "content-encoding": "gzip",
+          "vary": "Accept-Encoding",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+        }
+      }
+    ],
+    [
+      "sem_barra",
+      {
+        "erro": "HTTP 500",
+        "response": "{\"faultstring\":\"ERROR: O preenchimento da tag [codigo_cliente_integracao] \\u00e9 obrigat\\u00f3rio!\",\"faultcode\":\"SOAP-ENV:Client-103\"}",
+        "headers": {
+          "date": "Fri, 11 Jul 2025 13:44:25 GMT",
+          "content-type": "application/json; encoding=UTF-8",
+          "content-length": "140",
+          "connection": "keep-alive",
+          "server": "nginx",
+          "x-omie-ratelimit": "8/960 allow",
+          "x-omie-parallelratelimit": "1/4 allow 10.SW5jbHVpckNsaWVudGU=",
+          "x-omie-request-id": "28765ae0-5e5d-11f0-ae46-47293b9c85c6",
+          "omieapi-error": "103 - O preenchimento da tag [codigo_cliente_integracao] é obrigatório!",
+          "expires": "Tue, 03 Jul 2001 06:00:00 GMT",
+          "last-modified": "Fri, 11 Jul 2025 13:44:25 GMT",
+          "cache-control": "no-store, no-cache, must-revalidate, max-age=0, post-check=0, pre-check=0",
+          "pragma": "no-cache",
+          "content-encoding": "gzip",
+          "vary": "Accept-Encoding",
+          "strict-transport-security": "max-age=31536000; includeSubDomains; preload"
+        }
+      }
+    ]
+  ]
+}

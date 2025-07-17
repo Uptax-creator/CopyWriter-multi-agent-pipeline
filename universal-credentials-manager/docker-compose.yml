@@ -1,0 +1,92 @@
+# Universal Credentials Manager - Local Development
+version: '3.8'
+
+services:
+  # API Backend
+  ucm-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "8100:8100"
+    environment:
+      - PORT=8100
+      - AUTH0_DOMAIN=${AUTH0_DOMAIN:-}
+      - AUTH0_API_AUDIENCE=${AUTH0_API_AUDIENCE:-}
+      - DEVELOPMENT_MODE=true
+      - REDIS_URL=redis://redis:6379
+      - POSTGRES_URL=postgresql://ucm:ucm_password@postgres:5432/ucm_db
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped
+    networks:
+      - ucm-network
+
+  # Frontend Web App
+  ucm-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8100
+      - NEXT_PUBLIC_AUTH0_DOMAIN=${AUTH0_DOMAIN:-}
+      - NEXT_PUBLIC_AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID:-}
+      - AUTH0_SECRET=${AUTH0_SECRET:-development-secret-key}
+      - AUTH0_BASE_URL=http://localhost:3000
+    depends_on:
+      - ucm-api
+    restart: unless-stopped
+    networks:
+      - ucm-network
+
+  # Redis para cache e sessions
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - ucm-network
+
+  # PostgreSQL para audit logs
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=ucm_db
+      - POSTGRES_USER=ucm
+      - POSTGRES_PASSWORD=ucm_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    networks:
+      - ucm-network
+
+  # Adminer para gerenciar PostgreSQL
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - ucm-network
+
+volumes:
+  redis_data:
+  postgres_data:
+
+networks:
+  ucm-network:
+    driver: bridge

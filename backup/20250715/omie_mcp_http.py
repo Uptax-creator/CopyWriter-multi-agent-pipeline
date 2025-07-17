@@ -284,6 +284,27 @@ class OmieHandlers:
             return f"💵 Contas a Receber encontradas: {total}\n\n📋 Lista de contas:\n" + "\n".join(lista_contas) + f"\n\n💰 Total (10 primeiras): R$ {total_valor:,.2f}" + (f"\n(Mostrando 10 de {total})" if total > 10 else "")
         else:
             return "❌ Nenhuma conta a receber encontrada com os filtros especificados"
+    
+    # ========== HANDLERS ADICIONAIS ==========
+    
+    async def handle_cadastrar_cliente_fornecedor(self, args: Dict) -> str:
+        """Handler para cadastrar cliente/fornecedor"""
+        import time
+        codigo_integracao = f"MCP-{int(time.time())}"
+        
+        dados_omie = {
+            "codigo_cliente_integracao": codigo_integracao,
+            "razao_social": args["razao_social"],
+            "cnpj_cpf": args["cnpj_cpf"],
+            "email": args["email"]
+        }
+        
+        resultado = await self.omie_client.cadastrar_cliente_fornecedor(dados_omie)
+        
+        if "codigo_cliente_omie" in resultado:
+            return f"✅ {args['tipo_cliente'].title()} cadastrado com sucesso!\n\n📋 Detalhes:\n• Código Omie: {resultado['codigo_cliente_omie']}\n• Código Integração: {codigo_integracao}\n• Razão Social: {args['razao_social']}\n• CNPJ/CPF: {args['cnpj_cpf']}\n• E-mail: {args['email']}"
+        else:
+            return f"✅ Cadastrado! Resposta: {json.dumps(resultado, ensure_ascii=False, indent=2)}"
 
 # ============================================================================
 # SERVIDOR FASTAPI
@@ -321,7 +342,7 @@ async def root():
         "version": "1.0.0",
         "protocol": "HTTP",
         "compatible_with": ["Claude Desktop", "Copilot Studio", "N8N", "Zapier"],
-        "tools": 5,
+        "tools": 6,
         "timestamp": datetime.now().isoformat()
     }
 

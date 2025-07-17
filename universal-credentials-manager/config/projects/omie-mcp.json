@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "project_name": "omie-mcp",
+  "metadata": {
+    "created_at": "2025-07-15T00:53:31.280269",
+    "credential_type": "omie",
+    "encryption_enabled": true,
+    "default_company": "empresa_exemplo"
+  },
+  "companies": {
+    "empresa_exemplo": {
+      "name": "Empresa Exemplo LTDA",
+      "credential_type": "omie",
+      "base_url": "https://app.omie.com.br/api/v1/",
+      "active": true,
+      "security_level": "standard",
+      "token_timeout_minutes": 60,
+      "credentials_encrypted": "EXEMPLO_DADOS_CRIPTOGRAFADOS"
+    }
+  },
+  "security": {
+    "auto_refresh_tokens": true,
+    "log_access_attempts": true,
+    "max_failed_attempts": 5,
+    "lockout_duration_minutes": 30
+  }
+}

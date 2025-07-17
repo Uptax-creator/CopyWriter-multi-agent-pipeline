@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Console - Omie Tenant Manager</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .console { 
+            background: #1e1e1e; 
+            color: #fff; 
+            padding: 15px; 
+            border-radius: 5px; 
+            font-family: monospace; 
+            height: 400px; 
+            overflow-y: auto; 
+            white-space: pre-wrap;
+        }
+        .error { color: #ff6b6b; }
+        .warning { color: #ffd93d; }
+        .success { color: #6bcf7f; }
+        .info { color: #74c0fc; }
+        button { 
+            background: #007AFF; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 5px;
+        }
+        button:hover { background: #0056CC; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Debug Console - Omie Tenant Manager v2.0</h1>
+        
+        <div class="mb-3">
+            <button onclick="clearConsole()">Limpar Console</button>
+            <button onclick="testScripts()">Testar Scripts</button>
+            <button onclick="testFormulario()">Testar Formulário</button>
+            <button onclick="goToApp()">Ir para App</button>
+        </div>
+        
+        <div class="console" id="console"></div>
+        
+        <h3>Status dos Scripts:</h3>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        const consoleDiv = document.getElementById('console');
+        const statusDiv = document.getElementById('status');
+        
+        // Capturar todos os logs
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function addToConsole(type, ...args) {
+            const timestamp = new Date().toLocaleTimeString();
+            const message = `[${timestamp}] [${type.toUpperCase()}] ${args.join(' ')}\n`;
+            
+            const span = document.createElement('span');
+            span.className = type;
+            span.textContent = message;
+            consoleDiv.appendChild(span);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToConsole('info', ...args);
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToConsole('error', ...args);
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addToConsole('warning', ...args);
+        };
+        
+        // Capturar erros globais
+        window.addEventListener('error', (e) => {
+            console.error('ERRO GLOBAL:', e.error?.message || e.message);
+            console.error('Arquivo:', e.filename);
+            console.error('Linha:', e.lineno);
+        });
+        
+        // Capturar promessas rejeitadas
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('PROMISE REJEITADA:', e.reason);
+        });
+        
+        function clearConsole() {
+            consoleDiv.innerHTML = '';
+        }
+        
+        function testScripts() {
+            console.log('=== TESTE DE SCRIPTS ===');
+            
+            // Testar se scripts estão carregados
+            console.log('Testando SecurityManager:', typeof securityManager);
+            console.log('Testando AuthManager:', typeof authManager);
+            console.log('Testando App:', typeof app);
+            
+            // Testar se bootstrap está carregado
+            console.log('Testando Bootstrap:', typeof bootstrap);
+            
+            // Testar se DOM está pronto
+            console.log('DOM Ready State:', document.readyState);
+            
+            updateStatus();
+        }
+        
+        function testFormulario() {
+            console.log('=== TESTE DE FORMULÁRIO ===');
+            
+            // Simular preenchimento
+            const nome = document.getElementById('registerNome');
+            const email = document.getElementById('registerEmail');
+            
+            if (nome && email) {
+                console.log('Formulário encontrado na página');
+                nome.value = 'Teste';
+                email.value = 'teste@exemplo.com';
+                console.log('Valores preenchidos');
+            } else {
+                console.log('Formulário NÃO encontrado - página atual não é cadastro');
+            }
+        }
+        
+        function updateStatus() {
+            const status = {
+                'SecurityManager': typeof securityManager !== 'undefined' ? '✅' : '❌',
+                'AuthManager': typeof authManager !== 'undefined' ? '✅' : '❌',
+                'App': typeof app !== 'undefined' ? '✅' : '❌',
+                'Bootstrap': typeof bootstrap !== 'undefined' ? '✅' : '❌',
+                'jQuery': typeof $ !== 'undefined' ? '✅' : '❌'
+            };
+            
+            statusDiv.innerHTML = Object.entries(status)
+                .map(([key, value]) => `<div>${key}: ${value}</div>`)
+                .join('');
+        }
+        
+        function goToApp() {
+            window.location.href = 'index.html';
+        }
+        
+        // Executar testes iniciais
+        setTimeout(() => {
+            console.log('Debug Console iniciado');
+            testScripts();
+        }, 1000);
+    </script>
+</body>
+</html>

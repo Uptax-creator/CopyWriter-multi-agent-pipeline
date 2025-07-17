@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset de Segurança - Uptax Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { 
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .reset-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                
+                <div class="text-center mb-4">
+                    <h1 class="text-white mb-3">🔧 Reset de Segurança</h1>
+                    <p class="text-white-50">Limpar bloqueios e dados de segurança</p>
+                </div>
+
+                <div class="reset-card">
+                    <div class="card-body p-5 text-center">
+                        
+                        <div class="mb-4">
+                            <i class="bi bi-shield-exclamation text-warning" style="font-size: 4rem;"></i>
+                        </div>
+                        
+                        <h3 class="mb-3">Sistema de Segurança</h3>
+                        <p class="text-muted mb-4">
+                            Esta página remove todos os bloqueios de login e limpa os dados de segurança armazenados localmente.
+                        </p>
+                        
+                        <div class="d-grid gap-3">
+                            <button class="btn btn-danger btn-lg" onclick="clearAllSecurityData()">
+                                <i class="bi bi-trash3 me-2"></i>
+                                Limpar Todos os Bloqueios
+                            </button>
+                            
+                            <button class="btn btn-warning" onclick="clearLoginAttempts()">
+                                <i class="bi bi-arrow-clockwise me-2"></i>
+                                Reset Tentativas de Login
+                            </button>
+                            
+                            <button class="btn btn-info" onclick="showStoredData()">
+                                <i class="bi bi-eye me-2"></i>
+                                Visualizar Dados Armazenados
+                            </button>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <div class="d-grid">
+                            <a href="index.html" class="btn btn-success btn-lg">
+                                <i class="bi bi-arrow-left me-2"></i>
+                                Voltar para Aplicação
+                            </a>
+                        </div>
+                        
+                        <div id="result" class="mt-4"></div>
+                        
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="credenciais.html" class="btn btn-light">
+                        <i class="bi bi-key me-2"></i>
+                        Ver Credenciais de Teste
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showResult(message, type = 'info') {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+        }
+
+        function clearAllSecurityData() {
+            try {
+                // Limpar localStorage
+                const keysToRemove = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && (
+                        key.includes('security') || 
+                        key.includes('login') || 
+                        key.includes('attempt') || 
+                        key.includes('block') ||
+                        key.includes('token') ||
+                        key.includes('user_data') ||
+                        key.includes('current_company')
+                    )) {
+                        keysToRemove.push(key);
+                    }
+                }
+                
+                keysToRemove.forEach(key => {
+                    localStorage.removeItem(key);
+                    console.log('🗑️ Removido:', key);
+                });
+                
+                // Limpar sessionStorage
+                const sessionKeysToRemove = [];
+                for (let i = 0; i < sessionStorage.length; i++) {
+                    const key = sessionStorage.key(i);
+                    if (key && (
+                        key.includes('security') || 
+                        key.includes('login') || 
+                        key.includes('attempt') || 
+                        key.includes('block') ||
+                        key.includes('token')
+                    )) {
+                        sessionKeysToRemove.push(key);
+                    }
+                }
+                
+                sessionKeysToRemove.forEach(key => {
+                    sessionStorage.removeItem(key);
+                    console.log('🗑️ Removido (session):', key);
+                });
+                
+                showResult(`
+                    <strong>✅ Limpeza Completa Realizada!</strong><br>
+                    • ${keysToRemove.length} itens removidos do localStorage<br>
+                    • ${sessionKeysToRemove.length} itens removidos do sessionStorage<br>
+                    • Todos os bloqueios foram removidos<br>
+                    • Sistema pronto para novos logins
+                `, 'success');
+                
+            } catch (error) {
+                showResult(`❌ Erro na limpeza: ${error.message}`, 'danger');
+            }
+        }
+
+        function clearLoginAttempts() {
+            try {
+                // Remover especificamente dados de tentativas de login
+                const loginKeys = [
+                    'login_attempts',
+                    'security_logs',
+                    'blocked_users',
+                    'failed_attempts',
+                    'last_attempt'
+                ];
+                
+                let removed = 0;
+                loginKeys.forEach(key => {
+                    if (localStorage.getItem(key)) {
+                        localStorage.removeItem(key);
+                        removed++;
+                    }
+                    if (sessionStorage.getItem(key)) {
+                        sessionStorage.removeItem(key);
+                        removed++;
+                    }
+                });
+                
+                showResult(`✅ Reset concluído! ${removed} registros de tentativas removidos.`, 'warning');
+                
+            } catch (error) {
+                showResult(`❌ Erro no reset: ${error.message}`, 'danger');
+            }
+        }
+
+        function showStoredData() {
+            try {
+                const localData = [];
+                const sessionData = [];
+                
+                // Verificar localStorage
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    const value = localStorage.getItem(key);
+                    localData.push({ key, value: value.substring(0, 50) + (value.length > 50 ? '...' : '') });
+                }
+                
+                // Verificar sessionStorage
+                for (let i = 0; i < sessionStorage.length; i++) {
+                    const key = sessionStorage.key(i);
+                    const value = sessionStorage.getItem(key);
+                    sessionData.push({ key, value: value.substring(0, 50) + (value.length > 50 ? '...' : '') });
+                }
+                
+                let html = '<strong>📊 Dados Armazenados:</strong><br><br>';
+                
+                if (localData.length > 0) {
+                    html += '<strong>LocalStorage:</strong><br>';
+                    localData.forEach(item => {
+                        html += `• ${item.key}: ${item.value}<br>`;
+                    });
+                    html += '<br>';
+                }
+                
+                if (sessionData.length > 0) {
+                    html += '<strong>SessionStorage:</strong><br>';
+                    sessionData.forEach(item => {
+                        html += `• ${item.key}: ${item.value}<br>`;
+                    });
+                }
+                
+                if (localData.length === 0 && sessionData.length === 0) {
+                    html += '✅ Nenhum dado armazenado encontrado.';
+                }
+                
+                showResult(html, 'info');
+                
+            } catch (error) {
+                showResult(`❌ Erro ao visualizar dados: ${error.message}`, 'danger');
+            }
+        }
+
+        // Auto-execução ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🔧 Página de reset de segurança carregada');
+            
+            // Executar limpeza automática
+            setTimeout(() => {
+                clearAllSecurityData();
+            }, 500);
+        });
+    </script>
+</body>
+</html>

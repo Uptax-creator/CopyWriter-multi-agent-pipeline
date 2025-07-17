@@ -1,0 +1,49 @@
+# Global owners - These users will be requested for review on all PRs
+* @kleberdossantosribeiro
+
+# Documentation
+/docs/ @kleberdossantosribeiro
+README.md @kleberdossantosribeiro
+*.md @kleberdossantosribeiro
+
+# Common library - Critical for all ERP integrations
+/common/ @kleberdossantosribeiro
+/common/auth/ @kleberdossantosribeiro
+/common/naming/ @kleberdossantosribeiro
+
+# ERP specific implementations
+/omie-mcp/ @kleberdossantosribeiro
+/nibo-mcp/ @kleberdossantosribeiro
+/sap-mcp/ @kleberdossantosribeiro
+
+# Security sensitive files
+**/security.yaml @kleberdossantosribeiro
+**/auth/ @kleberdossantosribeiro
+credentials.json.example @kleberdossantosribeiro
+.github/SECURITY.md @kleberdossantosribeiro
+
+# Infrastructure and CI/CD
+.github/ @kleberdossantosribeiro
+.github/workflows/ @kleberdossantosribeiro
+docker-compose*.yml @kleberdossantosribeiro
+Dockerfile @kleberdossantosribeiro
+
+# Configuration files
+requirements.txt @kleberdossantosribeiro
+**/requirements.txt @kleberdossantosribeiro
+**/config.py @kleberdossantosribeiro
+**/config/ @kleberdossantosribeiro
+
+# Scripts and automation
+/scripts/ @kleberdossantosribeiro
+/scripts/deploy* @kleberdossantosribeiro
+/scripts/security* @kleberdossantosribeiro
+
+# Tests
+/tests/ @kleberdossantosribeiro
+**/tests/ @kleberdossantosribeiro
+
+# Universal naming standard - Critical for compatibility
+/docs/UNIVERSAL_NAMING_STANDARD.md @kleberdossantosribeiro
+/docs/naming-standard/ @kleberdossantosribeiro
+/common/naming/ @kleberdossantosribeiro

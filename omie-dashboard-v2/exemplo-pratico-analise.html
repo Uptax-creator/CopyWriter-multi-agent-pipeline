@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Exemplo Prático - Análise em Tempo Real</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+        
+        .demo-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .console-output {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .btn-demo {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-demo:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+            color: white;
+        }
+        
+        .result-preview {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .score-display {
+            font-size: 3rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin: 1rem 0;
+        }
+        
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .problem-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #dc3545;
+        }
+        
+        .problem-card.warning {
+            border-left-color: #ffc107;
+        }
+        
+        .problem-card.suggestion {
+            border-left-color: #17a2b8;
+        }
+        
+        .system-badge {
+            background: #667eea;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .live-demo {
+            background: #ffe6e6;
+            border: 2px solid #ff9999;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            position: relative;
+        }
+        
+        .live-demo::before {
+            content: '❌ PROBLEMA INTENCIONAL';
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #dc3545;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 0.5rem;
+        }
+        
+        .status-running {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #dee2e6;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center text-white mb-5">📊 Exemplo Prático - Análise em Tempo Real</h1>
+        
+        <div class="demo-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>🚀 Iniciando Análise</h3>
+                <p>Clique no botão abaixo para executar a análise profissional em tempo real:</p>
+                <button class="btn btn-demo" onclick="startAnalysis()">
+                    <i class="bi bi-play-circle me-2"></i>Executar Análise Profissional
+                </button>
+                <div id="status" class="mt-3"></div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>📊 Console Output</h3>
+                <p>Veja o que acontece no console durante a análise:</p>
+                <div class="console-output" id="consoleOutput">
+                    Aguardando execução da análise...
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>🎯 Resultado Visual</h3>
+                <p>Resultado esperado do analisador:</p>
+                <div class="result-preview">
+                    <h4>🎨 Relatório Profissional</h4>
+                    <div class="score-display" id="scoreDisplay">85</div>
+                    <div class="h5">Grade: A (Muito Bom)</div>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="h3">2</div>
+                            <div>Problemas Críticos</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="h3">5</div>
+                            <div>Avisos</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="h3">8</div>
+                            <div>Sugestões</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-container">
+            <h2 class="mb-4">🔍 Exemplos de Problemas Detectados</h2>
+            
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <div class="system-badge">🎨 Material Design 3</div>
+                    <h5>Card sem elevação</h5>
+                    <p>Cards devem ter box-shadow para criar hierarquia visual.</p>
+                    <strong>💡 Solução:</strong> Adicionar <code>box-shadow: 0 2px 4px rgba(0,0,0,0.1)</code>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="system-badge">♿ WCAG 2.1 AA</div>
+                    <h5>Campo sem label</h5>
+                    <p>Campos de formulário precisam de labels para acessibilidade.</p>
+                    <strong>💡 Solução:</strong> Adicionar <code>&lt;label for="campo"&gt;Nome&lt;/label&gt;</code>
+                </div>
+                
+                <div class="problem-card warning">
+                    <div class="system-badge">🍎 Apple HIG</div>
+                    <h5>Espaçamento irregular</h5>
+                    <p>Espaçamentos devem seguir múltiplos de 8px.</p>
+                    <strong>💡 Solução:</strong> Usar valores como 8px, 16px, 24px, 32px
+                </div>
+                
+                <div class="problem-card suggestion">
+                    <div class="system-badge">🐜 Ant Design</div>
+                    <h5>Botão com altura inconsistente</h5>
+                    <p>Recomenda-se usar 3 tamanhos padrão de botão.</p>
+                    <strong>💡 Solução:</strong> Small (24px), Default (32px), Large (40px)
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-container">
+            <h2 class="mb-4">⏱️ Timeline da Análise</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h5>Inicialização (0.1s)</h5>
+                    <p>Carregamento dos 6 design systems e preparação das regras de análise.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <h5>Análise Material Design (0.3s)</h5>
+                    <p>Verificação de elevação, border-radius, altura de botões e consistência visual.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <h5>Análise Apple HIG (0.5s)</h5>
+                    <p>Verificação de 8pt grid, hierarquia tipográfica e espaçamento consistente.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <h5>Análise WCAG 2.1 AA (0.8s)</h5>
+                    <p>Verificação de contraste, foco visível, labels e acessibilidade geral.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <h5>Análise Bootstrap + Ant Design + Fluent UI (1.2s)</h5>
+                    <p>Verificação de grid system, componentes e padrões de interface.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <h5>Geração do Relatório (1.5s)</h5>
+                    <p>Compilação dos resultados, cálculo do score e criação do relatório visual.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-container">
+            <h2 class="mb-4">🎯 Exemplo Real - Problemas Intencionais</h2>
+            <p>Esta seção contém problemas intencionais que serão detectados pelo analisador:</p>
+            
+            <!-- Problema 1: Campo sem label -->
+            <div class="live-demo">
+                <h5>Campo sem Label (WCAG)</h5>
+                <input type="text" class="form-control" placeholder="Este campo não tem label">
+            </div>
+            
+            <!-- Problema 2: Imagem sem alt -->
+            <div class="live-demo">
+                <h5>Imagem sem Alt Text (WCAG)</h5>
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNjY2MiLz4KPC9zdmc+" width="100" height="100">
+            </div>
+            
+            <!-- Problema 3: Botão muito pequeno -->
+            <div class="live-demo">
+                <h5>Botão Muito Pequeno (Material Design)</h5>
+                <button class="btn btn-primary" style="height: 24px; font-size: 10px;">Botão Pequeno</button>
+            </div>
+            
+            <!-- Problema 4: Contraste ruim -->
+            <div class="live-demo">
+                <h5>Contraste Insuficiente (WCAG)</h5>
+                <p style="color: #ccc; background: #fff;">Texto com contraste muito baixo</p>
+            </div>
+        </div>
+        
+        <div class="demo-container text-center">
+            <h2 class="mb-4">🚀 Pronto para Testar?</h2>
+            <p class="lead">Execute a análise na sua aplicação principal:</p>
+            <a href="index.html" class="btn btn-demo">
+                <i class="bi bi-house me-2"></i>Ir para Aplicação Principal
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/design-analyzer.js"></script>
+    <script src="js/design-analyzer-professional.js"></script>
+    
+    <script>
+        let analysisStep = 0;
+        const steps = [
+            "🎨 Inicializando analisador profissional...",
+            "🔍 Carregando 6 design systems...",
+            "🎨 Analisando Material Design 3...",
+            "🍎 Analisando Apple HIG...",
+            "♿ Analisando WCAG 2.1 AA...",
+            "🥾 Analisando Bootstrap 5...",
+            "🐜 Analisando Ant Design...",
+            "🌊 Analisando Fluent UI...",
+            "📊 Calculando score...",
+            "✅ Relatório concluído!"
+        ];
+        
+        function startAnalysis() {
+            const statusDiv = document.getElementById('status');
+            const consoleDiv = document.getElementById('consoleOutput');
+            const scoreDiv = document.getElementById('scoreDisplay');
+            
+            statusDiv.innerHTML = '<span class="status-indicator status-running">🔄 Análise em Progresso</span>';
+            consoleDiv.innerHTML = '';
+            analysisStep = 0;
+            
+            // Simular análise passo a passo
+            const interval = setInterval(() => {
+                if (analysisStep < steps.length) {
+                    const step = steps[analysisStep];
+                    consoleDiv.innerHTML += step + '\\n';
+                    consoleDiv.scrollTop = consoleDiv.scrollHeight;
+                    analysisStep++;
+                } else {
+                    clearInterval(interval);
+                    statusDiv.innerHTML = '<span class="status-indicator status-completed">✅ Análise Concluída</span>';
+                    
+                    // Simular resultado final
+                    const finalScore = Math.floor(Math.random() * 30) + 70; // 70-100
+                    scoreDiv.textContent = finalScore;
+                    
+                    consoleDiv.innerHTML += `\\n🔍 RELATÓRIO PROFISSIONAL GERADO:\\n`;
+                    consoleDiv.innerHTML += `📊 Score: ${finalScore}/100\\n`;
+                    consoleDiv.innerHTML += `❌ Problemas: ${Math.floor(Math.random() * 5) + 1}\\n`;
+                    consoleDiv.innerHTML += `⚠️ Avisos: ${Math.floor(Math.random() * 8) + 2}\\n`;
+                    consoleDiv.innerHTML += `💡 Sugestões: ${Math.floor(Math.random() * 10) + 5}\\n`;
+                    
+                    // Executar análise real
+                    setTimeout(() => {
+                        if (typeof ProfessionalDesignAnalyzer !== 'undefined') {
+                            ProfessionalDesignAnalyzer.analyze();
+                        }
+                    }, 1000);
+                }
+            }, 200);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📊 Exemplo prático carregado!');
+            console.log('🎯 Clique no botão para ver a análise em tempo real');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{
+  "cliente_cnpj_valido": {
+    "sucesso": false,
+    "erro": "HTTP 425",
+    "response": "{\"faultstring\":\"ERROR: API bloqueada por consumo indevido. Tente novamente em 1726 segundos.\",\"faultcode\":\"MISUSE_API_PROCESS\"}"
+  },
+  "cliente_cpf_valido": {
+    "sucesso": false,
+    "erro": "HTTP 425",
+    "response": "{\"faultstring\":\"ERROR: API bloqueada por consumo indevido. Tente novamente em 1726 segundos.\",\"faultcode\":\"MISUSE_API_PROCESS\"}"
+  },
+  "cliente_completo": {
+    "sucesso": false,
+    "erro": "HTTP 425",
+    "response": "{\"faultstring\":\"ERROR: API bloqueada por consumo indevido. Tente novamente em 1726 segundos.\",\"faultcode\":\"MISUSE_API_PROCESS\"}"
+  },
+  "verificacao_fornecedores": [
+    {
+      "endpoint": "geral/fornecedor/",
+      "resultado": {
+        "sucesso": false,
+        "erro": "HTTP 404",
+        "response": "{\"error\": {\"status_code\": 404,\"status\": \"Not Found\"}}"
+      }
+    },
+    {
+      "endpoint": "geral/fornecedores/",
+      "resultado": {
+        "sucesso": false,
+        "erro": "HTTP 404",
+        "response": "{\"error\": {\"status_code\": 404,\"status\": \"Not Found\"}}"
+      }
+    },
+    {
+      "endpoint": "financas/fornecedor/",
+      "resultado": {
+        "sucesso": false,
+        "erro": "HTTP 404",
+        "response": "{\"error\": {\"status_code\": 404,\"status\": \"Not Found\"}}"
+      }
+    },
+    {
+      "endpoint": "fornecedores/",
+      "resultado": {
+        "sucesso": false,
+        "erro": "HTTP 404",
+        "response": "{\"error\": {\"status_code\": 404,\"status\": \"Not Found\"}}"
+      }
+    }
+  ]
+}

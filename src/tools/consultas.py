@@ -322,3 +322,174 @@ class ConsultarFornecedoresTool(ConsultaTool):
         
         # Formatar resposta
         return self.format_response(result)
+
+class ConsultarClientePorCodigoTool(ConsultaTool):
+    """Ferramenta para consultar cliente específico por código"""
+    
+    def get_name(self) -> str:
+        return "consultar_cliente_por_codigo"
+    
+    def get_description(self) -> str:
+        return "Consulta um cliente específico pelo código no Omie ERP"
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "codigo_cliente_omie": {
+                    "type": "integer",
+                    "description": "Código do cliente no Omie"
+                },
+                "codigo_cliente_integracao": {
+                    "type": "string",
+                    "description": "Código de integração do cliente"
+                },
+                "cnpj_cpf": {
+                    "type": "string",
+                    "description": "CNPJ ou CPF do cliente"
+                }
+            }
+        }
+    
+    async def execute(self, arguments: Dict[str, Any]) -> str:
+        # Fazer consulta
+        result = await omie_client.consultar_cliente_por_codigo(arguments)
+        
+        if result:
+            nome = result.get("razao_social", "N/A")
+            codigo = result.get("codigo_cliente_omie", "N/A")
+            cnpj_cpf = result.get("cnpj_cpf", "N/A")
+            email = result.get("email", "N/A")
+            telefone = result.get("telefone1_numero", "N/A")
+            
+            return f"""✅ Cliente encontrado:
+
+📋 Detalhes:
+• Código: {codigo}
+• Razão Social: {nome}
+• CNPJ/CPF: {cnpj_cpf}
+• Email: {email}
+• Telefone: {telefone}"""
+        else:
+            return "❌ Cliente não encontrado"
+
+class ConsultarFornecedorPorCodigoTool(ConsultaTool):
+    """Ferramenta para consultar fornecedor específico por código"""
+    
+    def get_name(self) -> str:
+        return "consultar_fornecedor_por_codigo"
+    
+    def get_description(self) -> str:
+        return "Consulta um fornecedor específico pelo código no Omie ERP"
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "codigo_cliente_omie": {
+                    "type": "integer",
+                    "description": "Código do fornecedor no Omie"
+                },
+                "codigo_cliente_integracao": {
+                    "type": "string",
+                    "description": "Código de integração do fornecedor"
+                },
+                "cnpj_cpf": {
+                    "type": "string",
+                    "description": "CNPJ ou CPF do fornecedor"
+                }
+            }
+        }
+    
+    async def execute(self, arguments: Dict[str, Any]) -> str:
+        # Fazer consulta
+        result = await omie_client.consultar_fornecedor_por_codigo(arguments)
+        
+        if result:
+            nome = result.get("razao_social", "N/A")
+            codigo = result.get("codigo_cliente_omie", "N/A")
+            cnpj_cpf = result.get("cnpj_cpf", "N/A")
+            email = result.get("email", "N/A")
+            telefone = result.get("telefone1_numero", "N/A")
+            
+            return f"""✅ Fornecedor encontrado:
+
+📋 Detalhes:
+• Código: {codigo}
+• Razão Social: {nome}
+• CNPJ/CPF: {cnpj_cpf}
+• Email: {email}
+• Telefone: {telefone}"""
+        else:
+            return "❌ Fornecedor não encontrado"
+
+class BuscarDadosContatoClienteTool(ConsultaTool):
+    """Ferramenta para buscar dados de contato específicos do cliente"""
+    
+    def get_name(self) -> str:
+        return "buscar_dados_contato_cliente"
+    
+    def get_description(self) -> str:
+        return "Busca dados de contato específicos do cliente (nome, email, telefone, endereço)"
+    
+    def get_input_schema(self) -> Dict[str, Any]:
+        return {
+            "type": "object",
+            "properties": {
+                "codigo_cliente_omie": {
+                    "type": "integer",
+                    "description": "Código do cliente no Omie"
+                },
+                "codigo_cliente_integracao": {
+                    "type": "string",
+                    "description": "Código de integração do cliente"
+                },
+                "cnpj_cpf": {
+                    "type": "string",
+                    "description": "CNPJ ou CPF do cliente"
+                }
+            }
+        }
+    
+    async def execute(self, arguments: Dict[str, Any]) -> str:
+        # Fazer consulta
+        result = await omie_client.buscar_dados_contato_cliente(arguments)
+        
+        if result:
+            nome = result.get("razao_social", "N/A")
+            nome_fantasia = result.get("nome_fantasia", "N/A")
+            email = result.get("email", "N/A")
+            email_nfe = result.get("email_nfe", "N/A")
+            
+            # Telefones
+            telefone1 = result.get("telefone1_numero", "N/A")
+            telefone2 = result.get("telefone2_numero", "N/A")
+            
+            # Endereço
+            endereco = result.get("endereco", "N/A")
+            numero = result.get("numero_endereco", "N/A")
+            complemento = result.get("complemento_endereco", "N/A")
+            bairro = result.get("bairro", "N/A")
+            cidade = result.get("cidade", "N/A")
+            estado = result.get("estado", "N/A")
+            cep = result.get("cep", "N/A")
+            
+            return f"""✅ Dados de contato do cliente:
+
+📝 Nome completo: {nome}
+🏪 Nome fantasia: {nome_fantasia}
+
+📧 Emails:
+• Principal: {email}
+• NFe: {email_nfe}
+
+📞 Telefones:
+• Principal: {telefone1}
+• Secundário: {telefone2}
+
+🏠 Endereço:
+{endereco}, {numero} {complemento}
+{bairro} - {cidade}/{estado}
+CEP: {cep}"""
+        else:
+            return "❌ Dados de contato não encontrados"

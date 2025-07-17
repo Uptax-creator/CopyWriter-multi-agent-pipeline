@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 Teste de Densidade - Zoom 100%</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/responsive-fixes.css" rel="stylesheet">
+    <link href="css/layout-fixes.css" rel="stylesheet">
+    <link href="css/density-fixes.css" rel="stylesheet">
+    <style>
+        .test-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            z-index: 9999;
+            font-size: 0.8rem;
+            max-width: 300px;
+        }
+        
+        .zoom-indicator {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            z-index: 9999;
+            font-weight: bold;
+        }
+        
+        .test-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            background: rgba(0, 123, 255, 0.1);
+        }
+        
+        .before-after {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .before {
+            background: #ffebee;
+            border: 1px solid #f44336;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .after {
+            background: #e8f5e9;
+            border: 1px solid #4caf50;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .screen-size {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            z-index: 9999;
+            font-size: 0.8rem;
+        }
+        
+        @media (max-width: 1366px) {
+            .resolution-warning {
+                background: #ff9800;
+                color: white;
+                padding: 1rem;
+                border-radius: 8px;
+                margin: 1rem 0;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="zoom-indicator" id="zoomIndicator">Zoom: 100%</div>
+    
+    <div class="test-info">
+        <strong>🔍 Teste de Densidade</strong><br>
+        <span id="testStatus">Carregando...</span><br>
+        <small>Redimensione a janela para testar</small>
+    </div>
+    
+    <div class="screen-size" id="screenSize">
+        Resolução: <span id="resolution"></span>
+    </div>
+    
+    <div class="container-fluid">
+        <div class="resolution-warning">
+            ⚠️ <strong>Teste de Densidade:</strong> Esta página deve ser totalmente visível em zoom 100%
+        </div>
+        
+        <div class="test-section">
+            <h2>🎯 Problema Original vs Solução</h2>
+            <div class="before-after">
+                <div class="before">
+                    <h4>❌ Antes</h4>
+                    <ul>
+                        <li>Precisava zoom 50% para ver tudo</li>
+                        <li>Densidade muito alta</li>
+                        <li>Cards muito grandes</li>
+                        <li>Muito espaçamento</li>
+                        <li>Navbar muito alto</li>
+                    </ul>
+                </div>
+                <div class="after">
+                    <h4>✅ Depois</h4>
+                    <ul>
+                        <li>Visível em zoom 100%</li>
+                        <li>Densidade otimizada</li>
+                        <li>Cards compactos</li>
+                        <li>Espaçamento reduzido</li>
+                        <li>Navbar compacto</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Simulação do Dashboard -->
+        <div class="test-section">
+            <h2>📊 Dashboard Simulado</h2>
+            
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">
+                        <i class="bi bi-building me-2"></i>
+                        <span>Omie Tenant Manager</span>
+                    </a>
+                    <div class="navbar-nav me-auto">
+                        <a class="nav-link" href="#"><i class="bi bi-house me-1"></i>Dashboard</a>
+                        <a class="nav-link" href="#"><i class="bi bi-grid-3x3-gap me-1"></i>Aplicações</a>
+                        <a class="nav-link" href="#"><i class="bi bi-people me-1"></i>Usuários</a>
+                    </div>
+                    <div class="navbar-nav">
+                        <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
+                    </div>
+                </div>
+            </nav>
+            
+            <!-- Stats Cards -->
+            <div class="row mb-3">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <h6 class="card-title text-muted mb-1">Aplicações</h6>
+                                    <h3 class="mb-0">12</h3>
+                                </div>
+                                <div class="text-primary">
+                                    <i class="bi bi-grid-3x3-gap"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <h6 class="card-title text-muted mb-1">Usuários</h6>
+                                    <h3 class="mb-0">5</h3>
+                                </div>
+                                <div class="text-info">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <h6 class="card-title text-muted mb-1">Conexões</h6>
+                                    <h3 class="mb-0">847</h3>
+                                </div>
+                                <div class="text-warning">
+                                    <i class="bi bi-graph-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <h6 class="card-title text-muted mb-1">Status</h6>
+                                    <h3 class="mb-0">Online</h3>
+                                </div>
+                                <div class="text-success">
+                                    <i class="bi bi-check-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Aplicações Configuradas</h5>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-building-gear me-1"></i>Gerenciar
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="app-item border rounded p-3 mb-3">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-3">
+                                                <i class="bi bi-diagram-3 text-primary"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">Omie MCP</h6>
+                                                <small class="text-muted">Integração ERP</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span class="badge bg-success">Ativo</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-wifi me-1"></i>Testar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-item border rounded p-3 mb-3">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-3">
+                                                <i class="bi bi-robot text-primary"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0">Claude AI</h6>
+                                                <small class="text-muted">Assistente IA</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span class="badge bg-warning">Pendente</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-gear me-1"></i>Configurar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Ações Rápidas</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary">
+                                    <i class="bi bi-building-gear me-2"></i>Configurar Apps
+                                </button>
+                                <button class="btn btn-outline-primary">
+                                    <i class="bi bi-grid-3x3-gap me-2"></i>Explorar Catálogo
+                                </button>
+                                <button class="btn btn-outline-success">
+                                    <i class="bi bi-person-plus me-2"></i>Convidar Usuário
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Equipe</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                                    <span class="text-white fw-bold">JS</span>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">João Silva</h6>
+                                    <small class="text-muted">Administrador</small>
+                                </div>
+                                <span class="badge bg-success">Online</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 32px; height: 32px;">
+                                    <span class="text-white fw-bold">MS</span>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-0">Maria Santos</h6>
+                                    <small class="text-muted">Usuário</small>
+                                </div>
+                                <span class="badge bg-warning">Ausente</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>📱 Teste de Responsividade</h2>
+            <div class="alert alert-info">
+                <strong>💡 Instruções:</strong>
+                <ul class="mb-0">
+                    <li>Redimensione a janela para testar diferentes tamanhos</li>
+                    <li>Veja como o layout se adapta automaticamente</li>
+                    <li>Teste em zoom 100%, 90%, 110%</li>
+                    <li>Verifique se não há scroll horizontal</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a href="index.html" class="btn btn-primary btn-lg">
+                <i class="bi bi-house me-2"></i>Testar na Aplicação Principal
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function updateScreenInfo() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const resolution = document.getElementById('resolution');
+            const testStatus = document.getElementById('testStatus');
+            const zoomIndicator = document.getElementById('zoomIndicator');
+            
+            resolution.textContent = `${width}x${height}`;
+            
+            // Detectar nível de zoom aproximado
+            const devicePixelRatio = window.devicePixelRatio || 1;
+            const zoom = Math.round(devicePixelRatio * 100);
+            zoomIndicator.textContent = `Zoom: ~${zoom}%`;
+            
+            // Status do teste
+            if (width >= 1200) {
+                testStatus.innerHTML = '✅ Ótimo<br>Tela grande';
+            } else if (width >= 992) {
+                testStatus.innerHTML = '✅ Bom<br>Tela média';
+            } else if (width >= 768) {
+                testStatus.innerHTML = '⚠️ Tablet<br>Layout adaptado';
+            } else {
+                testStatus.innerHTML = '📱 Mobile<br>Layout compacto';
+            }
+            
+            // Verificar se precisa scroll horizontal
+            const body = document.body;
+            const hasHorizontalScroll = body.scrollWidth > body.clientWidth;
+            
+            if (hasHorizontalScroll) {
+                testStatus.innerHTML += '<br>❌ Scroll horizontal';
+            } else {
+                testStatus.innerHTML += '<br>✅ Sem scroll horizontal';
+            }
+        }
+        
+        // Atualizar informações na carga e redimensionamento
+        window.addEventListener('load', updateScreenInfo);
+        window.addEventListener('resize', updateScreenInfo);
+        
+        // Atualizar a cada segundo para capturar mudanças de zoom
+        setInterval(updateScreenInfo, 1000);
+        
+        // Mostrar alerta inicial
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                alert('🔍 Teste de Densidade Carregado!\n\n' +
+                      '✅ Agora a página deve ser totalmente visível em zoom 100%\n' +
+                      '📏 Redimensione a janela para testar diferentes tamanhos\n' +
+                      '🎯 Veja as informações no canto da tela');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

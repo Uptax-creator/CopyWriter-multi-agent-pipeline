@@ -23,7 +23,10 @@ from src.tools.consultas import (
     ConsultarContasPagarTool,
     ConsultarContasReceberTool,
     ConsultarClientesTool,
-    ConsultarFornecedoresTool
+    ConsultarFornecedoresTool,
+    ConsultarClientePorCodigoTool,
+    ConsultarFornecedorPorCodigoTool,
+    BuscarDadosContatoClienteTool
 )
 from src.tools.cliente_tool import (
     IncluirClienteTool,
@@ -85,6 +88,11 @@ class ToolRegistry:
         self._register_tool(ConsultarContasReceberTool())
         self._register_tool(ConsultarClientesTool())
         self._register_tool(ConsultarFornecedoresTool())
+        
+        # Ferramentas de consulta avançada
+        self._register_tool(ConsultarClientePorCodigoTool())
+        self._register_tool(ConsultarFornecedorPorCodigoTool())
+        self._register_tool(BuscarDadosContatoClienteTool())
         
         # Ferramentas de cliente/fornecedor
         self._register_tool(IncluirClienteTool())

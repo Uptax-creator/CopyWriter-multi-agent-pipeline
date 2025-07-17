@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-07-11T21:10:40.805652",
+  "company": "I9 MARKETING E TECNOLOGIA LTDA",
+  "total_tests": 8,
+  "passed_tests": 7,
+  "failed_tests": 1,
+  "success_rate": 87.5,
+  "results": {
+    "consultar_categorias": true,
+    "consultar_centros_custo": true,
+    "consultar_clientes": false,
+    "consultar_fornecedores": true,
+    "consultar_contas_pagar": true,
+    "consultar_contas_receber": true,
+    "consultar_socios": true,
+    "testar_conexao": true
+  }
+}

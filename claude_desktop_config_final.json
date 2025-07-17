@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "omie-erp": {
+      "command": "python3",
+      "args": [
+        "/Users/kleberdossantosribeiro/omie-mcp/omie_mcp_client_dedicated.py",
+        "--server-url",
+        "http://localhost:3001",
+        "--server-name",
+        "omie-erp"
+      ]
+    },
+    "nibo-erp": {
+      "command": "python3",
+      "args": [
+        "/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/nibo_mcp_server_stdio.py"
+      ]
+    }
+  }
+}

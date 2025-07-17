@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Analisador Profissional de Design - Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/responsive-fixes.css" rel="stylesheet">
+    <link href="css/layout-fixes.css" rel="stylesheet">
+    <style>
+        .professional-intro {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .professional-intro::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+        
+        .professional-intro > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .design-systems-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .system-showcase {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .system-showcase:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .system-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            text-align: center;
+        }
+        
+        .system-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .system-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .system-features {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .system-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .system-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .system-features li::before {
+            content: '✓';
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .comparison-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+        
+        .comparison-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .comparison-table td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .feature-highlight {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .cta-section {
+            text-align: center;
+            padding: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            margin-top: 3rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .cta-button {
+            padding: 1rem 2rem;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .cta-button:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Introdução Profissional -->
+        <div class="professional-intro">
+            <h1 class="mb-4">🎨 Analisador Profissional de Design</h1>
+            <p class="lead mb-4">
+                Análise baseada nas principais diretrizes de design da indústria
+            </p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Design Systems</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Regras Profissionais</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100</div>
+                    <div class="stat-label">Score Máximo</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Design Systems Showcase -->
+        <div class="design-systems-showcase">
+            <div class="system-showcase">
+                <div class="system-icon">🎨</div>
+                <h3 class="system-title">Material Design 3</h3>
+                <p class="system-description">
+                    Sistema de design do Google com foco em elevação, cores e componentes modernos.
+                </p>
+                <ul class="system-features">
+                    <li>Elevação (shadows) em componentes</li>
+                    <li>Border-radius consistente (4px+)</li>
+                    <li>Altura mínima de botões (36px)</li>
+                    <li>Cores e temas dinâmicos</li>
+                </ul>
+            </div>
+            
+            <div class="system-showcase">
+                <div class="system-icon">🍎</div>
+                <h3 class="system-title">Apple HIG</h3>
+                <p class="system-description">
+                    Human Interface Guidelines da Apple com foco em clareza e hierarquia.
+                </p>
+                <ul class="system-features">
+                    <li>8pt Grid System</li>
+                    <li>Hierarquia tipográfica clara</li>
+                    <li>Espaçamento múltiplo de 8px</li>
+                    <li>Feedback visual consistente</li>
+                </ul>
+            </div>
+            
+            <div class="system-showcase">
+                <div class="system-icon">♿</div>
+                <h3 class="system-title">WCAG 2.1 AA</h3>
+                <p class="system-description">
+                    Diretrizes de acessibilidade para garantir inclusão e usabilidade.
+                </p>
+                <ul class="system-features">
+                    <li>Contraste mínimo 4.5:1</li>
+                    <li>Foco visível em elementos</li>
+                    <li>Labels em formulários</li>
+                    <li>Alt text em imagens</li>
+                </ul>
+            </div>
+            
+            <div class="system-showcase">
+                <div class="system-icon">🥾</div>
+                <h3 class="system-title">Bootstrap 5</h3>
+                <p class="system-description">
+                    Framework CSS com grid system e componentes responsivos.
+                </p>
+                <ul class="system-features">
+                    <li>Grid system 12 colunas</li>
+                    <li>Containers e rows estruturados</li>
+                    <li>Breakpoints responsivos</li>
+                    <li>Componentes consistentes</li>
+                </ul>
+            </div>
+            
+            <div class="system-showcase">
+                <div class="system-icon">🐜</div>
+                <h3 class="system-title">Ant Design</h3>
+                <p class="system-description">
+                    Sistema de design empresarial com foco em eficiência e clareza.
+                </p>
+                <ul class="system-features">
+                    <li>Escala de espaçamento 8px</li>
+                    <li>3 tamanhos de botão padrão</li>
+                    <li>Densidade de informação otimizada</li>
+                    <li>Componentes enterprise-ready</li>
+                </ul>
+            </div>
+            
+            <div class="system-showcase">
+                <div class="system-icon">🌊</div>
+                <h3 class="system-title">Fluent UI</h3>
+                <p class="system-description">
+                    Design system da Microsoft com foco em produtividade e clareza.
+                </p>
+                <ul class="system-features">
+                    <li>Densidade de informação controlada</li>
+                    <li>Hierarquia visual forte</li>
+                    <li>Font-weight 600+ para headings</li>
+                    <li>Componentes para produtividade</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Comparação -->
+        <div class="comparison-section">
+            <h2 class="text-center mb-4">📊 Comparação: Básico vs Profissional</h2>
+            <div class="table-responsive">
+                <table class="table comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Recurso</th>
+                            <th>Analisador Básico</th>
+                            <th>Analisador Profissional</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Design Systems</strong></td>
+                            <td>Regras genéricas</td>
+                            <td>6 sistemas profissionais</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Análise de Cores</strong></td>
+                            <td>Contraste básico</td>
+                            <td>Teoria das cores + WCAG</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tipografia</strong></td>
+                            <td>Tamanhos de fonte</td>
+                            <td>Escala + line-height + hierarquia</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Acessibilidade</strong></td>
+                            <td>Verificações básicas</td>
+                            <td>WCAG 2.1 AA completo</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Relatório</strong></td>
+                            <td>Lista de problemas</td>
+                            <td>Agrupado por design system</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Score</strong></td>
+                            <td>0-100 genérico</td>
+                            <td>Grade profissional A+ até F</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Destaque de Recursos -->
+        <div class="feature-highlight">
+            <h3>🚀 Recursos Exclusivos do Analisador Profissional</h3>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h5>✨ Análise Inteligente</h5>
+                    <p>Detecta problemas específicos de cada design system</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>🎯 Sugestões Precisas</h5>
+                    <p>Correções baseadas em padrões da indústria</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 class="mb-4">Experimente Agora!</h2>
+            <p class="lead mb-4">
+                Analise seu design com os padrões profissionais da indústria
+            </p>
+            <div class="cta-buttons">
+                <button class="cta-button" onclick="ProfessionalDesignAnalyzer.analyze()">
+                    <i class="bi bi-search"></i>
+                    Análise Profissional
+                </button>
+                <button class="cta-button" onclick="DesignAnalyzer.analyze()">
+                    <i class="bi bi-speedometer2"></i>
+                    Análise Básica
+                </button>
+                <a href="index.html" class="cta-button">
+                    <i class="bi bi-house"></i>
+                    Aplicação Principal
+                </a>
+            </div>
+        </div>
+        
+        <!-- Instruções -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">📋 Como Funciona</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>1. Análise Automática</h5>
+                                <p>O analisador examina sua página usando regras dos principais design systems</p>
+                                
+                                <h5>2. Classificação por Severidade</h5>
+                                <ul>
+                                    <li><strong>Problemas Críticos:</strong> Afetam funcionalidade</li>
+                                    <li><strong>Avisos:</strong> Melhorias recomendadas</li>
+                                    <li><strong>Sugestões:</strong> Otimizações opcionais</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>3. Relatório Detalhado</h5>
+                                <p>Resultados organizados por design system com sugestões específicas</p>
+                                
+                                <h5>4. Score e Grade</h5>
+                                <p>Avaliação profissional de 0-100 com grades de A+ até F</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/design-analyzer.js"></script>
+    <script src="js/design-analyzer-professional.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎨 Analisador Profissional de Design carregado!');
+            console.log('🚀 Use ProfessionalDesignAnalyzer.analyze() para análise completa');
+            console.log('📊 Baseado em 6 design systems profissionais');
+        });
+    </script>
+</body>
+</html>

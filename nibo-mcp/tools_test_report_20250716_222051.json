@@ -1,0 +1,367 @@
+{
+  "test_info": {
+    "version": "2.0.0",
+    "service": "nibo-mcp-server",
+    "test_type": "complete_tools_test",
+    "timestamp": "2025-07-16T22:20:51.538493",
+    "duration_seconds": 9.451659,
+    "total_tools_expected": 31
+  },
+  "summary": {
+    "overall_status": "error",
+    "overall_message": "8 teste(s) falharam (taxa baixa)",
+    "tools_tested": 31,
+    "tools_passed": 23,
+    "tools_failed": 8,
+    "success_rate": 74.2
+  },
+  "category_stats": {
+    "consulta": {
+      "total": 7,
+      "success": 0,
+      "failed": 7,
+      "success_rate": 0.0
+    },
+    "crud": {
+      "total": 18,
+      "success": 18,
+      "failed": 0,
+      "success_rate": 100.0
+    },
+    "compatibilidade": {
+      "total": 2,
+      "success": 1,
+      "failed": 1,
+      "success_rate": 50.0
+    },
+    "gerenciamento": {
+      "total": 4,
+      "success": 4,
+      "failed": 0,
+      "success_rate": 100.0
+    }
+  },
+  "detailed_results": {
+    "consulta": {
+      "consultar_categorias": {
+        "status": "error",
+        "message": "Exceção: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+        "details": {
+          "exception": "Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/scripts/test_all_tools_v2.py\", line 53, in test_tool\n    result = await tool_func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/tools/consultas.py\", line 122, in consultar_categorias\n    return await self.client.consultar_categorias(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 160, in consultar_categorias\n    return await self._make_request(\"GET\", \"categories\", params=params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 54, in _make_request\n    raise Exception(f\"Erro na API: {response.status} - {error_text}\")\nException: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}\n"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:50.992050"
+      },
+      "consultar_centros_custo": {
+        "status": "error",
+        "message": "Exceção: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+        "details": {
+          "exception": "Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/scripts/test_all_tools_v2.py\", line 53, in test_tool\n    result = await tool_func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/tools/consultas.py\", line 135, in consultar_centros_custo\n    return await self.client.consultar_centros_custo(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 177, in consultar_centros_custo\n    return await self._make_request(\"GET\", \"costcenters\", params=params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 54, in _make_request\n    raise Exception(f\"Erro na API: {response.status} - {error_text}\")\nException: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}\n"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.060036"
+      },
+      "consultar_clientes": {
+        "status": "error",
+        "message": "Exceção: Erro na API: 404 - { \"statusCode\": 404, \"message\": \"Resource not found\" }",
+        "details": {
+          "exception": "Erro na API: 404 - { \"statusCode\": 404, \"message\": \"Resource not found\" }",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/scripts/test_all_tools_v2.py\", line 53, in test_tool\n    result = await tool_func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/tools/consultas.py\", line 30, in consultar_clientes\n    return await self.client.consultar_clientes(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 86, in consultar_clientes\n    return await self._make_request(\"GET\", \"clients\", params=params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 54, in _make_request\n    raise Exception(f\"Erro na API: {response.status} - {error_text}\")\nException: Erro na API: 404 - { \"statusCode\": 404, \"message\": \"Resource not found\" }\n"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.112426"
+      },
+      "consultar_fornecedores": {
+        "status": "error",
+        "message": "Exceção: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+        "details": {
+          "exception": "Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/scripts/test_all_tools_v2.py\", line 53, in test_tool\n    result = await tool_func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/tools/consultas.py\", line 54, in consultar_fornecedores\n    return await self.client.consultar_fornecedores(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 110, in consultar_fornecedores\n    return await self._make_request(\"GET\", \"suppliers\", params=params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 54, in _make_request\n    raise Exception(f\"Erro na API: {response.status} - {error_text}\")\nException: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}\n"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.167898"
+      },
+      "consultar_contas_pagar": {
+        "status": "error",
+        "message": "Exceção: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+        "details": {
+          "exception": "Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/scripts/test_all_tools_v2.py\", line 53, in test_tool\n    result = await tool_func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/tools/consultas.py\", line 81, in consultar_contas_pagar\n    return await self.client.consultar_contas_pagar(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 129, in consultar_contas_pagar\n    return await self._make_request(\"GET\", \"schedules/debit\", params=params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 54, in _make_request\n    raise Exception(f\"Erro na API: {response.status} - {error_text}\")\nException: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}\n"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.231490"
+      },
+      "consultar_contas_receber": {
+        "status": "error",
+        "message": "Exceção: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+        "details": {
+          "exception": "Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/scripts/test_all_tools_v2.py\", line 53, in test_tool\n    result = await tool_func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/tools/consultas.py\", line 108, in consultar_contas_receber\n    return await self.client.consultar_contas_receber(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 148, in consultar_contas_receber\n    return await self._make_request(\"GET\", \"schedules/credit\", params=params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 54, in _make_request\n    raise Exception(f\"Erro na API: {response.status} - {error_text}\")\nException: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}\n"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.315333"
+      },
+      "consultar_socios": {
+        "status": "error",
+        "message": "Exceção: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+        "details": {
+          "exception": "Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/scripts/test_all_tools_v2.py\", line 53, in test_tool\n    result = await tool_func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/tools/socios.py\", line 34, in consultar_socios\n    return await self.client.consultar_socios(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 201, in consultar_socios\n    return await self._make_request(\"GET\", \"partners\", params=params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 54, in _make_request\n    raise Exception(f\"Erro na API: {response.status} - {error_text}\")\nException: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}\n"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.380529"
+      }
+    },
+    "crud": {
+      "incluir_cliente": {
+        "status": "success",
+        "message": "Estrutura validada - Simular criação de cliente",
+        "details": {
+          "simulated": true,
+          "description": "Simular criação de cliente"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381799"
+      },
+      "alterar_cliente": {
+        "status": "success",
+        "message": "Estrutura validada - Simular alteração de cliente",
+        "details": {
+          "simulated": true,
+          "description": "Simular alteração de cliente"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381810"
+      },
+      "excluir_cliente": {
+        "status": "success",
+        "message": "Estrutura validada - Simular exclusão de cliente",
+        "details": {
+          "simulated": true,
+          "description": "Simular exclusão de cliente"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381815"
+      },
+      "obter_cliente_por_id": {
+        "status": "success",
+        "message": "Estrutura validada - Simular consulta de cliente por ID",
+        "details": {
+          "simulated": true,
+          "description": "Simular consulta de cliente por ID"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381820"
+      },
+      "incluir_fornecedor": {
+        "status": "success",
+        "message": "Estrutura validada - Simular criação de fornecedor",
+        "details": {
+          "simulated": true,
+          "description": "Simular criação de fornecedor"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381824"
+      },
+      "alterar_fornecedor": {
+        "status": "success",
+        "message": "Estrutura validada - Simular alteração de fornecedor",
+        "details": {
+          "simulated": true,
+          "description": "Simular alteração de fornecedor"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381828"
+      },
+      "excluir_fornecedor": {
+        "status": "success",
+        "message": "Estrutura validada - Simular exclusão de fornecedor",
+        "details": {
+          "simulated": true,
+          "description": "Simular exclusão de fornecedor"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381832"
+      },
+      "obter_fornecedor_por_id": {
+        "status": "success",
+        "message": "Estrutura validada - Simular consulta de fornecedor por ID",
+        "details": {
+          "simulated": true,
+          "description": "Simular consulta de fornecedor por ID"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381836"
+      },
+      "incluir_conta_pagar": {
+        "status": "success",
+        "message": "Estrutura validada - Simular criação de conta a pagar",
+        "details": {
+          "simulated": true,
+          "description": "Simular criação de conta a pagar"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381844"
+      },
+      "alterar_conta_pagar": {
+        "status": "success",
+        "message": "Estrutura validada - Simular alteração de conta a pagar",
+        "details": {
+          "simulated": true,
+          "description": "Simular alteração de conta a pagar"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381848"
+      },
+      "excluir_conta_pagar": {
+        "status": "success",
+        "message": "Estrutura validada - Simular exclusão de conta a pagar",
+        "details": {
+          "simulated": true,
+          "description": "Simular exclusão de conta a pagar"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381852"
+      },
+      "incluir_conta_receber": {
+        "status": "success",
+        "message": "Estrutura validada - Simular criação de conta a receber",
+        "details": {
+          "simulated": true,
+          "description": "Simular criação de conta a receber"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381857"
+      },
+      "alterar_conta_receber": {
+        "status": "success",
+        "message": "Estrutura validada - Simular alteração de conta a receber",
+        "details": {
+          "simulated": true,
+          "description": "Simular alteração de conta a receber"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381861"
+      },
+      "excluir_conta_receber": {
+        "status": "success",
+        "message": "Estrutura validada - Simular exclusão de conta a receber",
+        "details": {
+          "simulated": true,
+          "description": "Simular exclusão de conta a receber"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381865"
+      },
+      "incluir_socio": {
+        "status": "success",
+        "message": "Estrutura validada - Simular criação de sócio",
+        "details": {
+          "simulated": true,
+          "description": "Simular criação de sócio"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381869"
+      },
+      "alterar_socio": {
+        "status": "success",
+        "message": "Estrutura validada - Simular alteração de sócio",
+        "details": {
+          "simulated": true,
+          "description": "Simular alteração de sócio"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381874"
+      },
+      "excluir_socio": {
+        "status": "success",
+        "message": "Estrutura validada - Simular exclusão de sócio",
+        "details": {
+          "simulated": true,
+          "description": "Simular exclusão de sócio"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381878"
+      },
+      "obter_socio_por_id": {
+        "status": "success",
+        "message": "Estrutura validada - Simular consulta de sócio por ID",
+        "details": {
+          "simulated": true,
+          "description": "Simular consulta de sócio por ID"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.381882"
+      }
+    },
+    "compatibilidade": {
+      "consultar_departamentos_alias": {
+        "status": "error",
+        "message": "Exceção: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+        "details": {
+          "exception": "Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}",
+          "traceback": "Traceback (most recent call last):\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/scripts/test_all_tools_v2.py\", line 53, in test_tool\n    result = await tool_func(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/tools/consultas.py\", line 135, in consultar_centros_custo\n    return await self.client.consultar_centros_custo(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 177, in consultar_centros_custo\n    return await self._make_request(\"GET\", \"costcenters\", params=params)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/kleberdossantosribeiro/omie-mcp/nibo-mcp/src/core/nibo_client.py\", line 54, in _make_request\n    raise Exception(f\"Erro na API: {response.status} - {error_text}\")\nException: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}\n"
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.448712"
+      },
+      "CompatibilityMapper": {
+        "status": "success",
+        "message": "Mapeamento de aliases funcionando",
+        "details": {
+          "mappings_tested": 2
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.448740"
+      }
+    },
+    "gerenciamento": {
+      "testar_conexao": {
+        "status": "success",
+        "message": "Operação concluída (90ms)",
+        "details": {
+          "response_time_ms": 89.5228385925293,
+          "result": {
+            "success": false,
+            "message": "Erro ao conectar com API Nibo: Erro na API: 401 - {\"error\":\"validation_error\",\"error_description\":\"Api token expirado\",\"exception\":{\"ClassName\":\"System.UnauthorizedAccessException\",\"Message\":\"Api token expirado\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":\"   at Nibo.Crosscut.AssertionConcern.Asserts.True[TException](Boolean boolValue, String message) in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Domain\\\\Crosscut\\\\AssertionConcern\\\\Asserts.cs:line 204\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.Authorization.CustomAutenthicationMiddleware.<>c.<<UseApiToken>b__3_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\Authorization\\\\CustomAutenthicationMiddleware.cs:line 94\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Microsoft.Owin.Cors.CorsMiddleware.<Invoke>d__4.MoveNext()\\r\\n--- End of stack trace from previous location where exception was thrown ---\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)\\r\\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\\r\\n   at Nibo.Apps.Organization.Api.Middlewares.ErrorHandling.ErrorHandlingMiddleware.<>c.<<UseErrorHandler>b__0_0>d.MoveNext() in D:\\\\a\\\\1\\\\s\\\\Nibo.Apps.Organization.Api\\\\Middlewares\\\\ErrorHandling\\\\ErrorHandlingMiddleware.cs:line 29\",\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":\"8\\nTrue\\nNibo.Apps.Organization.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null\\nNibo.Crosscut.AssertionConcern.Asserts\\nVoid True[TException](Boolean, System.String)\",\"HResult\":-2147024891,\"Source\":\"Nibo.Apps.Organization.Domain\",\"WatsonBuckets\":null}}"
+          }
+        },
+        "response_time_ms": 89.5228385925293,
+        "timestamp": "2025-07-16T22:20:51.538434"
+      },
+      "listar_empresas": {
+        "status": "success",
+        "message": "Encontradas 1 empresa(s)",
+        "details": {
+          "companies_count": 1
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.538460"
+      },
+      "info_empresa_atual": {
+        "status": "success",
+        "message": "Empresa: I9 MARKETING E TECNOLOGIA LTDA",
+        "details": {
+          "key": "empresa_exemplo",
+          "name": "I9 MARKETING E TECNOLOGIA LTDA",
+          "company_id": "50404226-615e-48d2-9701-0e765f64e0b9",
+          "token_expired": false,
+          "active": true
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.538474"
+      },
+      "selecionar_empresa": {
+        "status": "success",
+        "message": "Estrutura validada - Seleção de empresa ativa",
+        "details": {
+          "simulated": true
+        },
+        "response_time_ms": 0,
+        "timestamp": "2025-07-16T22:20:51.538483"
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📚 Documentation
+    url: https://github.com/kleberdossantosribeiro/omie-mcp/wiki
+    about: Check the documentation and FAQ
+  - name: 💬 Discussions
+    url: https://github.com/kleberdossantosribeiro/omie-mcp/discussions
+    about: Ask questions and discuss with the community
+  - name: 🔒 Security Issues
+    url: mailto:security@uptax.com
+    about: Report security vulnerabilities privately

@@ -1,0 +1,103 @@
+/**
+ * Correções específicas para os botões de visualização
+ * Remove label e melhora o layout
+ */
+
+/* ===============================
+   CORREÇÃO DOS BOTÕES DE VISUALIZAÇÃO
+   =============================== */
+
+/* Remover o label "Visualização" e posicionar botões à direita */
+.d-flex.justify-content-end.h-100 {
+    align-items: center;
+    height: 58px !important; /* Mesma altura dos form-floating */
+}
+
+.d-flex.justify-content-end.h-100 .btn-group {
+    height: 58px; /* Mesma altura do botão Filtrar */
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.d-flex.justify-content-end.h-100 .btn-group .btn {
+    width: 40px;
+    height: 58px; /* Mesma altura do botão Filtrar */
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+    font-size: 1rem;
+}
+
+.d-flex.justify-content-end.h-100 .btn-group .btn:first-child {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.d-flex.justify-content-end.h-100 .btn-group .btn:last-child {
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+/* Garantir que os botões tenham boa aparência */
+.d-flex.justify-content-end.h-100 .btn-group .btn-outline-secondary {
+    border-color: #dee2e6;
+    color: #6c757d;
+}
+
+.d-flex.justify-content-end.h-100 .btn-group .btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #495057;
+}
+
+.d-flex.justify-content-end.h-100 .btn-group .btn-outline-secondary.active,
+.d-flex.justify-content-end.h-100 .btn-group .btn-check:checked + .btn-outline-secondary {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+/* ===============================
+   CORREÇÃO DE RESPONSIVIDADE
+   =============================== */
+
+@media (max-width: 768px) {
+    .d-flex.justify-content-end.h-100 {
+        justify-content: center !important;
+        margin-top: 1rem;
+    }
+    
+    .d-flex.justify-content-end.h-100 .btn-group {
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .d-flex.justify-content-end.h-100 .btn-group .btn {
+        flex: 1;
+        width: auto;
+    }
+}
+
+/* ===============================
+   CORREÇÃO DE ALINHAMENTO COM FILTROS
+   =============================== */
+
+/* Garantir que todos os elementos da row tenham a mesma altura */
+.card .card-body .row {
+    align-items: end;
+}
+
+.card .card-body .row > * {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 58px;
+}
+
+/* Exceção para os botões de visualização */
+.card .card-body .row .d-flex.justify-content-end.h-100 {
+    justify-content: flex-end;
+    align-items: center;
+}

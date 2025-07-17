@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "project_name": "test-omie-mcp",
+  "companies": {
+    "empresa_teste": {
+      "name": "Empresa Teste",
+      "app_key": "encrypted_key",
+      "app_secret": "encrypted_secret"
+    }
+  }
+}

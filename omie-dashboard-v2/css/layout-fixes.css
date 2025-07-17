@@ -1,0 +1,420 @@
+/**
+ * Correções de Layout e Alinhamento
+ * Correções específicas para os problemas identificados
+ */
+
+/* ===============================
+   CORREÇÃO DO CARD DE FILTROS
+   =============================== */
+
+/* Corrigir alinhamento do card de filtros */
+.card .card-body .row {
+    align-items: end; /* Alinhar elementos ao final */
+    margin-bottom: 0;
+}
+
+.card .card-body .row .col-md-3,
+.card .card-body .row .col-md-2 {
+    margin-bottom: 1rem;
+}
+
+.card .card-body .row .form-floating {
+    margin-bottom: 0;
+}
+
+/* Garantir que todos os elementos do filtro tenham a mesma altura */
+.card .card-body .row .form-floating,
+.card .card-body .row .btn,
+.card .card-body .row .view-toggle-container {
+    height: 58px; /* Altura padrão do form-floating */
+}
+
+.card .card-body .row .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.view-toggle-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.view-toggle-container .btn-group {
+    height: 38px; /* Altura dos botões */
+}
+
+/* Versão melhorada da visualização */
+.view-toggle-container-improved {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.view-toggle-container-improved .form-label {
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+    text-align: center;
+}
+
+.view-toggle-container-improved .btn-group .btn {
+    width: 40px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* Versão limpa (sem nome, canto direito) */
+.view-toggle-container-clean {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.view-toggle-container-clean .btn-group .btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 6px;
+}
+
+.view-toggle-container-clean .btn-group .btn:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.view-toggle-container-clean .btn-group .btn:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* ===============================
+   CORREÇÃO DA VISUALIZAÇÃO DAS APLICAÇÕES
+   =============================== */
+
+/* Garantir que as aplicações apareçam imediatamente */
+#applicationsContainer,
+#companyApplicationsContainer {
+    min-height: 400px;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+#applicationsGrid,
+#companyApplicationsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0;
+}
+
+#applicationsGrid > div,
+#companyApplicationsGrid > div {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+}
+
+/* Forçar visibilidade das aplicações */
+.application-card {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    height: auto !important;
+    margin-bottom: 1rem;
+}
+
+/* ===============================
+   CORREÇÃO DO SCROLL E POSICIONAMENTO
+   =============================== */
+
+/* Scroll automático para o topo quando trocar de página */
+.auth-screen {
+    scroll-behavior: smooth;
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+/* Garantir que o conteúdo principal seja visível */
+.auth-screen .container,
+.auth-screen .container-fluid {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* ===============================
+   CORREÇÃO DE PÁGINAS DE CADASTRO
+   =============================== */
+
+/* Melhorar layout das páginas de cadastro */
+#registerScreen .auth-card,
+#createCompanyScreen .auth-card,
+#inviteUserScreen .auth-card,
+#createApplicationScreen .auth-card {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    max-width: 100%;
+}
+
+/* Garantir que formulários longos sejam visíveis */
+.auth-form {
+    max-width: none;
+}
+
+.form-section {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 0.75rem;
+    border: 1px solid #e9ecef;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+}
+
+/* ===============================
+   CORREÇÃO DE ALTURA DAS TELAS
+   =============================== */
+
+/* Garantir que todas as telas tenham altura adequada */
+.auth-screen,
+#applicationsScreen,
+#companyApplicationsScreen {
+    min-height: 100vh;
+    padding: 1rem 0;
+}
+
+/* Ajustar altura dos containers */
+.container-fluid.py-4 {
+    min-height: calc(100vh - 80px); /* Descontar altura do navbar */
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+}
+
+/* ===============================
+   CORREÇÃO DE BOTÕES E NAVEGAÇÃO
+   =============================== */
+
+/* Melhorar posicionamento dos botões de ação */
+.auth-header {
+    position: relative;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.btn-back {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+
+/* Garantir que botões de ação sejam visíveis */
+.auth-card .row:last-child {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+/* ===============================
+   CORREÇÃO RESPONSIVA
+   =============================== */
+
+@media (max-width: 768px) {
+    /* Corrigir card de filtros em mobile */
+    .card .card-body .row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .card .card-body .row .col-md-3,
+    .card .card-body .row .col-md-2 {
+        margin-bottom: 1rem;
+        width: 100%;
+    }
+    
+    .card .card-body .row .form-floating,
+    .card .card-body .row .btn,
+    .card .card-body .row .view-toggle-container {
+        height: auto;
+    }
+    
+    .view-toggle-container {
+        margin-top: 1rem;
+    }
+    
+    /* Aplicações em mobile */
+    #applicationsGrid,
+    #companyApplicationsGrid {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .application-card {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    /* Páginas de cadastro em mobile */
+    .auth-card {
+        margin: 0.5rem;
+        padding: 1rem;
+    }
+    
+    .form-section {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Botões em mobile */
+    .auth-card .row:last-child .btn {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* ===============================
+   CORREÇÃO DE Z-INDEX
+   =============================== */
+
+/* Garantir que elementos importantes estejam visíveis */
+.auth-header {
+    z-index: 10;
+    position: relative;
+}
+
+.card {
+    z-index: 5;
+    position: relative;
+}
+
+.btn-back {
+    z-index: 15;
+}
+
+/* ===============================
+   CORREÇÃO DE OVERFLOW
+   =============================== */
+
+/* Prevenir overflow horizontal */
+.auth-screen .container,
+.auth-screen .container-fluid {
+    overflow-x: hidden;
+}
+
+/* Garantir scroll vertical quando necessário */
+.auth-screen {
+    overflow-y: auto;
+}
+
+/* ===============================
+   CORREÇÃO DE ANIMAÇÕES
+   =============================== */
+
+/* Animações suaves para transições */
+.auth-screen {
+    transition: all 0.3s ease;
+}
+
+.application-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.application-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ===============================
+   CORREÇÃO DE SCROLL COMPORTAMENTO
+   =============================== */
+
+/* Scroll suave para todas as páginas */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Garantir que o conteúdo seja visível imediatamente */
+.auth-screen.d-none {
+    display: none !important;
+}
+
+.auth-screen:not(.d-none) {
+    display: block !important;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===============================
+   CORREÇÃO DE ESPAÇAMENTO
+   =============================== */
+
+/* Garantir espaçamento adequado */
+.container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.card {
+    margin-bottom: 1rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Espaçamento entre elementos */
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.py-4 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+}
+
+/* ===============================
+   CORREÇÃO DE VISIBILIDADE
+   =============================== */
+
+/* Garantir que todos os elementos sejam visíveis */
+.row {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.col-lg-4,
+.col-md-6,
+.col-md-4,
+.col-md-3,
+.col-md-2 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+/* Forçar visibilidade de elementos importantes */
+.application-card,
+.card,
+.form-section {
+    display: block !important;
+    visibility: visible !important;
+}

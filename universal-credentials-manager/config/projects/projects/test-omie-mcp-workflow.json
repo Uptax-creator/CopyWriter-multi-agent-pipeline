@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "project_name": "test-omie-mcp-workflow",
+  "metadata": {
+    "created_at": "2025-07-15T01:06:34.537954",
+    "credential_type": "omie",
+    "encryption_enabled": true
+  },
+  "companies": {
+    "empresa_workflow": {
+      "name": "Empresa Workflow Teste",
+      "active": true,
+      "security_level": "high",
+      "token_timeout_minutes": 60,
+      "token_expires_at": null,
+      "created_at": "2025-07-15T01:06:34.537953",
+      "updated_at": "2025-07-15T01:06:34.537953",
+      "app_key": "workflow_key_123",
+      "app_secret": "workflow_secret_456",
+      "base_url": "https://app.omie.com.br/api/v1/",
+      "company_id": null
+    }
+  },
+  "security": {
+    "auto_refresh_tokens": true,
+    "log_access_attempts": true
+  }
+}

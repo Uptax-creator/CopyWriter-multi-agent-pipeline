@@ -1,0 +1,387 @@
+{
+  "context7_config": {
+    "name": "Omie MCP N8N Automation Suite",
+    "version": "2.0.0",
+    "description": "Configuração Context7 para automação completa Omie + Nibo via N8N",
+    "mcp_servers": {
+      "omie": {
+        "url": "http://localhost:3001",
+        "protocol": "http",
+        "tools": [
+          "testar_conexao",
+          "consultar_categorias", 
+          "consultar_departamentos",
+          "consultar_contas_pagar",
+          "consultar_contas_receber",
+          "consultar_clientes",
+          "consultar_fornecedores",
+          "cadastrar_cliente_fornecedor",
+          "criar_conta_pagar",
+          "criar_conta_receber"
+        ]
+      },
+      "nibo": {
+        "url": "http://localhost:3002", 
+        "protocol": "http",
+        "tools": [
+          "testar_conexao",
+          "consultar_categorias",
+          "consultar_centros_custo",
+          "consultar_socios",
+          "consultar_clientes",
+          "consultar_fornecedores",
+          "consultar_contas_pagar",
+          "consultar_contas_receber",
+          "incluir_socio",
+          "incluir_cliente",
+          "incluir_fornecedor",
+          "incluir_conta_pagar",
+          "incluir_conta_receber",
+          "alterar_cliente",
+          "alterar_fornecedor",
+          "excluir_cliente"
+        ]
+      }
+    },
+    "n8n_workflows": {
+      "sync_clients": {
+        "name": "Sincronização Clientes Omie ↔ Nibo",
+        "trigger": "webhook",
+        "frequency": "daily",
+        "nodes": [
+          {
+            "type": "http_request",
+            "name": "Get Omie Clients",
+            "url": "http://localhost:3001/tools/consultar_clientes",
+            "method": "POST",
+            "body": {"arguments": {"pagina": 1, "registros_por_pagina": 100}}
+          },
+          {
+            "type": "loop", 
+            "name": "Process Each Client",
+            "input": "{{$json.data.clientes_cadastro}}"
+          },
+          {
+            "type": "http_request",
+            "name": "Create Nibo Client",
+            "url": "http://localhost:3002/tools/incluir_cliente",
+            "method": "POST",
+            "body": {
+              "arguments": {
+                "nome": "{{$json.razao_social}}",
+                "documento": "{{$json.cnpj_cpf}}",
+                "email": "{{$json.email}}"
+              }
+            }
+          }
+        ]
+      },
+      "financial_sync": {
+        "name": "Sincronização Financeira Bidirecional",
+        "trigger": "webhook",
+        "frequency": "hourly",
+        "nodes": [
+          {
+            "type": "parallel",
+            "name": "Sync Both Ways",
+            "branches": [
+              {
+                "name": "Omie → Nibo",
+                "nodes": [
+                  {
+                    "type": "http_request",
+                    "name": "Get Omie Payables",
+                    "url": "http://localhost:3001/tools/consultar_contas_pagar"
+                  },
+                  {
+                    "type": "transform",
+                    "name": "Map to Nibo Format"
+                  },
+                  {
+                    "type": "http_request",
+                    "name": "Create Nibo Payable",
+                    "url": "http://localhost:3002/tools/incluir_conta_pagar"
+                  }
+                ]
+              },
+              {
+                "name": "Nibo → Omie", 
+                "nodes": [
+                  {
+                    "type": "http_request",
+                    "name": "Get Nibo Receivables",
+                    "url": "http://localhost:3002/tools/consultar_contas_receber"
+                  },
+                  {
+                    "type": "transform",
+                    "name": "Map to Omie Format"
+                  },
+                  {
+                    "type": "http_request",
+                    "name": "Create Omie Receivable",
+                    "url": "http://localhost:3001/tools/criar_conta_receber"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "smart_analytics": {
+        "name": "Análise Inteligente Multi-ERP",
+        "trigger": "schedule",
+        "frequency": "daily",
+        "nodes": [
+          {
+            "type": "parallel",
+            "name": "Collect Data",
+            "branches": [
+              {
+                "name": "Omie Data",
+                "nodes": [
+                  {"name": "Get Clients", "url": "http://localhost:3001/tools/consultar_clientes"},
+                  {"name": "Get Payables", "url": "http://localhost:3001/tools/consultar_contas_pagar"},
+                  {"name": "Get Receivables", "url": "http://localhost:3001/tools/consultar_contas_receber"}
+                ]
+              },
+              {
+                "name": "Nibo Data",
+                "nodes": [
+                  {"name": "Get Clients", "url": "http://localhost:3002/tools/consultar_clientes"},
+                  {"name": "Get Payables", "url": "http://localhost:3002/tools/consultar_contas_pagar"},
+                  {"name": "Get Receivables", "url": "http://localhost:3002/tools/consultar_contas_receber"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "merge",
+            "name": "Combine All Data"
+          },
+          {
+            "type": "ai_analysis",
+            "name": "Generate Insights",
+            "model": "claude-3.5-sonnet",
+            "prompt": "Analise os dados financeiros consolidados e gere insights sobre: 1) Fluxo de caixa 2) Clientes em atraso 3) Oportunidades de otimização 4) Alertas de risco"
+          },
+          {
+            "type": "notification",
+            "name": "Send Report",
+            "channels": ["email", "slack", "webhook"]
+          }
+        ]
+      }
+    },
+    "context7_flows": {
+      "erp_integration_master": {
+        "name": "ERP Integration Master Flow",
+        "description": "Fluxo principal para integração e automação multi-ERP",
+        "components": {
+          "data_collection": {
+            "omie_collector": {
+              "schedule": "0 */6 * * *",
+              "endpoints": [
+                "/tools/consultar_clientes",
+                "/tools/consultar_fornecedores", 
+                "/tools/consultar_contas_pagar",
+                "/tools/consultar_contas_receber",
+                "/tools/consultar_categorias",
+                "/tools/consultar_departamentos"
+              ]
+            },
+            "nibo_collector": {
+              "schedule": "15 */6 * * *",
+              "endpoints": [
+                "/tools/consultar_clientes",
+                "/tools/consultar_fornecedores",
+                "/tools/consultar_contas_pagar", 
+                "/tools/consultar_contas_receber",
+                "/tools/consultar_categorias",
+                "/tools/consultar_centros_custo",
+                "/tools/consultar_socios"
+              ]
+            }
+          },
+          "data_processing": {
+            "unification_engine": {
+              "rules": [
+                {
+                  "type": "client_matching",
+                  "fields": ["cnpj_cpf", "razao_social", "email"],
+                  "similarity_threshold": 0.85
+                },
+                {
+                  "type": "duplicate_detection", 
+                  "algorithms": ["fuzzy_match", "exact_match"],
+                  "auto_merge": true
+                },
+                {
+                  "type": "data_enrichment",
+                  "sources": ["omie", "nibo", "external_apis"],
+                  "confidence_threshold": 0.9
+                }
+              ]
+            },
+            "transformation_rules": {
+              "omie_to_nibo": {
+                "client": {
+                  "razao_social": "nome",
+                  "cnpj_cpf": "documento", 
+                  "email": "email",
+                  "telefone1_ddd": "telefone_ddd",
+                  "telefone1_numero": "telefone_numero"
+                },
+                "conta_pagar": {
+                  "numero_documento": "numero_documento",
+                  "data_vencimento": "data_vencimento",
+                  "valor_documento": "valor_documento",
+                  "observacao": "observacao"
+                }
+              },
+              "nibo_to_omie": {
+                "client": {
+                  "nome": "razao_social",
+                  "documento": "cnpj_cpf",
+                  "email": "email"
+                },
+                "conta_receber": {
+                  "numero_documento": "numero_documento",
+                  "data_vencimento": "data_vencimento", 
+                  "valor_documento": "valor_documento"
+                }
+              }
+            }
+          },
+          "automation_triggers": {
+            "real_time": {
+              "webhooks": [
+                {
+                  "name": "omie_client_created",
+                  "url": "/webhook/omie/client/created",
+                  "action": "sync_to_nibo"
+                },
+                {
+                  "name": "nibo_payment_created",
+                  "url": "/webhook/nibo/payment/created", 
+                  "action": "sync_to_omie"
+                },
+                {
+                  "name": "financial_alert",
+                  "url": "/webhook/financial/alert",
+                  "action": "notify_stakeholders"
+                }
+              ]
+            },
+            "scheduled": {
+              "sync_jobs": [
+                {
+                  "name": "daily_full_sync",
+                  "schedule": "0 2 * * *",
+                  "scope": "all_entities",
+                  "direction": "bidirectional"
+                },
+                {
+                  "name": "hourly_incremental",
+                  "schedule": "0 * * * *",
+                  "scope": "modified_records",
+                  "direction": "bidirectional"
+                }
+              ]
+            }
+          },
+          "ai_intelligence": {
+            "anomaly_detection": {
+              "models": ["isolation_forest", "neural_network"],
+              "metrics": ["payment_patterns", "client_behavior", "cash_flow"],
+              "alert_threshold": 0.95
+            },
+            "predictive_analytics": {
+              "cash_flow_forecast": {
+                "horizon": "90_days",
+                "confidence_interval": 0.85,
+                "factors": ["historical_data", "seasonal_patterns", "economic_indicators"]
+              },
+              "client_risk_scoring": {
+                "algorithm": "gradient_boosting",
+                "features": ["payment_history", "credit_score", "industry_risk"],
+                "update_frequency": "daily"
+              }
+            },
+            "smart_recommendations": {
+              "optimization_engine": {
+                "areas": ["cash_flow", "cost_reduction", "process_automation"],
+                "roi_threshold": 1.5,
+                "implementation_complexity": "medium"
+              }
+            }
+          },
+          "monitoring_alerting": {
+            "health_checks": {
+              "mcp_servers": {
+                "frequency": "1m",
+                "timeout": "30s",
+                "retry_count": 3
+              },
+              "data_sync": {
+                "frequency": "5m", 
+                "lag_threshold": "15m",
+                "error_threshold": 5
+              }
+            },
+            "business_alerts": {
+              "critical": [
+                "sync_failure_extended",
+                "data_inconsistency_high",
+                "cash_flow_negative"
+              ],
+              "warning": [
+                "sync_lag_detected",
+                "unusual_patterns",
+                "approaching_limits"
+              ],
+              "info": [
+                "sync_completed",
+                "optimization_opportunity",
+                "report_generated"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "deployment": {
+      "environments": {
+        "development": {
+          "omie_mcp_url": "http://localhost:3001",
+          "nibo_mcp_url": "http://localhost:3002",
+          "n8n_url": "http://localhost:5678",
+          "context7_url": "http://localhost:7000"
+        },
+        "staging": {
+          "omie_mcp_url": "https://staging-omie-mcp.empresa.com",
+          "nibo_mcp_url": "https://staging-nibo-mcp.empresa.com",
+          "n8n_url": "https://staging-n8n.empresa.com",
+          "context7_url": "https://staging-context7.empresa.com"
+        },
+        "production": {
+          "omie_mcp_url": "https://omie-mcp.empresa.com",
+          "nibo_mcp_url": "https://nibo-mcp.empresa.com", 
+          "n8n_url": "https://n8n.empresa.com",
+          "context7_url": "https://context7.empresa.com"
+        }
+      },
+      "scaling": {
+        "horizontal": {
+          "mcp_servers": "auto_scale",
+          "min_instances": 2,
+          "max_instances": 10,
+          "cpu_threshold": 70
+        },
+        "vertical": {
+          "memory_limit": "2Gi",
+          "cpu_limit": "1000m"
+        }
+      }
+    }
+  }
+}

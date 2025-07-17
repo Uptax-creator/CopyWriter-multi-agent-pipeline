@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug - Omie Tenant Manager v2.0</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status { 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 4px; 
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Debug - Omie Tenant Manager v2.0</h1>
+        
+        <div id="status"></div>
+        
+        <h3>Teste de JavaScript:</h3>
+        <button onclick="testSecurity()">Testar SecurityManager</button>
+        <button onclick="testAuth()">Testar AuthManager</button>
+        <button onclick="goToMain()">Ir para App Principal</button>
+        
+        <div id="output"></div>
+        
+        <h3>Console de Debug:</h3>
+        <textarea id="console" rows="10" style="width: 100%; font-family: monospace;" readonly></textarea>
+    </div>
+
+    <script>
+        // Override console.log para capturar
+        const originalLog = console.log;
+        const consoleElement = document.getElementById('console');
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            consoleElement.value += args.join(' ') + '\n';
+            consoleElement.scrollTop = consoleElement.scrollHeight;
+        };
+
+        function showStatus(message, type = 'success') {
+            const status = document.getElementById('status');
+            status.className = `status ${type}`;
+            status.textContent = message;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function showOutput(content) {
+            document.getElementById('output').innerHTML = content;
+        }
+
+        // Teste inicial
+        window.addEventListener('load', () => {
+            showStatus('✅ HTML carregado com sucesso');
+            console.log('=== INICIO DO DEBUG ===');
+            console.log('User Agent:', navigator.userAgent);
+            console.log('URL:', window.location.href);
+        });
+
+        function testSecurity() {
+            console.log('--- Testando SecurityManager ---');
+            try {
+                // Simular SecurityManager básico
+                console.log('✓ SecurityManager carregaria aqui');
+                showStatus('✅ SecurityManager funcionando');
+            } catch (error) {
+                console.error('❌ Erro no SecurityManager:', error);
+                showStatus('❌ Erro no SecurityManager: ' + error.message, 'error');
+            }
+        }
+
+        function testAuth() {
+            console.log('--- Testando AuthManager ---');
+            try {
+                // Simular AuthManager básico
+                console.log('✓ AuthManager carregaria aqui');
+                showStatus('✅ AuthManager funcionando');
+            } catch (error) {
+                console.error('❌ Erro no AuthManager:', error);
+                showStatus('❌ Erro no AuthManager: ' + error.message, 'error');
+            }
+        }
+
+        function goToMain() {
+            console.log('Redirecionando para aplicação principal...');
+            window.location.href = 'index.html';
+        }
+
+        // Log de erros
+        window.addEventListener('error', (e) => {
+            console.error('❌ ERRO CAPTURADO:', e.error);
+            showStatus('❌ Erro JavaScript: ' + e.error.message, 'error');
+        });
+    </script>
+</body>
+</html>

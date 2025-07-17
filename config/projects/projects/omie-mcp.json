@@ -1,0 +1,30 @@
+{
+  "version": "1.0",
+  "project_name": "omie-mcp",
+  "metadata": {
+    "created_at": "2025-07-15T01:46:38.969664",
+    "credential_type": "omie",
+    "encryption_enabled": true,
+    "default_company": "empresa_principal",
+    "migrated_from": "credentials.json",
+    "migration_date": "2025-07-15T01:46:38.969666"
+  },
+  "companies": {
+    "empresa_principal": {
+      "name": "Empresa Principal",
+      "app_key": "2687508979155",
+      "app_secret": "23ae858794e1cd879232c81105604b1f",
+      "base_url": "https://app.omie.com.br/api/v1",
+      "active": true,
+      "security_level": "standard",
+      "token_timeout_minutes": 60,
+      "credential_type": "omie"
+    }
+  },
+  "security": {
+    "auto_refresh_tokens": true,
+    "log_access_attempts": true,
+    "max_failed_attempts": 5,
+    "lockout_duration_minutes": 30
+  }
+}

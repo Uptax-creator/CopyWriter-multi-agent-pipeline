@@ -1,0 +1,59 @@
+/**
+ * Correção simples para padronizar altura dos campos
+ * Mantém o layout original, apenas ajusta alturas
+ */
+
+/* Padronizar altura de todos os form-floating */
+#createCompanyScreen .form-floating > .form-control,
+#createCompanyScreen .form-floating > .form-select {
+    height: 58px;
+}
+
+/* Garantir que labels funcionem corretamente */
+#createCompanyScreen .form-floating > label {
+    padding: 1rem 0.75rem;
+}
+
+/* Alinhamento específico para o telefone com código internacional */
+#createCompanyScreen .col-md-6 .row .col-4 .form-floating,
+#createCompanyScreen .col-md-6 .row .col-8 .form-floating {
+    height: 58px;
+    display: flex;
+    align-items: stretch;
+}
+
+#createCompanyScreen .col-md-6 .row .col-4 .form-floating > .form-select,
+#createCompanyScreen .col-md-6 .row .col-8 .form-floating > .form-control {
+    height: 58px;
+    flex: 1;
+}
+
+/* Garantir que campos longos (CNPJ, CEP) sejam totalmente visíveis */
+#createCompanyScreen .form-floating > .form-control {
+    min-width: 0;
+    width: 100%;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+/* Campos específicos com largura adequada */
+#createCompanyScreen #companyCNPJ {
+    min-width: 200px; /* Largura mínima para CNPJ completo */
+}
+
+#createCompanyScreen #companyCEP {
+    min-width: 120px; /* Largura mínima para CEP completo */
+}
+
+/* Responsividade para campos longos */
+@media (max-width: 768px) {
+    #createCompanyScreen .form-floating > .form-control {
+        font-size: 0.9rem;
+        min-width: 0;
+    }
+    
+    #createCompanyScreen #companyCNPJ,
+    #createCompanyScreen #companyCEP {
+        min-width: 0;
+    }
+}
