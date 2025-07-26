@@ -1,0 +1,210 @@
+{
+  "name": "Omie MCP Tool Execution - Completo",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "omie-tools",
+        "options": {
+          "responseMode": "responseNode"
+        }
+      },
+      "name": "Tool Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "tool_name",
+              "name": "tool_name",
+              "value": "={{ $json.body.tool_name || 'testar_conexao' }}",
+              "type": "string"
+            },
+            {
+              "id": "arguments",
+              "name": "arguments",
+              "value": "={{ $json.body.arguments || {} }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Extract Parameters",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.tool_name }}",
+              "rightValue": "testar_conexao,consultar_categorias,consultar_departamentos,consultar_tipos_documento,consultar_contas_pagar,consultar_contas_receber",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "name": "Validate Tool",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/mcp/tools/={{ $json.tool_name }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"arguments\": $json.arguments } }}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "Execute Tool",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        800,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/sse/tools/={{ $json.tool_name }}",
+        "options": {
+          "headers": {
+            "Accept": "text/event-stream"
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "Stream Tool Execution",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        800,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": true, \"result\": $json.content[0].text, \"tool_name\": $('Extract Parameters').item.json.tool_name, \"execution_time\": $now } }}",
+        "options": {
+          "responseHeaders": {
+            "Content-Type": "application/json"
+          }
+        }
+      },
+      "name": "Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": false, \"error\": \"Invalid tool name\", \"available_tools\": [\"testar_conexao\", \"consultar_categorias\", \"consultar_departamentos\", \"consultar_tipos_documento\", \"consultar_contas_pagar\", \"consultar_contas_receber\"] } }}",
+        "options": {
+          "responseHeaders": {
+            "Content-Type": "application/json"
+          },
+          "responseCode": 400
+        }
+      },
+      "name": "Invalid Tool Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "Tool Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract Parameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Parameters": {
+      "main": [
+        [
+          {
+            "node": "Validate Tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Tool": {
+      "main": [
+        [
+          {
+            "node": "Execute Tool",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Invalid Tool Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Tool": {
+      "main": [
+        [
+          {
+            "node": "Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

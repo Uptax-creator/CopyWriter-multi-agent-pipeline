@@ -1,0 +1,2 @@
+2025-07-15 12:25:12,563 - nibo-mcp-server - INFO - Módulos do Nibo importados com sucesso
+2025-07-15 12:25:12,932 - nibo-mcp-server - ERROR - Erro ao importar MCP: cannot import name 'eval_type_backport' from 'pydantic._internal._typing_extra' (/Users/kleberdossantosribeiro/omie-mcp/venv/lib/python3.12/site-packages/pydantic/_internal/_typing_extra.py)

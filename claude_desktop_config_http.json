@@ -1,24 +1,15 @@
 {
   "mcpServers": {
-    "omie-erp-http": {
+    "omie-erp": {
       "command": "python3",
       "args": [
-        "/Users/kleberdossantosribeiro/omie-mcp/claude_mcp_client_parameterized.py",
-        "--server-url",
-        "http://localhost:3001",
-        "--server-name",
-        "omie-erp"
-      ]
-    },
-    "nibo-erp-http": {
-      "command": "python3",
-      "args": [
-        "/Users/kleberdossantosribeiro/omie-mcp/claude_mcp_client_parameterized.py",
-        "--server-url",
-        "http://localhost:3002",
-        "--server-name",
-        "nibo-erp"
-      ]
+        "/Users/kleberdossantosribeiro/omie-mcp/omie_mcp_server_hybrid.py",
+        "--mode",
+        "stdio"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/kleberdossantosribeiro/omie-mcp"
+      }
     }
   }
 }

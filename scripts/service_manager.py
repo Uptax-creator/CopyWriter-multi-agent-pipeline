@@ -19,8 +19,8 @@ import psutil
 PROJECT_ROOT = Path(__file__).parent.parent
 PID_FILE = PROJECT_ROOT / "server.pid"
 LOG_FILE = PROJECT_ROOT / "logs" / "service.log"
-SERVER_URL = "http://localhost:3000"
-SERVER_SCRIPT = PROJECT_ROOT / "run_server.py"
+SERVER_URL = "http://localhost:3001"
+SERVER_SCRIPT = PROJECT_ROOT / "omie_http_server_fastapi.py"
 
 class ServiceManager:
     """Gerenciador do serviço Omie MCP"""
@@ -81,11 +81,11 @@ class ServiceManager:
                 
                 # Verificar saúde via HTTP
                 try:
-                    response = requests.get(f"{SERVER_URL}/health", timeout=5)
+                    response = requests.get(f"{SERVER_URL}/", timeout=5)
                     if response.status_code == 200:
                         status["health"] = "healthy"
                         health_data = response.json()
-                        status["uptime"] = health_data.get("uptime")
+                        status["uptime"] = health_data.get("uptime", "active")
                     else:
                         status["health"] = "unhealthy"
                 except:

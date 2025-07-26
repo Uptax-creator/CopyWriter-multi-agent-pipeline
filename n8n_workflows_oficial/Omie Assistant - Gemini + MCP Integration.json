@@ -1,0 +1,167 @@
+{
+  "name": "Omie Assistant - Gemini + MCP Integration",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "id": "chat-interface",
+      "name": "Chat Interface",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "position": [
+        208,
+        304
+      ],
+      "typeVersion": 1,
+      "webhookId": "0a52a8ad-eeed-4141-a9c1-d5b5caebd8de"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Você é o **Omie Assistant**, especialista em ERP Omie com acesso às ferramentas MCP.\n\n🔧 **FERRAMENTAS MCP:**\n- testar_conexao: Testa conectividade API Omie\n- consultar_categorias: Lista categorias (params: pagina, registros_por_pagina)\n- consultar_clientes: Lista clientes (params: pagina, registros_por_pagina) \n- consultar_fornecedores: Lista fornecedores (params: pagina, registros_por_pagina)\n\n📋 **DIRETRIZES:**\n✅ SEMPRE use ferramentas MCP para dados do Omie\n✅ Formato: 🔍 Consultando... → 📊 Resultados → 💡 Insights\n✅ Seja proativo e sugira consultas relacionadas\n✅ Use emojis para organizar respostas\n\n⚡ **COMANDOS:**\n- teste/conexão → testar_conexao\n- clientes → consultar_clientes \n- fornecedores → consultar_fornecedores\n- categorias → consultar_categorias\n\nMensagem: {{ $json.chatInput }}",
+        "options": {}
+      },
+      "id": "ai-agent",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        608,
+        304
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "id": "gemini-model",
+      "name": "Google Gemini Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "position": [
+        544,
+        496
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "PoWDvtAx9fpTHg72",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sseEndpoint": "=https://applications-n8nt.jg26hn.easypanel.host/mcp/omie-mcp"
+      },
+      "id": "mcp-client",
+      "name": "MCP Client",
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "position": [
+        880,
+        528
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "format-response",
+      "name": "Format Response",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1120,
+        320
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        672,
+        560
+      ],
+      "id": "499393c3-bd7a-473c-aee0-437f2e9ff681",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Chat Interface": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Format Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true
+  },
+  "versionId": "31e31ccf-7b12-4304-b62d-3959716e5e78",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3f40ecf585e4f1acafcb7ff5109853efd2a0b9ae077b106e914ff969d630702d"
+  },
+  "id": "rLBK8ZZ3nKUWNjEd",
+  "tags": []
+}

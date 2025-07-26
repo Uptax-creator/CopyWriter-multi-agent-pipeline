@@ -1,0 +1,155 @@
+{
+  "name": "Omie MCP Client Tool - OFICIAL CORRETO",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "tool_name",
+              "name": "tool_name",
+              "value": "testar_conexao",
+              "type": "string"
+            },
+            {
+              "id": "arguments",
+              "name": "arguments",
+              "value": "={}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Set Tool Parameters",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/mcp/tools/={{ $json.tool_name }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"arguments\": $json.arguments } }}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          "timeout": 30000,
+          "retry": {
+            "enabled": true,
+            "maxRetries": 3,
+            "retryDelay": 1000
+          }
+        }
+      },
+      "name": "Execute MCP Tool via HTTP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "timestamp",
+              "name": "timestamp",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "tool_name",
+              "name": "tool_name",
+              "value": "={{ $('Set Tool Parameters').item.json.tool_name }}",
+              "type": "string"
+            },
+            {
+              "id": "tool_result",
+              "name": "tool_result",
+              "value": "={{ $json.content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "execution_status",
+              "name": "execution_status",
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "id": "full_response",
+              "name": "full_response",
+              "value": "={{ $json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Process MCP Result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        800,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set Tool Parameters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Tool Parameters": {
+      "main": [
+        [
+          {
+            "node": "Execute MCP Tool via HTTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute MCP Tool via HTTP": {
+      "main": [
+        [
+          {
+            "node": "Process MCP Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

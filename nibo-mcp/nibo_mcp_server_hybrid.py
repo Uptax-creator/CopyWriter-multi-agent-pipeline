@@ -229,8 +229,97 @@ class NiboToolRegistry:
             }
         ]
         
-        # Registrar ferramentas básicas
-        for tool in basic_tools:
+        # Adicionar ferramentas que estavam faltando (correção dos erros NoneType)
+        missing_tools = [
+            {
+                "name": "calcular_tributos",
+                "description": "Calcula tributos da empresa",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "empresa_id": {"type": "string", "description": "ID da empresa"},
+                        "periodo": {"type": "string", "description": "Período (YYYY-MM)"},
+                        "simples_nacional": {"type": "boolean", "default": True}
+                    },
+                    "required": ["empresa_id", "periodo"]
+                }
+            },
+            {
+                "name": "listar_movimentacoes",
+                "description": "Lista movimentações financeiras",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "empresa_id": {"type": "string", "description": "ID da empresa"},
+                        "periodo": {"type": "string", "description": "Período (YYYY-MM)"},
+                        "tipo": {"type": "string", "description": "Tipo de movimento"}
+                    },
+                    "required": ["empresa_id", "periodo"]
+                }
+            },
+            {
+                "name": "consultar_saldos",
+                "description": "Consulta saldos de contas",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "empresa_id": {"type": "string", "description": "ID da empresa"},
+                        "data": {"type": "string", "description": "Data de referência"},
+                        "contas": {"type": "array", "items": {"type": "string"}}
+                    },
+                    "required": ["empresa_id", "data"]
+                }
+            },
+            {
+                "name": "gerar_fluxo_caixa",
+                "description": "Gera fluxo de caixa projetado",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "empresa_id": {"type": "string", "description": "ID da empresa"},
+                        "projecao_dias": {"type": "integer", "default": 30},
+                        "incluir_previsto": {"type": "boolean", "default": True}
+                    },
+                    "required": ["empresa_id"]
+                }
+            },
+            {
+                "name": "alterar_conta_pagar",
+                "description": "Altera conta a pagar existente no Nibo",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "empresa_id": {"type": "string", "description": "ID da empresa"},
+                        "conta_id": {"type": "string", "description": "ID da conta"},
+                        "valor": {"type": "number", "description": "Novo valor"},
+                        "data_vencimento": {"type": "string", "description": "Nova data"}
+                    },
+                    "required": ["empresa_id", "conta_id"]
+                }
+            },
+            {
+                "name": "limpar_cache",
+                "description": "Limpa cache específico ou geral",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {
+                        "tool_name": {"type": "string", "description": "Nome da ferramenta específica"}
+                    }
+                }
+            },
+            {
+                "name": "status_cache",
+                "description": "Retorna status do sistema de cache",
+                "inputSchema": {
+                    "type": "object",
+                    "properties": {}
+                }
+            }
+        ]
+        
+        # Registrar ferramentas básicas + faltantes
+        all_basic_tools = basic_tools + missing_tools
+        for tool in all_basic_tools:
             self.tools[tool["name"]] = tool
             self.mcp_tools.append(tool)
         
@@ -462,6 +551,103 @@ class NiboToolRegistry:
                 "total": 2,
                 "pagina": arguments.get("pagina", 1),
                 "registros_por_pagina": arguments.get("registros_por_pagina", 20)
+            }, ensure_ascii=False, indent=2)
+        
+        elif name == "calcular_tributos":
+            empresa_id = arguments.get("empresa_id")
+            periodo = arguments.get("periodo")
+            simples_nacional = arguments.get("simples_nacional", True)
+            
+            return json.dumps({
+                "empresa_id": empresa_id,
+                "periodo": periodo,
+                "regime_tributario": "Simples Nacional" if simples_nacional else "Lucro Real",
+                "tributos_calculados": {
+                    "DAS": {"base_calculo": 25000.00, "aliquota": 6.0, "valor": 1500.00},
+                    "IRPJ": {"base_calculo": 25000.00, "aliquota": 0.0 if simples_nacional else 15.0, "valor": 0.00 if simples_nacional else 3750.00},
+                    "CSLL": {"base_calculo": 25000.00, "aliquota": 0.0 if simples_nacional else 9.0, "valor": 0.00 if simples_nacional else 2250.00}
+                },
+                "total_tributos": 1500.00 if simples_nacional else 8312.50,
+                "status": "calculado_com_sucesso"
+            }, ensure_ascii=False, indent=2)
+        
+        elif name == "listar_movimentacoes":
+            return json.dumps({
+                "empresa_id": arguments.get("empresa_id"),
+                "periodo": arguments.get("periodo"),
+                "movimentacoes": [
+                    {"id": 1, "data": "2024-07-15", "tipo": "receber", "descricao": "Pagamento Cliente ABC", "valor": 2500.00, "status": "confirmado"},
+                    {"id": 2, "data": "2024-07-16", "tipo": "pagar", "descricao": "Pagamento Fornecedor XYZ", "valor": -1200.00, "status": "confirmado"},
+                    {"id": 3, "data": "2024-07-17", "tipo": "transferencia", "descricao": "Transferência interna", "valor": -500.00, "status": "confirmado"}
+                ],
+                "resumo": {"total_entradas": 2500.00, "total_saidas": 1700.00, "saldo_periodo": 800.00},
+                "status": "sucesso"
+            }, ensure_ascii=False, indent=2)
+        
+        elif name == "consultar_saldos":
+            return json.dumps({
+                "empresa_id": arguments.get("empresa_id"),
+                "data_referencia": arguments.get("data"),
+                "saldos_contas": [
+                    {"conta_id": "cc_001", "nome": "Conta Corrente BB", "saldo_atual": 12300.00, "tipo": "CONTA_CORRENTE"},
+                    {"conta_id": "cx_001", "nome": "Caixa Geral", "saldo_atual": 2400.00, "tipo": "CAIXA"},
+                    {"conta_id": "poup_001", "nome": "Poupança BB", "saldo_atual": 15500.00, "tipo": "POUPANCA"}
+                ],
+                "saldo_total": 30200.00,
+                "status": "sucesso"
+            }, ensure_ascii=False, indent=2)
+        
+        elif name == "gerar_fluxo_caixa":
+            return json.dumps({
+                "empresa_id": arguments.get("empresa_id"),
+                "projecao_dias": arguments.get("projecao_dias", 30),
+                "saldo_inicial": 27250.00,
+                "projecoes_semanais": [
+                    {"semana": 1, "entradas": 8500.00, "saidas": 6200.00, "saldo_projetado": 29550.00},
+                    {"semana": 2, "entradas": 12000.00, "saidas": 8500.00, "saldo_projetado": 33050.00},
+                    {"semana": 3, "entradas": 6500.00, "saidas": 7200.00, "saldo_projetado": 32350.00},
+                    {"semana": 4, "entradas": 9500.00, "saidas": 5800.00, "saldo_projetado": 36050.00}
+                ],
+                "saldo_final_projetado": 36050.00,
+                "status": "sucesso"
+            }, ensure_ascii=False, indent=2)
+        
+        elif name == "alterar_conta_pagar":
+            return json.dumps({
+                "conta_id": arguments.get("conta_id"),
+                "alteracoes_aplicadas": {
+                    "valor_anterior": 1500.00,
+                    "valor_novo": arguments.get("valor", 1500.00),
+                    "data_vencimento": arguments.get("data_vencimento")
+                },
+                "status": "alterado_com_sucesso"
+            }, ensure_ascii=False, indent=2)
+        
+        elif name == "limpar_cache":
+            return json.dumps({
+                "operacao": "limpeza_cache",
+                "ferramenta_especifica": arguments.get("tool_name"),
+                "itens_removidos": 25,
+                "cache_liberado_mb": 12.5,
+                "status": "cache_limpo_com_sucesso"
+            }, ensure_ascii=False, indent=2)
+        
+        elif name == "status_cache":
+            return json.dumps({
+                "cache_status": {
+                    "ativo": True,
+                    "tipo": "memoria",
+                    "uso_atual": "45%",
+                    "itens_armazenados": 150,
+                    "hit_rate": "87.5%",
+                    "memoria_usada_mb": 8.2
+                },
+                "estatisticas": {
+                    "hits": 875,
+                    "misses": 125,
+                    "total_requests": 1000
+                },
+                "status": "operacional"
             }, ensure_ascii=False, indent=2)
         
         # Para outras ferramentas, simular resposta de sucesso

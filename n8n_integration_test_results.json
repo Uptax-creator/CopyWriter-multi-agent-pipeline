@@ -1,0 +1,190 @@
+{
+  "test_suite": "n8n_omie_mcp_integration",
+  "total_tests": 6,
+  "successful_tests": 6,
+  "failed_tests": 0,
+  "success_rate": 100.0,
+  "total_time_seconds": 0.31,
+  "results": [
+    {
+      "test": "server_health",
+      "status": "success",
+      "response_code": 200,
+      "data": {
+        "name": "Omie MCP Server",
+        "version": "2.0.0-hybrid",
+        "mode": "HTTP",
+        "tools": 6,
+        "endpoints": [
+          "/mcp/initialize",
+          "/mcp/tools",
+          "/mcp/tools/{tool_name}",
+          "/test/{tool_name}",
+          "/sse/events",
+          "/sse/tools/{tool_name}"
+        ],
+        "features": {
+          "mcp_protocol": true,
+          "server_sent_events": true,
+          "n8n_compatible": true,
+          "real_time_streaming": true
+        }
+      },
+      "timestamp": 1752797230.842767
+    },
+    {
+      "test": "tools_list",
+      "status": "success",
+      "tools_count": 6,
+      "tools": [
+        "testar_conexao",
+        "consultar_categorias",
+        "consultar_departamentos",
+        "consultar_tipos_documento",
+        "consultar_contas_pagar",
+        "consultar_contas_receber"
+      ],
+      "timestamp": 1752797230.842983
+    },
+    {
+      "test": "tool_execution_testar_conexao",
+      "status": "success",
+      "response_code": 200,
+      "tool_name": "testar_conexao",
+      "arguments": {},
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"status\": \"conectado\",\n  \"servidor\": \"Omie ERP\",\n  \"modo\": \"híbrido\",\n  \"ferramentas_disponíveis\": 6,\n  \"ferramentas_http\": true,\n  \"configuracao\": true\n}"
+          }
+        ]
+      },
+      "timestamp": 1752797230.866812
+    },
+    {
+      "test": "tool_execution_consultar_categorias",
+      "status": "success",
+      "response_code": 200,
+      "tool_name": "consultar_categorias",
+      "arguments": {
+        "pagina": 1,
+        "registros_por_pagina": 3
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "**Pagina:** 1\\n**Total De Paginas:** 51\\n**Registros:** 3\\n**Total De Registros:** 152\\n**Categoria Cadastro:**\\n- codigo: 0.01 | descricao: Transferência\\n- codigo: 0.01.01 | descricao: Entrada de Transferência\\n- codigo: 0.01.02 | descricao: Saída de Transferência"
+          }
+        ]
+      },
+      "timestamp": 1752797231.085984
+    },
+    {
+      "test": "n8n_webhook_simulation",
+      "status": "success",
+      "webhook_data": {
+        "tool_name": "consultar_categorias",
+        "arguments": {
+          "pagina": 1,
+          "registros_por_pagina": 5
+        },
+        "source": "n8n_webhook",
+        "workflow_id": "test_workflow_123"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "**Pagina:** 1\\n**Total De Paginas:** 31\\n**Registros:** 5\\n**Total De Registros:** 152\\n**Categoria Cadastro:**\\n- codigo: 0.01 | descricao: Transferência\\n- codigo: 0.01.01 | descricao: Entrada de Transferência\\n- codigo: 0.01.02 | descricao: Saída de Transferência\\n- codigo: 1.01 | descricao: Receitas Diretas\\n- codigo: 1.01.01 | descricao: Clientes - Venda Produtos"
+          }
+        ]
+      },
+      "timestamp": 1752797231.141707
+    },
+    {
+      "test": "concurrent_requests",
+      "status": "success",
+      "total_requests": 4,
+      "successful_requests": 4,
+      "total_time_seconds": 0.25,
+      "avg_time_per_request": 0.06,
+      "results": [
+        {
+          "test": "tool_execution_testar_conexao",
+          "status": "success",
+          "response_code": 200,
+          "tool_name": "testar_conexao",
+          "arguments": {},
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"status\": \"conectado\",\n  \"servidor\": \"Omie ERP\",\n  \"modo\": \"híbrido\",\n  \"ferramentas_disponíveis\": 6,\n  \"ferramentas_http\": true,\n  \"configuracao\": true\n}"
+              }
+            ]
+          },
+          "timestamp": 1752797230.86675
+        },
+        {
+          "test": "tool_execution_consultar_categorias",
+          "status": "success",
+          "response_code": 200,
+          "tool_name": "consultar_categorias",
+          "arguments": {
+            "pagina": 1,
+            "registros_por_pagina": 3
+          },
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "**Pagina:** 1\\n**Total De Paginas:** 51\\n**Registros:** 3\\n**Total De Registros:** 152\\n**Categoria Cadastro:**\\n- codigo: 0.01 | descricao: Transferência\\n- codigo: 0.01.01 | descricao: Entrada de Transferência\\n- codigo: 0.01.02 | descricao: Saída de Transferência"
+              }
+            ]
+          },
+          "timestamp": 1752797231.083881
+        },
+        {
+          "test": "tool_execution_consultar_departamentos",
+          "status": "success",
+          "response_code": 200,
+          "tool_name": "consultar_departamentos",
+          "arguments": {
+            "pagina": 1,
+            "registros_por_pagina": 3
+          },
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "**Pagina:** 1\\n**Total De Paginas:** 3\\n**Registros:** 3\\n**Total De Registros:** 9\\n**Departamentos:**\\n- codigo: 2197687650 | descricao: Administrativo\\n- codigo: 2197687651 | descricao: Comercial e Marketing\\n- codigo: 2197687652 | descricao: Sua Empresa"
+              }
+            ]
+          },
+          "timestamp": 1752797231.077591
+        },
+        {
+          "test": "tool_execution_testar_conexao",
+          "status": "success",
+          "response_code": 200,
+          "tool_name": "testar_conexao",
+          "arguments": {},
+          "response": {
+            "content": [
+              {
+                "type": "text",
+                "text": "{\n  \"status\": \"conectado\",\n  \"servidor\": \"Omie ERP\",\n  \"modo\": \"híbrido\",\n  \"ferramentas_disponíveis\": 6,\n  \"ferramentas_http\": true,\n  \"configuracao\": true\n}"
+              }
+            ]
+          },
+          "timestamp": 1752797230.8668501
+        }
+      ],
+      "timestamp": 1752797231.084125
+    }
+  ],
+  "timestamp": 1752797231.141928,
+  "verdict": "PASSED"
+}

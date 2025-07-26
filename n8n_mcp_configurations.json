@@ -1,0 +1,650 @@
+{
+  "mcp_server_trigger_optimized": {
+    "name": "Omie MCP Server Trigger - Otimizado",
+    "active": true,
+    "nodes": [
+      {
+        "parameters": {
+          "serverUrl": "http://localhost:3000",
+          "transport": "sse",
+          "options": {
+            "headers": {
+              "Content-Type": "application/json",
+              "Accept": "text/event-stream",
+              "Cache-Control": "no-cache",
+              "Connection": "keep-alive"
+            },
+            "reconnect": true,
+            "reconnectInterval": 5000,
+            "maxReconnectAttempts": 10,
+            "timeout": 30000
+          },
+          "authentication": {
+            "type": "none"
+          }
+        },
+        "name": "MCP Server Trigger",
+        "type": "n8n-nodes-langchain.mcptrigger",
+        "typeVersion": 1,
+        "position": [400, 300],
+        "webhookId": "omie-mcp-webhook"
+      },
+      {
+        "parameters": {
+          "respondWith": "allEntries",
+          "options": {
+            "responseHeaders": {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+              "Access-Control-Allow-Headers": "Content-Type, Authorization"
+            }
+          }
+        },
+        "name": "Respond to Webhook",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [600, 300]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.method }}",
+                "rightValue": "tools/list",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        },
+        "name": "Check MCP Method",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [800, 300]
+      }
+    ],
+    "connections": {
+      "MCP Server Trigger": {
+        "main": [
+          [
+            {
+              "node": "Check MCP Method",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Check MCP Method": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    }
+  },
+
+  "mcp_client_tool_sse_optimized": {
+    "name": "Omie MCP Client Tool - SSE Streamable",
+    "active": true,
+    "nodes": [
+      {
+        "parameters": {},
+        "name": "Manual Trigger",
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [200, 300]
+      },
+      {
+        "parameters": {
+          "resource": "clientTool",
+          "operation": "listen",
+          "serverUrl": "http://localhost:3000",
+          "transport": "sse",
+          "endpoint": "/sse/events",
+          "options": {
+            "headers": {
+              "Accept": "text/event-stream",
+              "Cache-Control": "no-cache",
+              "Connection": "keep-alive",
+              "User-Agent": "n8n-mcp-client/1.0"
+            },
+            "reconnect": true,
+            "reconnectInterval": 3000,
+            "maxReconnectAttempts": 5,
+            "timeout": 60000,
+            "parseJson": true,
+            "eventFilter": "server_status,tool_result,tool_error"
+          },
+          "authentication": {
+            "type": "none"
+          }
+        },
+        "name": "MCP Client Tool - SSE",
+        "type": "n8n-nodes-langchain.toolmcp",
+        "typeVersion": 1,
+        "position": [450, 300]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.event }}",
+                "rightValue": "server_status",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        },
+        "name": "Filter Server Status",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [700, 200]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.event }}",
+                "rightValue": "tool_result",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        },
+        "name": "Filter Tool Results",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [700, 400]
+      },
+      {
+        "parameters": {
+          "fields": {
+            "values": [
+              {
+                "name": "timestamp",
+                "value": "={{ $now }}"
+              },
+              {
+                "name": "server_status",
+                "value": "={{ $json.data.status }}"
+              },
+              {
+                "name": "tools_available",
+                "value": "={{ $json.data.tools_available }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Process Status",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3,
+        "position": [950, 200]
+      },
+      {
+        "parameters": {
+          "fields": {
+            "values": [
+              {
+                "name": "timestamp",
+                "value": "={{ $now }}"
+              },
+              {
+                "name": "tool_name",
+                "value": "={{ $json.data.tool_name }}"
+              },
+              {
+                "name": "result",
+                "value": "={{ $json.data.result }}"
+              },
+              {
+                "name": "status",
+                "value": "={{ $json.data.status }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Process Tool Result",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3,
+        "position": [950, 400]
+      }
+    ],
+    "connections": {
+      "Manual Trigger": {
+        "main": [
+          [
+            {
+              "node": "MCP Client Tool - SSE",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "MCP Client Tool - SSE": {
+        "main": [
+          [
+            {
+              "node": "Filter Server Status",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Filter Tool Results",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter Server Status": {
+        "main": [
+          [
+            {
+              "node": "Process Status",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter Tool Results": {
+        "main": [
+          [
+            {
+              "node": "Process Tool Result",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    }
+  },
+
+  "mcp_http_streamable_workflow": {
+    "name": "Omie MCP HTTP Streamable - Moderno",
+    "active": true,
+    "nodes": [
+      {
+        "parameters": {
+          "path": "mcp-webhook",
+          "options": {
+            "responseMode": "responseNode",
+            "responseHeaders": {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json"
+            }
+          }
+        },
+        "name": "Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [200, 300],
+        "webhookId": "omie-mcp-http-streamable"
+      },
+      {
+        "parameters": {
+          "url": "http://localhost:3000/mcp/tools/={{ $json.body.tool_name }}",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ $json.body.arguments }}",
+          "options": {
+            "headers": {
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "User-Agent": "n8n-mcp-client/1.0"
+            },
+            "timeout": 30000,
+            "retry": {
+              "enabled": true,
+              "maxRetries": 3,
+              "retryDelay": 1000
+            }
+          }
+        },
+        "name": "HTTP Request to MCP",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [450, 300]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.content }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty"
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        },
+        "name": "Check Response",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [700, 300]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ { \"success\": true, \"data\": $json.content[0].text, \"timestamp\": $now, \"tool_name\": $('Webhook').item.json.body.tool_name } }}",
+          "options": {
+            "responseHeaders": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            }
+          }
+        },
+        "name": "Success Response",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [950, 200]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ { \"success\": false, \"error\": \"Tool execution failed\", \"timestamp\": $now } }}",
+          "options": {
+            "responseHeaders": {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*"
+            },
+            "responseCode": 500
+          }
+        },
+        "name": "Error Response",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [950, 400]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request to MCP",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request to MCP": {
+        "main": [
+          [
+            {
+              "node": "Check Response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Check Response": {
+        "main": [
+          [
+            {
+              "node": "Success Response",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Error Response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    }
+  },
+
+  "mcp_tool_execution_workflow": {
+    "name": "Omie MCP Tool Execution - Completo",
+    "active": true,
+    "nodes": [
+      {
+        "parameters": {
+          "path": "omie-tools",
+          "options": {
+            "responseMode": "responseNode"
+          }
+        },
+        "name": "Tool Webhook",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [200, 300]
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "tool_name",
+                "name": "tool_name",
+                "value": "={{ $json.body.tool_name || 'testar_conexao' }}",
+                "type": "string"
+              },
+              {
+                "id": "arguments",
+                "name": "arguments",
+                "value": "={{ $json.body.arguments || {} }}",
+                "type": "object"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "name": "Extract Parameters",
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3,
+        "position": [400, 300]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.tool_name }}",
+                "rightValue": "testar_conexao,consultar_categorias,consultar_departamentos,consultar_tipos_documento,consultar_contas_pagar,consultar_contas_receber",
+                "operator": {
+                  "type": "string",
+                  "operation": "contains"
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        },
+        "name": "Validate Tool",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [600, 300]
+      },
+      {
+        "parameters": {
+          "url": "http://localhost:3000/mcp/tools/={{ $json.tool_name }}",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={{ { \"arguments\": $json.arguments } }}",
+          "options": {
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "timeout": 30000
+          }
+        },
+        "name": "Execute Tool",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [800, 200]
+      },
+      {
+        "parameters": {
+          "url": "http://localhost:3000/sse/tools/={{ $json.tool_name }}",
+          "options": {
+            "headers": {
+              "Accept": "text/event-stream"
+            },
+            "timeout": 30000
+          }
+        },
+        "name": "Stream Tool Execution",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4,
+        "position": [800, 400]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ { \"success\": true, \"result\": $json.content[0].text, \"tool_name\": $('Extract Parameters').item.json.tool_name, \"execution_time\": $now } }}",
+          "options": {
+            "responseHeaders": {
+              "Content-Type": "application/json"
+            }
+          }
+        },
+        "name": "Success Response",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [1000, 200]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ { \"success\": false, \"error\": \"Invalid tool name\", \"available_tools\": [\"testar_conexao\", \"consultar_categorias\", \"consultar_departamentos\", \"consultar_tipos_documento\", \"consultar_contas_pagar\", \"consultar_contas_receber\"] } }}",
+          "options": {
+            "responseHeaders": {
+              "Content-Type": "application/json"
+            },
+            "responseCode": 400
+          }
+        },
+        "name": "Invalid Tool Response",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [1000, 400]
+      }
+    ],
+    "connections": {
+      "Tool Webhook": {
+        "main": [
+          [
+            {
+              "node": "Extract Parameters",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract Parameters": {
+        "main": [
+          [
+            {
+              "node": "Validate Tool",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validate Tool": {
+        "main": [
+          [
+            {
+              "node": "Execute Tool",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Invalid Tool Response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute Tool": {
+        "main": [
+          [
+            {
+              "node": "Success Response",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    }
+  }
+}

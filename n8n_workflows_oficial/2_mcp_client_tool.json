@@ -1,0 +1,91 @@
+{
+  "name": "Omie MCP Client Tool - Oficial",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mcpServerUrl": "http://localhost:3000",
+        "authentication": "none",
+        "toolName": "testar_conexao",
+        "arguments": {},
+        "options": {
+          "timeout": 30000,
+          "retryAttempts": 3,
+          "retryDelay": 1000
+        }
+      },
+      "name": "MCP Client Tool",
+      "type": "n8n-nodes-langchain.toolmcp",
+      "typeVersion": 1,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "timestamp",
+              "value": "={{ $now }}"
+            },
+            {
+              "name": "tool_result",
+              "value": "={{ $json }}"
+            },
+            {
+              "name": "execution_status",
+              "value": "success"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Process Result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        700,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "MCP Client Tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client Tool": {
+      "main": [
+        [
+          {
+            "node": "Process Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

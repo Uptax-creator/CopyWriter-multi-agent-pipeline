@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "omie-conjunto-1": {
+      "command": "python3",
+      "args": [
+        "/Users/kleberdossantosribeiro/omie-mcp/omie_fastmcp_conjunto_1_enhanced.py"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/kleberdossantosribeiro/omie-mcp"
+      }
+    },
+    "omie-conjunto-2": {
+      "command": "python3", 
+      "args": [
+        "/Users/kleberdossantosribeiro/omie-mcp/omie_fastmcp_conjunto_2_complete.py"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/kleberdossantosribeiro/omie-mcp"
+      }
+    }
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "name": "Teste Todas Ferramentas Omie - OFICIAL",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "tools",
+              "name": "tools",
+              "value": "=[\n  {\"name\": \"testar_conexao\", \"args\": {}},\n  {\"name\": \"consultar_categorias\", \"args\": {\"pagina\": 1, \"registros_por_pagina\": 3}},\n  {\"name\": \"consultar_departamentos\", \"args\": {\"pagina\": 1, \"registros_por_pagina\": 3}},\n  {\"name\": \"consultar_tipos_documento\", \"args\": {}},\n  {\"name\": \"consultar_contas_pagar\", \"args\": {\"pagina\": 1, \"registros_por_pagina\": 3}},\n  {\"name\": \"consultar_contas_receber\", \"args\": {\"pagina\": 1, \"registros_por_pagina\": 3}}\n]",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Define Tools to Test",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "name": "Split Tools",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "current_tool",
+              "name": "current_tool",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "current_args",
+              "name": "current_args",
+              "value": "={{ $json.args }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Extract Current Tool",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        800,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/mcp/tools/={{ $json.current_tool }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"arguments\": $json.current_args } }}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          "timeout": 30000,
+          "retry": {
+            "enabled": true,
+            "maxRetries": 2,
+            "retryDelay": 1000
+          }
+        }
+      },
+      "name": "Execute Tool",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "tool_name",
+              "name": "tool_name",
+              "value": "={{ $('Extract Current Tool').item.json.current_tool }}",
+              "type": "string"
+            },
+            {
+              "id": "arguments",
+              "name": "arguments",
+              "value": "={{ $('Extract Current Tool').item.json.current_args }}",
+              "type": "object"
+            },
+            {
+              "id": "result",
+              "name": "result",
+              "value": "={{ $json.content[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "timestamp",
+              "name": "timestamp",
+              "value": "={{ $now }}",
+              "type": "string"
+            },
+            {
+              "id": "status",
+              "name": "status",
+              "value": "=success",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Format Result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        1200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "wait",
+        "time": 1,
+        "unit": "seconds"
+      },
+      "name": "Wait Between Calls",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        1400,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Define Tools to Test",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Define Tools to Test": {
+      "main": [
+        [
+          {
+            "node": "Split Tools",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Tools": {
+      "main": [
+        [
+          {
+            "node": "Extract Current Tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Current Tool": {
+      "main": [
+        [
+          {
+            "node": "Execute Tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Tool": {
+      "main": [
+        [
+          {
+            "node": "Format Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Result": {
+      "main": [
+        [
+          {
+            "node": "Wait Between Calls",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

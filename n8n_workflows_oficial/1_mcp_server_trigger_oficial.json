@@ -1,0 +1,268 @@
+{
+  "name": "Omie MCP Server Trigger - OFICIAL CORRETO",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "omie-mcp-webhook",
+        "options": {
+          "responseMode": "responseNode",
+          "responseHeaders": {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json"
+          }
+        }
+      },
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "method",
+              "name": "method",
+              "value": "={{ $json.body.method || $json.query.method || 'unknown' }}",
+              "type": "string"
+            },
+            {
+              "id": "params",
+              "name": "params",
+              "value": "={{ $json.body.params || $json.query.params || {} }}",
+              "type": "object"
+            },
+            {
+              "id": "id",
+              "name": "id",
+              "value": "={{ $json.body.id || $json.query.id || Date.now() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Extract MCP Request",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.method }}",
+              "rightValue": "tools/list",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "name": "Check Method Tools List",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        800,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.method }}",
+              "rightValue": "tools/call",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "name": "Check Method Tools Call",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        800,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"jsonrpc\": \"2.0\", \"id\": $json.id, \"result\": { \"tools\": [ { \"name\": \"testar_conexao\", \"description\": \"Testa conexão com API Omie\", \"inputSchema\": { \"type\": \"object\", \"properties\": {} } }, { \"name\": \"consultar_categorias\", \"description\": \"Lista categorias\", \"inputSchema\": { \"type\": \"object\", \"properties\": { \"pagina\": { \"type\": \"integer\", \"default\": 1 }, \"registros_por_pagina\": { \"type\": \"integer\", \"default\": 50 } } } }, { \"name\": \"consultar_departamentos\", \"description\": \"Lista departamentos\", \"inputSchema\": { \"type\": \"object\", \"properties\": { \"pagina\": { \"type\": \"integer\", \"default\": 1 }, \"registros_por_pagina\": { \"type\": \"integer\", \"default\": 50 } } } }, { \"name\": \"consultar_tipos_documento\", \"description\": \"Lista tipos de documento\", \"inputSchema\": { \"type\": \"object\", \"properties\": { \"codigo\": { \"type\": \"string\", \"description\": \"Código do tipo documento (opcional)\" } } } }, { \"name\": \"consultar_contas_pagar\", \"description\": \"Lista contas a pagar\", \"inputSchema\": { \"type\": \"object\", \"properties\": { \"data_inicio\": { \"type\": \"string\" }, \"data_fim\": { \"type\": \"string\" }, \"pagina\": { \"type\": \"integer\", \"default\": 1 }, \"registros_por_pagina\": { \"type\": \"integer\", \"default\": 20 } } } }, { \"name\": \"consultar_contas_receber\", \"description\": \"Lista contas a receber\", \"inputSchema\": { \"type\": \"object\", \"properties\": { \"data_inicio\": { \"type\": \"string\" }, \"data_fim\": { \"type\": \"string\" }, \"pagina\": { \"type\": \"integer\", \"default\": 1 }, \"registros_por_pagina\": { \"type\": \"integer\", \"default\": 20 } } } } ] } } }}",
+        "options": {
+          "responseHeaders": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
+        }
+      },
+      "name": "Return Tools List",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/mcp/tools/={{ $json.params.name }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"arguments\": $json.params.arguments || {} } }}",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          "timeout": 30000
+        }
+      },
+      "name": "Execute Tool via HTTP",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        1000,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"jsonrpc\": \"2.0\", \"id\": $('Extract MCP Request').item.json.id, \"result\": { \"content\": [{ \"type\": \"text\", \"text\": $json.content[0].text }] } } }}",
+        "options": {
+          "responseHeaders": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+          }
+        }
+      },
+      "name": "Return Tool Result",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"jsonrpc\": \"2.0\", \"id\": $json.id, \"error\": { \"code\": -32601, \"message\": \"Method not found\", \"data\": { \"method\": $json.method, \"available_methods\": [\"tools/list\", \"tools/call\"] } } } }}",
+        "options": {
+          "responseHeaders": {
+            "Content-Type": "application/json"
+          },
+          "responseCode": 400
+        }
+      },
+      "name": "Method Not Found",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        600
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Extract MCP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract MCP Request": {
+      "main": [
+        [
+          {
+            "node": "Check Method Tools List",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Check Method Tools Call",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Method Tools List": {
+      "main": [
+        [
+          {
+            "node": "Return Tools List",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Method Not Found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Method Tools Call": {
+      "main": [
+        [
+          {
+            "node": "Execute Tool via HTTP",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Tool via HTTP": {
+      "main": [
+        [
+          {
+            "node": "Return Tool Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

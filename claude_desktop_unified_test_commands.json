@@ -1,0 +1,25 @@
+{
+  "Teste Básico": [
+    "Liste as categorias disponíveis",
+    "Consulte os clientes cadastrados",
+    "Verifique as contas a pagar vencidas"
+  ],
+  "Teste CRUD Projetos": [
+    "Crie um projeto chamado 'Teste Servidor Unificado'",
+    "Liste todos os projetos cadastrados",
+    "Exclua o projeto 'Teste Servidor Unificado'"
+  ],
+  "Teste CRUD Lançamentos": [
+    "Inclua um lançamento de entrada no valor de R$ 1000,00",
+    "Liste os lançamentos da conta corrente CX001"
+  ],
+  "Teste CRUD Contas": [
+    "Inclua uma conta corrente chamada 'Teste Unificado'",
+    "Liste todas as contas correntes",
+    "Mostre o resumo das contas correntes"
+  ],
+  "Teste Resources": [
+    "Verifique o status do servidor unificado",
+    "Mostre a lista de todas as ferramentas disponíveis"
+  ]
+}

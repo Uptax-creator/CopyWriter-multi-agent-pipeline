@@ -1,0 +1,129 @@
+{
+  "name": "MCP Server Template - N8N Integration",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "http://localhost:3000/sse/events",
+        "options": {
+          "headers": {
+            "Accept": "text/event-stream",
+            "Cache-Control": "no-cache"
+          }
+        }
+      },
+      "name": "SSE Monitor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [260, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/mcp/tools/exemplo",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": {
+            "arguments": {
+              "mensagem": "{{$node[\"SSE Monitor\"].json[\"data\"][\"status\"]}}"
+            }
+          }
+        },
+        "method": "POST"
+      },
+      "name": "Execute Tool",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "{{$node[\"Execute Tool\"].json[\"content\"][0][\"text\"]}}",
+              "operation": "contains",
+              "value2": "sucesso"
+            }
+          ]
+        }
+      },
+      "name": "Check Result",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [660, 300]
+    },
+    {
+      "parameters": {
+        "message": "✅ Ferramenta executada com sucesso: {{$node[\"Execute Tool\"].json[\"content\"][0][\"text\"]}}"
+      },
+      "name": "Success Notification",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [860, 200]
+    },
+    {
+      "parameters": {
+        "message": "❌ Erro na execução: {{$node[\"Execute Tool\"].json[\"content\"][0][\"text\"]}}"
+      },
+      "name": "Error Notification",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [860, 400]
+    }
+  ],
+  "connections": {
+    "SSE Monitor": {
+      "main": [
+        [
+          {
+            "node": "Execute Tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Tool": {
+      "main": [
+        [
+          {
+            "node": "Check Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Result": {
+      "main": [
+        [
+          {
+            "node": "Success Notification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [
+    "mcp",
+    "template",
+    "integration"
+  ],
+  "triggerCount": 1,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "1"
+}

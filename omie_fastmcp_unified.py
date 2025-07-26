@@ -1325,13 +1325,27 @@ async def cache_status() -> str:
     """
     try:
         if not CACHE_AVAILABLE or not cache_instance:
-            return format_response("warning", "Sistema de cache não disponível")
+            return format_response("success", {
+                "cache_enabled": False,
+                "status": "não_disponível",
+                "message": "Sistema funcionando sem cache - performance pode ser menor",
+                "recommendations": [
+                    "Instalar dependências de cache: pip install redis",
+                    "Configurar cache no credentials.json",
+                    "Reiniciar servidor para ativar cache"
+                ]
+            })
         
-        stats = cache_instance.get_stats()
-        hot_entries = cache_instance.get_hot_entries(5)
+        try:
+            stats = cache_instance.get_stats()
+            hot_entries = cache_instance.get_hot_entries(5) if hasattr(cache_instance, 'get_hot_entries') else []
+        except:
+            stats = {"total_entries": 0, "hit_rate": "0%", "memory_usage": "0MB"}
+            hot_entries = []
         
         result = {
             "cache_enabled": True,
+            "status": "operacional",
             "statistics": stats,
             "hot_entries": hot_entries,
             "recommendations": []

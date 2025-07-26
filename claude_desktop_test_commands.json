@@ -1,0 +1,24 @@
+{
+  "Básicos": [
+    "Teste a conexão com o Omie ERP",
+    "Liste as categorias disponíveis",
+    "Consulte os clientes cadastrados",
+    "Verifique as contas a pagar vencidas"
+  ],
+  "CRUD Avançado": [
+    "Crie um projeto chamado 'Teste Claude Desktop'",
+    "Liste todos os projetos cadastrados",
+    "Inclua uma conta corrente de teste chamada 'Caixa Teste'",
+    "Liste todas as contas correntes"
+  ],
+  "Monitoramento": [
+    "Verifique o status do sistema de database",
+    "Mostre as métricas de performance das últimas 24 horas",
+    "Verifique se há alertas ativos no sistema"
+  ],
+  "Recursos Avançados": [
+    "Execute o prompt de validação do conjunto 1",
+    "Mostre o roadmap de implementação das tools",
+    "Gere um relatório de status do sistema"
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "name": "Omie Webhook VPS Compatible",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "omie-webhook"
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "tool_name",
+              "value": "={{ $json.body.tool_name || $json.query.tool_name || 'testar_conexao' }}"
+            }
+          ],
+          "object": [
+            {
+              "name": "arguments",
+              "value": "={{ $json.body.arguments || $json.query.arguments || {} }}"
+            }
+          ]
+        }
+      },
+      "name": "Extract Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        400,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.tool_name }}",
+              "operation": "contains",
+              "value2": "testar_conexao,consultar_categorias,consultar_departamentos,consultar_tipos_documento,consultar_contas_pagar,consultar_contas_receber"
+            }
+          ]
+        }
+      },
+      "name": "Valid Tool",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/mcp/tools/={{ $json.tool_name }}",
+        "jsonParameters": true,
+        "options": {
+          "headers": {
+            "content-type": "application/json"
+          }
+        },
+        "bodyParametersJson": "={{ JSON.stringify({\"arguments\": $json.arguments}) }}"
+      },
+      "name": "Execute Tool",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        800,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({\"success\": true, \"tool_name\": $('Extract Data').item.json.tool_name, \"result\": $json.content[0].text, \"timestamp\": Date.now()}) }}"
+      },
+      "name": "Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({\"success\": false, \"error\": \"Invalid tool\", \"available_tools\": [\"testar_conexao\", \"consultar_categorias\", \"consultar_departamentos\"]}) }}",
+        "statusCode": 400
+      },
+      "name": "Error Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1000,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Data": {
+      "main": [
+        [
+          {
+            "node": "Valid Tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Valid Tool": {
+      "main": [
+        [
+          {
+            "node": "Execute Tool",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Tool": {
+      "main": [
+        [
+          {
+            "node": "Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {}
+}

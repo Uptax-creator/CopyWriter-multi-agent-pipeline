@@ -10,6 +10,7 @@ import json
 import logging
 import sys
 import os
+import time
 from typing import Dict, Any, Optional, List
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
@@ -371,8 +372,16 @@ class OmieHTTPServer:
                     "/mcp/initialize",
                     "/mcp/tools",
                     "/mcp/tools/{tool_name}",
-                    "/test/{tool_name}"
-                ]
+                    "/test/{tool_name}",
+                    "/sse/events",
+                    "/sse/tools/{tool_name}"
+                ],
+                "features": {
+                    "mcp_protocol": True,
+                    "server_sent_events": True,
+                    "n8n_compatible": True,
+                    "real_time_streaming": True
+                }
             }
         
         @self.app.post("/mcp/initialize")
@@ -413,6 +422,100 @@ class OmieHTTPServer:
                 return {"status": "success", "data": result}
             except Exception as e:
                 return {"status": "error", "message": str(e)}
+        
+        @self.app.get("/sse/events")
+        async def sse_events():
+            """Server-Sent Events endpoint para N8N"""
+            async def event_generator():
+                try:
+                    while True:
+                        # Enviar status do servidor
+                        status_event = {
+                            "event": "server_status",
+                            "data": {
+                                "timestamp": time.time(),
+                                "status": "active",
+                                "tools_available": len(self.tool_registry.tools),
+                                "mode": "hybrid"
+                            }
+                        }
+                        yield f"data: {json.dumps(status_event)}\n\n"
+                        
+                        # Aguardar 30 segundos antes do próximo evento
+                        await asyncio.sleep(30)
+                        
+                except Exception as e:
+                    logger.error(f"Erro no SSE stream: {e}")
+                    error_event = {
+                        "event": "error",
+                        "data": {"error": str(e), "timestamp": time.time()}
+                    }
+                    yield f"data: {json.dumps(error_event)}\n\n"
+            
+            return StreamingResponse(
+                event_generator(),
+                media_type="text/event-stream",
+                headers={
+                    "Cache-Control": "no-cache",
+                    "Connection": "keep-alive",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Cache-Control"
+                }
+            )
+        
+        @self.app.get("/sse/tools/{tool_name}")
+        async def sse_tool_stream(tool_name: str):
+            """SSE endpoint para execução de ferramentas específicas"""
+            async def tool_event_generator():
+                try:
+                    # Evento de início
+                    start_event = {
+                        "event": "tool_start",
+                        "data": {
+                            "tool_name": tool_name,
+                            "timestamp": time.time(),
+                            "status": "starting"
+                        }
+                    }
+                    yield f"data: {json.dumps(start_event)}\n\n"
+                    
+                    # Executar ferramenta
+                    result = await self.tool_registry.call_tool(tool_name, {})
+                    
+                    # Evento de resultado
+                    result_event = {
+                        "event": "tool_result",
+                        "data": {
+                            "tool_name": tool_name,
+                            "result": result,
+                            "timestamp": time.time(),
+                            "status": "completed"
+                        }
+                    }
+                    yield f"data: {json.dumps(result_event)}\n\n"
+                    
+                except Exception as e:
+                    error_event = {
+                        "event": "tool_error",
+                        "data": {
+                            "tool_name": tool_name,
+                            "error": str(e),
+                            "timestamp": time.time(),
+                            "status": "error"
+                        }
+                    }
+                    yield f"data: {json.dumps(error_event)}\n\n"
+            
+            return StreamingResponse(
+                tool_event_generator(),
+                media_type="text/event-stream",
+                headers={
+                    "Cache-Control": "no-cache",
+                    "Connection": "keep-alive",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Cache-Control"
+                }
+            )
     
     def run(self, host: str = "0.0.0.0", port: int = 3000, debug: bool = False):
         """Executa servidor HTTP"""

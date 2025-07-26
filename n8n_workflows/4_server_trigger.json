@@ -1,0 +1,110 @@
+{
+  "name": "Omie MCP Server Trigger - Otimizado",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "serverUrl": "http://localhost:3000",
+        "transport": "sse",
+        "options": {
+          "headers": {
+            "Content-Type": "application/json",
+            "Accept": "text/event-stream",
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive"
+          },
+          "reconnect": true,
+          "reconnectInterval": 5000,
+          "maxReconnectAttempts": 10,
+          "timeout": 30000
+        },
+        "authentication": {
+          "type": "none"
+        }
+      },
+      "name": "MCP Server Trigger",
+      "type": "n8n-nodes-langchain.mcptrigger",
+      "typeVersion": 1,
+      "position": [
+        400,
+        300
+      ],
+      "webhookId": "omie-mcp-webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "allEntries",
+        "options": {
+          "responseHeaders": {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization"
+          }
+        }
+      },
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        600,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.method }}",
+              "rightValue": "tools/list",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "name": "Check MCP Method",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        800,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "MCP Server Trigger": {
+      "main": [
+        [
+          {
+            "node": "Check MCP Method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check MCP Method": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

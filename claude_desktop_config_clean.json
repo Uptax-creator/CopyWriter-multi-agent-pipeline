@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "omie-mcp": {
+      "command": "python3",
+      "args": [
+        "/Users/kleberdossantosribeiro/omie-mcp/omie_mcp_server_hybrid.py",
+        "--mode",
+        "stdio"
+      ],
+      "env": {
+        "PYTHONPATH": "/Users/kleberdossantosribeiro/omie-mcp"
+      }
+    }
+  }
+}

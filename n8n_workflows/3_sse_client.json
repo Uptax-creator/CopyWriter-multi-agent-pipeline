@@ -1,0 +1,221 @@
+{
+  "name": "Omie MCP Client Tool - SSE Streamable",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        200,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "clientTool",
+        "operation": "listen",
+        "serverUrl": "http://localhost:3000",
+        "transport": "sse",
+        "endpoint": "/sse/events",
+        "options": {
+          "headers": {
+            "Accept": "text/event-stream",
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "User-Agent": "n8n-mcp-client/1.0"
+          },
+          "reconnect": true,
+          "reconnectInterval": 3000,
+          "maxReconnectAttempts": 5,
+          "timeout": 60000,
+          "parseJson": true,
+          "eventFilter": "server_status,tool_result,tool_error"
+        },
+        "authentication": {
+          "type": "none"
+        }
+      },
+      "name": "MCP Client Tool - SSE",
+      "type": "n8n-nodes-langchain.toolmcp",
+      "typeVersion": 1,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.event }}",
+              "rightValue": "server_status",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "name": "Filter Server Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        700,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.event }}",
+              "rightValue": "tool_result",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "name": "Filter Tool Results",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        700,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "timestamp",
+              "value": "={{ $now }}"
+            },
+            {
+              "name": "server_status",
+              "value": "={{ $json.data.status }}"
+            },
+            {
+              "name": "tools_available",
+              "value": "={{ $json.data.tools_available }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Process Status",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        950,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "fields": {
+          "values": [
+            {
+              "name": "timestamp",
+              "value": "={{ $now }}"
+            },
+            {
+              "name": "tool_name",
+              "value": "={{ $json.data.tool_name }}"
+            },
+            {
+              "name": "result",
+              "value": "={{ $json.data.result }}"
+            },
+            {
+              "name": "status",
+              "value": "={{ $json.data.status }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Process Tool Result",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        950,
+        400
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "MCP Client Tool - SSE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client Tool - SSE": {
+      "main": [
+        [
+          {
+            "node": "Filter Server Status",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter Tool Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Server Status": {
+      "main": [
+        [
+          {
+            "node": "Process Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Tool Results": {
+      "main": [
+        [
+          {
+            "node": "Process Tool Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

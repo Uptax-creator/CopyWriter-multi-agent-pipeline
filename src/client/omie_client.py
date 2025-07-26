@@ -19,19 +19,21 @@ class OmieClient:
     
     async def _make_request(self, endpoint: str, call: str, param: Dict[str, Any]) -> Dict[str, Any]:
         """Fazer requisição para a API Omie"""
+        # Garantir que o endpoint termine com /
+        if not endpoint.endswith('/'):
+            endpoint += '/'
+        
         url = f"{self.base_url}/{endpoint}"
         
-        payload = [
-            {
-                "call": call,
-                "app_key": self.auth["app_key"],
-                "app_secret": self.auth["app_secret"],
-                "param": [param]
-            }
-        ]
+        payload = {
+            "call": call,
+            "app_key": self.auth["app_key"],
+            "app_secret": self.auth["app_secret"],
+            "param": [param]
+        }
         
         try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
+            async with httpx.AsyncClient(timeout=self.timeout, follow_redirects=True) as client:
                 logger.debug(f"POST {url} - {call}")
                 response = await client.post(url, json=payload, headers=self.headers)
                 response.raise_for_status()
@@ -39,10 +41,7 @@ class OmieClient:
                 result = response.json()
                 logger.debug(f"Resposta: {result}")
                 
-                if result and len(result) > 0:
-                    return result[0]
-                else:
-                    return {}
+                return result
                     
         except httpx.TimeoutException:
             logger.error(f"Timeout na requisição para {call}")
@@ -63,31 +62,35 @@ class OmieClient:
     
     async def consultar_categorias(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Consultar categorias"""
-        return await self._make_request("geral/categorias/", "ListarCategorias", param)
+        return await self._make_request("geral/categorias", "ListarCategorias", param)
+    
+    async def listar_clientes(self, param: Dict[str, Any]) -> Dict[str, Any]:
+        """Listar clientes"""
+        return await self._make_request("geral/clientes", "ListarClientes", param)
     
     async def consultar_departamentos(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Consultar departamentos"""
-        return await self._make_request("geral/departamentos/", "ListarDepartamentos", param)
+        return await self._make_request("geral/departamentos", "ListarDepartamentos", param)
     
     async def consultar_tipos_documento(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Consultar tipos de documento"""
-        return await self._make_request("geral/tpdoc/", "PesquisarTipoDocumento", param)
+        return await self._make_request("geral/tpdoc", "PesquisarTipoDocumento", param)
     
     async def consultar_contas_pagar(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Consultar contas a pagar"""
-        return await self._make_request("financas/contapagar/", "ListarContasPagar", param)
+        return await self._make_request("financas/contapagar", "ListarContasPagar", param)
     
     async def consultar_contas_receber(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Consultar contas a receber"""
-        return await self._make_request("financas/contareceber/", "ListarContasReceber", param)
+        return await self._make_request("financas/contareceber", "ListarContasReceber", param)
     
     async def consultar_clientes(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Consultar clientes"""
-        return await self._make_request("geral/clientes/", "ListarClientes", param)
+        return await self._make_request("geral/clientes", "ListarClientes", param)
     
     async def consultar_fornecedores(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Consultar fornecedores"""
-        return await self._make_request("geral/fornecedores/", "ListarFornecedores", param)
+        return await self._make_request("geral/fornecedores", "ListarFornecedores", param)
     
     # ============================================================================
     # MÉTODOS DE CRIAÇÃO
@@ -95,19 +98,19 @@ class OmieClient:
     
     async def incluir_cliente(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Incluir cliente"""
-        return await self._make_request("geral/clientes/", "IncluirCliente", param)
+        return await self._make_request("geral/clientes", "IncluirCliente", param)
     
     async def incluir_fornecedor(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Incluir fornecedor"""
-        return await self._make_request("geral/fornecedores/", "IncluirFornecedor", param)
+        return await self._make_request("geral/fornecedores", "IncluirFornecedor", param)
     
     async def incluir_conta_pagar(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Incluir conta a pagar"""
-        return await self._make_request("financas/contapagar/", "IncluirContaPagar", param)
+        return await self._make_request("financas/contapagar", "IncluirContaPagar", param)
     
     async def incluir_conta_receber(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Incluir conta a receber"""
-        return await self._make_request("financas/contareceber/", "IncluirContaReceber", param)
+        return await self._make_request("financas/contareceber", "IncluirContaReceber", param)
     
     # ============================================================================
     # MÉTODOS DE ATUALIZAÇÃO
@@ -115,19 +118,19 @@ class OmieClient:
     
     async def alterar_cliente(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Alterar cliente"""
-        return await self._make_request("geral/clientes/", "AlterarCliente", param)
+        return await self._make_request("geral/clientes", "AlterarCliente", param)
     
     async def alterar_fornecedor(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Alterar fornecedor"""
-        return await self._make_request("geral/fornecedores/", "AlterarFornecedor", param)
+        return await self._make_request("geral/fornecedores", "AlterarFornecedor", param)
     
     async def alterar_conta_pagar(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Alterar conta a pagar"""
-        return await self._make_request("financas/contapagar/", "AlterarContaPagar", param)
+        return await self._make_request("financas/contapagar", "AlterarContaPagar", param)
     
     async def alterar_conta_receber(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Alterar conta a receber"""
-        return await self._make_request("financas/contareceber/", "AlterarContaReceber", param)
+        return await self._make_request("financas/contareceber", "AlterarContaReceber", param)
     
     # ============================================================================
     # MÉTODOS DE EXCLUSÃO
@@ -135,19 +138,19 @@ class OmieClient:
     
     async def excluir_cliente(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Excluir cliente"""
-        return await self._make_request("geral/clientes/", "ExcluirCliente", param)
+        return await self._make_request("geral/clientes", "ExcluirCliente", param)
     
     async def excluir_fornecedor(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Excluir fornecedor"""
-        return await self._make_request("geral/fornecedores/", "ExcluirFornecedor", param)
+        return await self._make_request("geral/fornecedores", "ExcluirFornecedor", param)
     
     async def excluir_conta_pagar(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Excluir conta a pagar"""
-        return await self._make_request("financas/contapagar/", "ExcluirContaPagar", param)
+        return await self._make_request("financas/contapagar", "ExcluirContaPagar", param)
     
     async def excluir_conta_receber(self, param: Dict[str, Any]) -> Dict[str, Any]:
         """Excluir conta a receber"""
-        return await self._make_request("financas/contareceber/", "ExcluirContaReceber", param)
+        return await self._make_request("financas/contareceber", "ExcluirContaReceber", param)
 
 # Instância global do cliente
 omie_client = OmieClient()

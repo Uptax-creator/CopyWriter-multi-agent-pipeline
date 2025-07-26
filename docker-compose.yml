@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  omie-mcp:
+    build: .
+    container_name: omie-mcp-server
+    ports:
+      - "3000:3000"
+    environment:
+      - ENV=production
+      - DEBUG=false
+    volumes:
+      - ./logs:/app/logs
+      - ./credentials.json:/app/credentials.json:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - mcp-network
+
+  nibo-mcp:
+    build: ./nibo-mcp
+    container_name: nibo-mcp-server
+    ports:
+      - "3001:3000"
+    environment:
+      - ENV=production
+      - DEBUG=false
+    volumes:
+      - ./logs:/app/logs
+      - ./nibo-mcp/credentials.json:/app/credentials.json:ro
+    restart: unless-stopped
+    depends_on:
+      - omie-mcp
+    networks:
+      - mcp-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: mcp-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - omie-mcp
+      - nibo-mcp
+    restart: unless-stopped
+    networks:
+      - mcp-network
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: mcp-watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30 --cleanup
+    restart: unless-stopped
+
+networks:
+  mcp-network:
+    driver: bridge

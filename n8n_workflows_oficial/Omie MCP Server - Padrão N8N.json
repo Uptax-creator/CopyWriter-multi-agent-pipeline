@@ -1,0 +1,130 @@
+{
+  "name": "Omie MCP Server - Padrão N8N",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "omie-mcp"
+      },
+      "id": "mcp-trigger",
+      "name": "Omie MCP Server",
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        272,
+        112
+      ],
+      "webhookId": "716a361f-07b7-42bb-b588-d62ba5fb1406"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.method }}",
+              "rightValue": "tools/list",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "id": "73d7efa5-be42-467d-9416-d880f754af5e"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "route-check",
+      "name": "Route MCP Request",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        592,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "tools-list",
+      "name": "Return Omie Tools List",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [
+        800,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:3000/mcp/tools/={{ $json.params.name }}",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ { \"arguments\": $json.params.arguments || {} } }}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "execute-tool",
+      "name": "Execute Omie Tool",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        800,
+        400
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Omie MCP Server": {
+      "main": [
+        [
+          {
+            "node": "Route MCP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route MCP Request": {
+      "main": [
+        [
+          {
+            "node": "Return Omie Tools List",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute Omie Tool",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "all",
+    "saveManualExecutions": true,
+    "saveExecutionProgress": true
+  },
+  "versionId": "6d80d647-64bc-4b35-89c7-99b696570ac3",
+  "meta": {
+    "instanceId": "3f40ecf585e4f1acafcb7ff5109853efd2a0b9ae077b106e914ff969d630702d"
+  },
+  "id": "oFHZjhGBWAq5aPyR",
+  "tags": []
+}
