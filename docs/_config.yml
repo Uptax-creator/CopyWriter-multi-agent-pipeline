@@ -1,0 +1,79 @@
+# UpTax AI Platform - GitHub Pages Configuration
+title: "UpTax AI Platform"
+description: "Business Plan 2025 - MCP Servers Licensing Platform"
+author: "Kleber dos Santos Ribeiro & Agent Especialista"
+
+# GitHub Pages settings
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Site configuration
+url: "https://uptax.github.io"
+baseurl: "/uptax-ai-platform"
+
+# Navigation
+header_pages:
+  - business-plan.md
+  - technical-docs.md
+  - roadmap.md
+
+# SEO
+lang: pt-BR
+timezone: America/Sao_Paulo
+
+# Privacy (importante para informações confidenciais)
+exclude:
+  - credentials.json
+  - .env
+  - secrets/
+  - private/
+  - "*.key"
+  - "*.secret"
+
+# GitHub Pages build settings
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Collections (para organizar documentos)
+collections:
+  docs:
+    output: true
+    permalink: /:collection/:name/
+  business:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "docs"
+    values:
+      layout: "page"
+      author: "UpTax Team"
+  - scope:
+      path: ""
+      type: "business" 
+    values:
+      layout: "page"
+      confidential: true
+
+# Custom variables
+project:
+  name: "UpTax AI Platform"
+  version: "2.0"
+  status: "In Development"
+  launch_date: "2025-08-01"
+
+business_metrics:
+  revenue_per_customer: "$788/mês"
+  break_even_customers: 3
+  target_mrr_30_days: "$2,364/mês"
+  mcp_servers: 4
+  total_tools: "77+"
